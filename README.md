@@ -5,7 +5,7 @@
 SoGParty
 ================
 
-This is a hobby/project forking counterwallet and adapting specifically for Spells of Genesis. 
+This is a hobby/project forking counterwallet and adapting it specifically for Spells of Genesis. BTC/XCP/BCY donation address: 1KJ6SPUi7oAJ8q5nSGuv8SujUDeieKy5GF 
 
 Production Systems
 -------------------
