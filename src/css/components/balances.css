@@ -106,6 +106,9 @@ div#showAssetInfoModal table tbody {
 .asset-item.myasset     { color: #8a6d3b; background-color: #f4dbab; border-color: #cfb991; }
 .asset-item.othersasset { color: #31708f; background-color: #bce8f1; border-color: #9fc4cc; }
 
+.asset-item.imgasset {padding: 5px;}
+
+
 
 .balancesAssetIcons {
   position:absolute;bottom:2px;right:10px
