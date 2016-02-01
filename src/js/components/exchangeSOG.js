@@ -2577,19 +2577,22 @@ function HomeExchangeViewModel() {
 
                     //fix the burned supplies
                     if (single.base_asset == "SATOSHICARD")
-                        single.supply = 199;
+                        single.supply = "199";
                     if (single.base_asset == "GENESISCARD")
-                        single.supply = 557;
+                        single.supply = "557";
                     if (single.base_asset == "RIPPLECARD")
-                        single.supply = 500;
+                        single.supply = "500";
 
-
-                    subArrayCounter++;
-                    subArray[subArrayCounter] = single;
-                    console.log(subArray[subArrayCounter].base_asset);
+                    //if (subArrayCounter < 20) {
+                        subArrayCounter++;
+                        subArray[subArrayCounter] = single;
+                        //console.log(subArray[subArrayCounter].base_asset);
+                    //}
                 }
             }
         }
+        //subArray = subArray.sort(function (left, right) { return left.volume == right.volume ? 0 : (left.volume < right.volume ? -1 : 1) });
+
         data_ = subArray;
 
         for (var i in data_) {
@@ -2619,7 +2622,9 @@ function HomeExchangeViewModel() {
         data_[i].price = smartFormat(parseFloat(data_[i].price));
         }
 
+        //data_ = data_.sort(function (left, right) { return left.volume == right.volume ? 0 : (left.volume < right.volume ? 1 : -1) });
         self.allHomePairs(data_);
+
         if (self.allHomePairs().length) {
             console.log(self.allHomePairs().length);
             runDataTables('#HomeAssetPairMarketInfo', true, {"aaSorting": [[0, 'asc']]});
@@ -2632,7 +2637,7 @@ function HomeExchangeViewModel() {
             self.allHomePairs([]);
             $('#HomeAssetPairMarketInfo').dataTable().fnClearTable();
         } catch(e) {}
-        failoverAPI('get_markets_list', [], self.displayHomeAllPairs);
+        failoverAPI('get_sog_markets_list', [], self.displayHomeAllPairs);
     }
 
 
