@@ -5,9 +5,10 @@
 SoGParty
 ================
 
-This is a hobby/project forking counterwallet and adapting it specifically for Spells of Genesis. BTC/XCP/BCY donation address: 1KJ6SPUi7oAJ8q5nSGuv8SujUDeieKy5GF 
+- This is a hobby/project forking counterwallet and adapting it specifically for Spells of Genesis. BTC/XCP/BCY donation address: 1KJ6SPUi7oAJ8q5nSGuv8SujUDeieKy5GF 
+- Note this counterwallet fork uses extended API calls to reduce latency and enable new functionality. This must be run with my **[forked counterblock implementation](https://github.com/x-ETHeREAL-x/SOGPartyBlock)**
 
-Production Systems
+Beta Testing Production Systems 
 -------------------
 
 * Primary server -- Mainnet: **[SoGParty.com](https://sogparty.com/)**
