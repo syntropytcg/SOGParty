@@ -45,7 +45,7 @@ var SOGAssetArray = [
     "GOBLINCARD"
 ];
 
-var numSOGAssets = SOGAssetArray.length;
+var numSOGAssets = SOGAssetArray.length
 
 function getSOGImage(name){
 

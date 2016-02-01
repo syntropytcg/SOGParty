@@ -13,7 +13,7 @@
     [FR] Ce site requiert Javascript. Veuillez l'activer et recharcher la page.
   </noscript>
 
-  <script src="js/ServerCheck.js"></script>
+
   <!-- build:css css/counterwallet-deps-min.css -->
   <link rel="stylesheet" type="text/css" media="screen" href="vendors/bootstrap/dist/css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" media="screen" href="vendors/font-awesome/css/font-awesome.min.css">
@@ -254,17 +254,17 @@
   <div id="logon">
     <div id="langSelector"  class="container">
       <a href="https://github.com/x-ETHeREAL-x/SOGParty" target="_blank">
-        <img src="pages/logos/github.png" height="20" width="20"/>
+        <img src="/pages/logos/github.png" height="20" width="20"/>
       </a>
       <a href="https://twitter.com/x_ETHeREAL_x" target="_blank">
-        <img src="pages/logos/twitter.png" height="20" width="20"/>
+        <img src="/pages/logos/twitter.png" height="20" width="20"/>
       </a>
 
       <a href="https://www.reddit.com/r/sogparty" target="_blank">
-        <img src="pages/logos/reddit2.png" height="20" width="20"/>
+        <img src="/pages/logos/reddit2.png" height="20" width="20"/>
       </a>
       <a href="https://sogparty.signup.team/" target="_blank">
-        <img src="pages/logos/slack.png" height="20" width="20"/>
+        <img src="/pages/logos/slack.png" height="20" width="20"/>
       </a>
     </div>
     <h1 style="margin:5px 0">
@@ -315,7 +315,7 @@
 
               </div>
             </form>
-            <div style="font-size: small"><i>*To use your existing CounterWallet.io quick access url, simply replace "https://wallet.counterwallet.io/#cp=" in the url with: "https://SoGParty.com/#cp="</i></div>
+            <div style="font-size: small"><i>*To use your existing CounterWallet.io quick access url, simply replace "https://wallet.counterwallet.io/#cp=" in the url with: "https://SoGParty.com/BETA/#cp="</i></div>
 
             <div class="clearfix"></div>
             <div data-bind="fadeVisible: walletGenProgressVal() > 0" class="progress progress-striped active margin-top-15 margin-bottom-0" class="margin-top-15 margin-bottom-0 display-none">
@@ -347,7 +347,10 @@
         </div>
 
       </div>
-      <div class="row"> <!-- row -->
+      </div>
+    </div>
+      <div class="container" id="homepairscontainer">
+      <div class="row" id="homepairsgrid"> <!-- row -->
         <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> <!-- NEW WIDGET START -->
           <div class="jarviswidget defaultWidgetColor" id="wid-id-HomeAssetPairMarketInfo" data-widget-editbutton="false" data-widget-sortable="false" data-widget-deletebutton="false" data-widget-colorbutton="false" data-widget-fullscreenbutton="false" data-widget-togglebutton="false"  data-widget-grid="false">
             <header>
@@ -357,15 +360,18 @@
             </header>
             <div> <!-- widget div-->
               <div class="widget-body no-padding"> <!-- widget content -->
-
+                <div class="widget-body-toolbar">
+                </div>
                 <table id="HomeAssetPairMarketInfo" class="table table-striped table-bordered table-hover datatable_basic">
                   <thead>
                   <tr class="centerHeader">
                     <th data-bind="locale: 'card_image'"></th>
                     <th data-bind="locale: 'market'"></th>
-                    <th>Buy Offer/Vol</th>
-                    <th>Sell Offer/Vol</th>
-                    <th>Card Supply</th>
+                    <th data-bind="locale: 'price'"></th>
+                    <th data-bind="locale: '24h_change'"></th>
+                    <th data-bind="locale: '24h_volume'"></th>
+                    <th>Total Issued</th>
+
 
 
 
@@ -375,24 +381,27 @@
                   <tr>
                     <td style="text-align:center">
 
-                      <img data-bind="attr: {'src': 'SOGImages/' + base_asset + '.jpg', height:'423', width: '160'}">
-                      <p data-bind="text: '(' + getSOGOrder(base_asset) ' Issued Card)'"></p>
+                      <img data-bind="attr: {'src': 'https://sogparty.com/pages/SOGImages/' + base_asset + '.jpg', height:'240', width: '160'}">
+                      <p>
+                        <b><span data-bind="text: issued"></span></b>
+                      </p>
                     </td>
                     <td style="with-space:nowrap">
-                      <b><span data-bind="text: base_asset"></span></b> / <span data-bind="text: quote_asset == 'BITCRYSTALS' ? 'BCY' : quote_asset"></span>
+                      <b><span data-bind="text: base_asset"></span></b> / <span data-bind="text: quote_asset"></span>
 
                     </td>
                     <td style="text-align:right" data-bind="attr: {class: price_class}">
-                      <span data-bind="text: highBid + ' ' + quote_asset == 'BITCRYSTALS' ? 'BCY' : quote_asset + '/' + highBidVol"></span>
-
+                      <span data-bind="text: price"></span>
+                      <span data-bind="text: quote_asset"></span>
                     </td>
-                    <td style="text-align:right" data-bind="attr: {class: price_class}">
-                      <span data-bind="text: lowAsk + ' ' + quote_asset == 'BITCRYSTALS' ? 'BCY' : quote_asset + '/' + lowAskVol"></span>
-
+                    <td style="text-align:center" data-bind="text: progression, attr: {class: prog_class}"></td>
+                    <td class="number">
+                      <span data-bind="text: volume || '0'"></span>
+                      <span data-bind="text: quote_asset"></span>
                     </td>
 
 
-                    <td class="number" data-bind="text: getSOGSupply(base_asset, supply)"></td>
+                    <td class="number" data-bind="text: supply"></td>
 
 
 
@@ -404,11 +413,10 @@
           </div> <!-- end widget -->
         </article> <!-- WIDGET END -->
 
-      </div> <!-- end row -->
+      </div></div> <!-- end row -->
 
 
-    </div>
-  </div> <!-- END logged out cover div -->
+
 
   <!-- modal for keyboardless passphrase entry (on login page) -->
   <div data-bind="showModal: shown" id="licenseModal" class="modal fade" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="licenseModal" aria-hidden="true">
@@ -948,6 +956,7 @@
 
     <script src="js/pages.init.js"></script>
     <script src="js/SOGSupport.js"></script>
+<script src="js/ServerCheck.js"></script>
     <!-- endbuild -->
 
   </body>

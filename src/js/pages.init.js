@@ -22,8 +22,13 @@ function initIndex() { //main page
   window.SUPPORT_MODAL = new SupportModalViewModel();
   window.DONATE_MODAL = new DonationViewModel();
   window.CREATE_SUPPORT_CASE_VIEW_MODEL = new CreateSupportCaseViewModel();
+  window.EXCHANGE_Home = new HomeExchangeViewModel();
+
 
   $(document).ready(function() {
+
+    ko.applyBindings(EXCHANGE_Home, document.getElementById("homepairsgrid"));
+    EXCHANGE_Home.fetchAllHomePairs();
     ko.applyBindings(LOGON_VIEW_MODEL, document.getElementById("logon"));
     ko.applyBindings(LICENSE_MODAL, document.getElementById("licenseModal"));
     ko.applyBindings(LOGON_PASSWORD_MODAL, document.getElementById("logonPassphaseModal"));

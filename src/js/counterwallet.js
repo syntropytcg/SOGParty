@@ -65,10 +65,11 @@ function produceCWServerList() {
     return element + (USE_TESTNET ? '/_t_api' : '/_api');
   }));
 
-  if (!homeCalled) {
-    homeCalled = true;
-    //fetchAllHomePairs();
-  }
+  /*if (!homeCalled) {
+    //homeCalled = true;
+    console.log("setuphome");
+    setUpHome();
+  }*/
 }
 
 function initGoogleAnalytics() {
