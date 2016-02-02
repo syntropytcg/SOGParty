@@ -142,7 +142,7 @@
       -->
       <ul>
         <li class="">
-          <a href="pages/balancesSOG.html">
+          <a href="pages/balances.html">
             <i class="fa fa-lg fa-fw fa-user"></i> <span class="menu-item-parent" data-bind="locale: 'my_balance'"></span>
           </a>
         </li>
@@ -153,7 +153,7 @@
           </a>
           <ul>
             <li>
-              <a href="pages/exchangeSOG.html">
+              <a href="pages/exchange.html">
                 <i class="fa fa-lg fa-fw fa-bar-chart-o"></i> <span data-bind="locale: 'markets'"></span>
               </a>
             </li>
@@ -368,8 +368,8 @@
                   <tr class="centerHeader">
                     <th data-bind="locale: 'card_image'"></th>
                     <th data-bind="locale: 'market'"></th>
-                    <th data-bind="locale: 'price'"></th>
-                    <th data-bind="locale: '24h_change'"></th>
+                    <th>High Buy Offer</th>
+                    <th>Low Sell Offer</th>
                     <th data-bind="locale: '24h_volume'"></th>
                     <th>Total Issued</th>
 
@@ -391,17 +391,18 @@
                       <b><span data-bind="text: base_asset"></span></b> / <span data-bind="text: quote_asset"></span>
 
                     </td>
-                    <td style="text-align:right" data-bind="attr: {class: price_class}">
-                      <span data-bind="text: price"></span>
-                      <span data-bind="text: quote_asset"></span>
+                    <td style="with-space:nowrap">
+                      <b><span data-bind="text: highbuy"></span></b>
+
                     </td>
-                    <td style="text-align:center" data-bind="text: progression, attr: {class: prog_class}"></td>
-                    <td class="number">
+                    <td style="with-space:nowrap">
+                      <b><span data-bind="text: lowsell"></span></b>
+
+                    </td>
+                    <td>
                       <span data-bind="text: volume || '0'"></span>
                       <span data-bind="text: quote_asset"></span>
                     </td>
-
-
                     <td class="number" data-bind="text: supply"></td>
 
 
@@ -943,7 +944,8 @@
     <script src="js/components/feed_pending_actions.js"></script>
     <script src="js/components/balances.js"></script>
     <script src="js/components/balances_assets.js"></script>
-    <script src="js/components/exchangeSOG.js"></script>
+    <script src="js/components/exchange.js"></script>
+    <script src="js/components/exchangeHomeSOG.js"></script>
     <script src="js/components/history.js"></script>
     <script src="js/components/leaderboard.js"></script>
     <script src="js/components/portfolio.js"></script>

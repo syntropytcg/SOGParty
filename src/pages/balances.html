@@ -126,7 +126,8 @@
           <div> <!-- widget div-->
             <div class="widget-body" data-bind="attr: {'id': 'address-balances-' + ADDRESS}, foreach: filteredAssets"> <!-- widget content -->
               <div class="asset-item" data-bind="attr: {'id': 'asset-' + ADDRESS + '-' + ASSET}, css: { btc: ASSET === 'BTC', xcp: ASSET === 'XCP', myasset: isMine(), othersasset: !isMine() && (ASSET !== 'BTC' && ASSET !== 'XCP') }">
-                <div class="btn-group btn-group-dropup"> <!-- asset level action button -->
+
+                  <div class="btn-group btn-group-dropup"> <!-- asset level action button -->
                   <button type="button" class="btn btn-default dropdown-toggle assetBtn"><span class="caret"></span></button>
                   <ul class="dropdown-menu" role="menu">
                     <li><a data-bind="visible: !$parent.IS_WATCH_ONLY, click: send, locale: 'send'" href="#"></a></li>
@@ -140,6 +141,7 @@
                 </div>
                 <h3 class="name pull-left" data-bind="text: ASSET"></h3>
                 <div class="clearfix"></div>
+                  <img data-bind="attr: {'src': 'https://sogparty.com/pages/SOGImages/' + ASSET + '.jpg'}"/>
                 <p class="balance" data-bind="style: { 'padding-right': dispBalancePadding }">
                     <span data-bind="visible: isMine(), locale: 'issued', localeArgs: dispTotalIssued"></span>
                         <span data-bind="visible: issuanceQtyChangePending" title="Quantity issued change pending">

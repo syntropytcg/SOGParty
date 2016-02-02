@@ -30,7 +30,8 @@ function AddressViewModel(type, key, address, initialLabel, pubKeys) {
 
   self.assets = ko.observableArray([
     new AssetViewModel({address: address, asset: "BTC"}), //will be updated with data loaded from insight
-    new AssetViewModel({address: address, asset: "XCP"})  //will be updated with data loaded from counterpartyd
+    new AssetViewModel({address: address, asset: "XCP"}), //will be updated with data loaded from counterpartyd
+    new AssetViewModel({address: address, asset: "BITCRYSTALS"})
   ]);
 
   self.assetFilter = ko.observable('');
@@ -129,7 +130,7 @@ function AddressViewModel(type, key, address, initialLabel, pubKeys) {
       return item.ASSET === asset;
     });
 
-    if (asset == 'BTC' || asset == 'XCP') { //special case update
+    if (asset == 'BTC' || asset == 'XCP'|| asset == 'BITCRYSTALS') { //special case update
       assert(match, 'was created when the address viewmodel was initialized...');
       match.rawBalance(initialRawBalance);
       match.escrowedBalance(escrowedBalance);
@@ -138,24 +139,29 @@ function AddressViewModel(type, key, address, initialLabel, pubKeys) {
     }
 
     if (!match) {
-      //add the asset if it doesn't exist. this can be triggered on login (from get_asset_info API results)
-      // OR via the message feed (through receiving an asset send or ownership transfer for an asset not in the address yet)
-      $.jqlog.debug("Adding token " + asset + " to address " + self.ADDRESS + " with raw bal "
-        + initialRawBalance + " (divisible: " + assetInfo['divisible'] + ")");
-      var assetProps = {
-        address: self.ADDRESS,
-        asset: asset,
-        divisible: assetInfo['divisible'],
-        owner: assetInfo['owner'] || assetInfo['issuer'],
-        locked: assetInfo['locked'],
-        rawBalance: initialRawBalance,
-        rawSupply: assetInfo['supply'] || assetInfo['quantity'],
-        description: assetInfo['description'],
-        rawEscrowedBalance: escrowedBalance,
-        escrowedBalance: normalizeQuantity(escrowedBalance, assetInfo['divisible'])
-      };
-      self.assets.push(new AssetViewModel(assetProps)); //add new
-      self.initDropDown(asset);
+      for (var j = 0; j < SOGAssetArray.length; j++) {
+        if (asset == SOGAssetArray[j]) {
+
+          //add the asset if it doesn't exist. this can be triggered on login (from get_asset_info API results)
+          // OR via the message feed (through receiving an asset send or ownership transfer for an asset not in the address yet)
+          $.jqlog.debug("Adding token " + asset + " to address " + self.ADDRESS + " with raw bal "
+              + initialRawBalance + " (divisible: " + assetInfo['divisible'] + ")");
+          var assetProps = {
+            address: self.ADDRESS,
+            asset: asset,
+            divisible: assetInfo['divisible'],
+            owner: assetInfo['owner'] || assetInfo['issuer'],
+            locked: assetInfo['locked'],
+            rawBalance: initialRawBalance,
+            rawSupply: assetInfo['supply'] || assetInfo['quantity'],
+            description: assetInfo['description'],
+            rawEscrowedBalance: escrowedBalance,
+            escrowedBalance: normalizeQuantity(escrowedBalance, assetInfo['divisible'])
+          };
+          self.assets.push(new AssetViewModel(assetProps)); //add new
+          self.initDropDown(asset);
+        }
+      }
 
     } else {
       //update existing. NORMALLY this logic is really only reached from the messages feed, however, we can have the

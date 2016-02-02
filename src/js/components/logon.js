@@ -41,6 +41,8 @@ function WalletCreationViewModel() {
   }
 
   self.goToStep2 = function() {
+    document.getElementById("homepairscontainer").innerHTML = "";
+
     self.step(2);
   }
 
@@ -129,6 +131,7 @@ function LogonViewModel() {
 
   self.openWallet = function() {
     //Start with a gate check to make sure at least one of the servers is ready and caught up before we try to log in
+    document.getElementById("homepairscontainer").innerHTML = "";
     multiAPI("is_ready", {}, function(data, endpoint) {
         assert(data['caught_up'], "Invalid is_ready result"); //otherwise we should have gotten a 525 error
         assert(USE_TESTNET == data['testnet'], "USE_TESTNET is " + USE_TESTNET + " from URL-based detection, but the server API disagrees!");
