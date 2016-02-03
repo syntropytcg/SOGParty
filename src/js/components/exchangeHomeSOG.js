@@ -928,6 +928,51 @@ function HomeExchangeViewModel() {
     }
     self.allHomePairs = ko.observableArray([]);
 
+    self.getorderdata = function(data){
+
+
+        var buyorder = data['buy_orders'].shift();
+
+        var highbuy;
+        var sellorder = data['sell_orders'].shift();
+        var lowsell;
+        for (var i in self.allHomePairs()) {
+            //console.log(self.allHomePairs()[i].base_asset);
+            if (self.allHomePairs()[i].base_asset == data['base_asset']) {
+                if (self.allHomePairs()[i].quote_asset == data['quote_asset']) {
+                    if (buyorder == undefined){
+                        self.allHomePairs()[i].highbuy = "None";
+                        console.log(self.allHomePairs()[i].highbuy);
+                    } else {
+
+                        self.allHomePairs()[i].highbuy = smartFormat(parseFloat(buyorder.price)) + " " + data['quote_asset'];
+                        console.log(self.allHomePairs()[i].highbuy);
+                    }
+                    if (sellorder == undefined){
+                        self.allHomePairs()[i].lowsell = "None";
+                        console.log(self.allHomePairs()[i].lowsell);
+                    } else {
+
+
+                        self.allHomePairs()[i].lowsell = smartFormat(parseFloat(sellorder.price)) + " " + data['quote_asset'];
+                        console.log(self.allHomePairs()[i].lowsell);
+                    }
+                }
+            }
+        }
+        self.allHomePairs(self.allHomePairs());
+
+
+
+
+
+
+
+
+
+    }
+
+
     self.displayHomeAllPairs = function(data_) {
 
 
@@ -983,6 +1028,7 @@ function HomeExchangeViewModel() {
             var single = data_[i];
             var buyorders = single['buy_orders'].shift();
             var sellorders = single['sell_orders'].shift();
+
             if (buyorders == undefined)
                 data_[i].highbuy = "None";
             else
@@ -993,17 +1039,27 @@ function HomeExchangeViewModel() {
             if (sellorders == undefined)
                 data_[i].lowsell = "None";
             else
-                data_[i].lowsell = smartFormat(parseFloat(sellorders.price)) + " " + single.quote_asset;
+               data_[i].lowsell = smartFormat(parseFloat(sellorders.price)) + " " + single.quote_asset;
 
         }
 
         //data_ = data_.sort(function (left, right) { return left.volume == right.volume ? 0 : (left.volume < right.volume ? 1 : -1) });
         self.allHomePairs(data_);
 
+
         if (self.allHomePairs().length) {
             console.log(self.allHomePairs().length);
-            runDataTables('#HomeAssetPairMarketInfo', true,{});
+            /*
+            for (var i in data_) {
 
+                var params = {
+                    'asset1': data_[i].base_asset,
+                    'asset2': data_[i].quote_asset
+                }
+                failoverAPI('get_market_details', params, self.getorderdata);
+            }
+            */
+            runDataTables('#HomeAssetPairMarketInfo', true,{});
         }
     }
 
