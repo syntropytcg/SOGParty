@@ -905,29 +905,36 @@ function ExchangeViewModel() {
     self.fetchAllPairs();
 
     //Get a list of all assets
-    failoverAPI("get_asset_names", {}, function(data, endpoint) {
-      data = ['XCP'].concat(data);
-      self.allAssets(data);
+    //failoverAPI("get_asset_names", {}, function(data, endpoint) {
+    var data = [];
+    data = ['XCP'].concat(data);
+    data = ['BTC'].concat(data);
+    data = ['BITCRYSTALS'].concat(data);
+    data = SOGAssetArray.concat(data);
+    self.allAssets(data);
 
-      //Set up typeahead bindings manually for now (can't get knockout and typeahead playing well together...)
-      var assets = new Bloodhound({
-        datumTokenizer: Bloodhound.tokenizers.whitespace,
-        queryTokenizer: Bloodhound.tokenizers.whitespace,
-        local: self.allAssets()
-      });
-      assets.initialize();
-      $('#asset1, #asset2').typeahead(null, {
-        source: assets.ttAdapter(),
-        displayKey: function(obj) {
-          return obj;
-        }
-      }).on('typeahead:selected', function($e, datum) {
-        if ($($e.target).attr('name') == 'asset1')
-          self.asset1(datum); //gotta do a manual update...doesn't play well with knockout
-        else if ($($e.target).attr('name') == 'asset2')
-          self.asset2(datum); //gotta do a manual update...doesn't play well with knockout
-      });
+    //data = ['XCP'].concat(data);
+    //self.allAssets(data);
+
+    //Set up typeahead bindings manually for now (can't get knockout and typeahead playing well together...)
+    var assets = new Bloodhound({
+      datumTokenizer: Bloodhound.tokenizers.whitespace,
+      queryTokenizer: Bloodhound.tokenizers.whitespace,
+      local: self.allAssets()
     });
+    assets.initialize();
+    $('#asset1, #asset2').typeahead(null, {
+      source: assets.ttAdapter(),
+      displayKey: function (obj) {
+        return obj;
+      }
+    }).on('typeahead:selected', function ($e, datum) {
+      if ($($e.target).attr('name') == 'asset1')
+        self.asset1(datum); //gotta do a manual update...doesn't play well with knockout
+      else if ($($e.target).attr('name') == 'asset2')
+        self.asset2(datum); //gotta do a manual update...doesn't play well with knockout
+    });
+
   }
 
   self.refresh = function() {

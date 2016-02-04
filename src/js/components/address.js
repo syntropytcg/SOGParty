@@ -31,13 +31,17 @@ function AddressViewModel(type, key, address, initialLabel, pubKeys) {
   self.assets = ko.observableArray([
     new AssetViewModel({address: address, asset: "BTC"}), //will be updated with data loaded from insight
     new AssetViewModel({address: address, asset: "XCP"}), //will be updated with data loaded from counterpartyd
-    new AssetViewModel({address: address, asset: "BITCRYSTALS"})
+    new AssetViewModel({address: address, asset: "BITCRYSTALS"}),
+    new AssetViewModel({address: address, asset: "MAGICFLDC"})
   ]);
+
 
   self.assetFilter = ko.observable('');
   self.filteredAssets = ko.computed(function() {
     if (self.assetFilter() == '') { //show all
-      return self.assets();
+      return ko.utils.arrayFilter(self.assets(), function(asset) {
+        return asset.ASSET != 'BTC' && asset.ASSET != 'XCP' && asset.ASSET != 'BITCRYSTALS' && asset.ASSET != 'MAGICFLDC';
+      });
     } else if (self.assetFilter() == 'base') {
       return ko.utils.arrayFilter(self.assets(), function(asset) {
         return asset.ASSET == 'BTC' || asset.ASSET == 'XCP';
@@ -51,6 +55,14 @@ function AddressViewModel(type, key, address, initialLabel, pubKeys) {
         return asset.isMine() == false;
       });
     }
+  }, self);
+
+  self.filteredBaseAssets = ko.computed(function() {
+
+      return ko.utils.arrayFilter(self.assets(), function(asset) {
+        return asset.ASSET == 'BTC' || asset.ASSET == 'XCP' || asset.ASSET == 'BITCRYSTALS' || asset.ASSET == 'MAGICFLDC';
+      });
+
   }, self);
 
   self.multisigType = ko.computed(function() {
@@ -130,7 +142,7 @@ function AddressViewModel(type, key, address, initialLabel, pubKeys) {
       return item.ASSET === asset;
     });
 
-    if (asset == 'BTC' || asset == 'XCP'|| asset == 'BITCRYSTALS') { //special case update
+    if (asset == 'BTC' || asset == 'XCP'|| asset == 'BITCRYSTALS' || asset == 'MAGICFLDC') { //special case update MAGICFLDC
       assert(match, 'was created when the address viewmodel was initialized...');
       match.rawBalance(initialRawBalance);
       match.escrowedBalance(escrowedBalance);

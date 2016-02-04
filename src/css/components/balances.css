@@ -33,15 +33,26 @@ div#showAssetInfoModal table tbody {
 .asset-item {
   position: relative;
   float: left;
-  min-width: 200px;
+  min-width: 300px;
 
-  height: 300px;
   margin: 5px;
   padding: 12px 53px 8px 8px;
   border-style:solid;
   border-width: 1px;  
   border-radius: 3px; 
  
+}
+.base-asset-item {
+  position: relative;
+  float: left;
+  min-width: 300px;
+
+  margin: 5px;
+  padding: 12px 53px 8px 8px;
+  border-style:solid;
+  border-width: 1px;
+  border-radius: 3px;
+
 }
 
 .asset-item div.btn-group {
@@ -101,10 +112,17 @@ div#showAssetInfoModal table tbody {
   margin-top: 2px;    
 }
 
-.asset-item.btc          { color: #a94442; background-color: #ebccd1; border-color: #c4aaaf; }
-.asset-item.xcp          { color: #3c763d; background-color: #d6e9c6; border-color: #b2c2a5; }
+.asset-item.btc          { color: #3c763d; background-color: #d6e9c6; border-color: #b2c2a5; height: 200px;}
+.asset-item.xcp          { color: #3c763d; background-color: #d6e9c6; border-color: #b2c2a5; height: 200px;}
+.asset-item.bcy          { color: #3c763d; background-color: #d6e9c6; border-color: #b2c2a5; height: 200px;display:block;}
 .asset-item.myasset     { color: #8a6d3b; background-color: #f4dbab; border-color: #cfb991; }
-.asset-item.othersasset { color: #31708f; background-color: #bce8f1; border-color: #9fc4cc; }
+.asset-item.othersasset { color: #31708f; background-color: #bce8f1; border-color: #9fc4cc; height: 460px;}
+
+.asset-item-img.ibtc          {width:240px;margin-left: auto;margin-right: auto;}
+.asset-item-img.ixcp          {width:240px;margin-left: auto;margin-right: auto;}
+.asset-item-img.ibcy          {width:240px;margin-left: auto;margin-right: auto;}
+
+.asset-item-img.iothersasset  {width:240px;height: 320px;margin-left: auto;margin-right: auto;}
 
 .asset-item.imgasset {padding: 5px;}
 
@@ -118,3 +136,75 @@ div#showAssetInfoModal table tbody {
   float:right;
   padding-left:5px;
 }
+
+
+.base-asset-item div.btn-group {
+  position:absolute !important;
+  top:11px;
+  right:15px;
+
+}
+
+.base-asset-item div.btn-group button {
+  z-index: 2 !important;
+}
+
+.base-asset-item div.btn-group .dropdown-menu {
+  z-index: 3 !important;
+}
+
+.base-asset-item h3 {
+  position: relative;
+  top:-10px;
+  z-index: 1 !important;
+}
+
+.base-asset-item > * {
+  margin: 0;
+  padding: 0;
+}
+
+.base-asset-item .name {
+  font-size: 38px;
+  font-weight: bold;
+  color: white;
+}
+
+.base-asset-item .balance {
+  position: relative;
+  /*bottom: -5px;*/
+  letter-spacing: 0;
+  font-size: 15px;
+  font-weight: bold;
+
+  bottom: 12px;
+  line-height: 18px;
+}
+
+.base-asset-item button.dropdown-toggle {
+  border-radius: 4px;
+}
+
+.base-asset-item div.btn-group {
+  float: right;
+  width: 30px;
+  height: 32px;
+  line-height: 32px;
+  position: relative;
+  margin-left: 10px;
+  margin-top: 2px;
+}
+
+.base-asset-item.btc          { color: #a94442; background-color: #ebccd1; border-color: #c4aaaf; height: 100px;}
+.base-asset-item.xcp          { color: #3c763d; background-color: #d6e9c6; border-color: #b2c2a5; height: 100px;}
+.base-asset-item.bcy          { color: #3c763d; background-color: #d6e9c6; border-color: #b2c2a5; height: 100px;}
+.base-asset-item.myasset     { color: #8a6d3b; background-color: #f4dbab; border-color: #cfb991; }
+.base-asset-item.othersasset { color: #31708f; background-color: #bce8f1; border-color: #9fc4cc; height: 460px;}
+
+.base-asset-item-img.ibtc          {width:240px;margin-left: auto;margin-right: auto;}
+.base-asset-item-img.ixcp          {width:240px;}
+.base-asset-item-img.ibcy          {width:240px;}
+
+.base-asset-item-img.iothersasset  {width:240px;height: 320px;}
+
+.base-asset-item.imgasset {padding: 5px;}

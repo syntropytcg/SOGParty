@@ -124,50 +124,6 @@
             <div class="clearfix"></div>
           </header>
           <div> <!-- widget div-->
-              <div class="row" style="margin-left: 5px; margin-right: 5px;">
-                  <div>
-                      <h4 class="alert-heading padding-bottom-10"><span>My Currency Balances:</span></h4>
-
-                  </div>
-              <div class="widget-body" data-bind="attr: {'id': 'address-basebalances-' + ADDRESS}, foreach: filteredBaseAssets">
-
-                  <div class="base-asset-item" data-bind="attr: {'id': 'baseasset-' + ADDRESS + '-' + ASSET}, css: { btc: ASSET === 'BTC', xcp: (ASSET === 'XCP' || ASSET === 'MAGICFLDC'), bcy: ASSET === 'BITCRYSTALS'}">
-
-                      <div class="btn-group btn-group-dropup"> <!-- asset level action button -->
-                          <button type="button" class="btn btn-default dropdown-toggle assetBtn"><span class="caret"></span></button>
-                          <ul class="dropdown-menu" role="menu">
-                              <li><a data-bind="visible: !$parent.IS_WATCH_ONLY, click: send, locale: 'send'" href="#"></a></li>
-                              <li><a data-bind="visible: ASSET !== 'BTC' && ASSET !== 'XCP', click: showInfo, locale: 'show_info'" href="#"></a></li>
-                              <li data-bind="visible: !$parent.IS_WATCH_ONLY && USE_TESTNET && ASSET === 'BTC'"><a data-bind="click: testnetBurn, locale: 'burn_for_xcp'" href="#"></a></li>
-                              <li data-bind="visible: !$parent.IS_WATCH_ONLY && isMine() && !locked()"><a data-bind="click: issueAdditional, locale: 'issue_additional'" href="#"></a></li>
-                              <li data-bind="visible: !$parent.IS_WATCH_ONLY && isMine()"><a data-bind="click: transfer, locale: 'transfer_ownership'" href="#"></a></li>
-                              <li data-bind="visible: !$parent.IS_WATCH_ONLY && isMine() && !locked()"><a data-bind="click: lock, locale: 'lock_token_issuance'" href="#"></a></li>
-                              <li data-bind="visible: !$parent.IS_WATCH_ONLY && isMine()"><a data-bind="click: changeDescription, locale: 'change_token_description'" href="#"></a></li>
-                          </ul>
-                      </div>
-                      <h3 class="name pull-left" data-bind="text: ASSET"></h3>
-                      <div class="clearfix"></div>
-                      <p class="balance" data-bind="style: { 'padding-right': dispBalancePadding }">
-                          <span data-bind="visible: isMine(), locale: 'issued', localeArgs: dispTotalIssued"></span>
-                        <span data-bind="visible: issuanceQtyChangePending" title="Quantity issued change pending">
-                            <i class="icon-append fa fa-spinner fa-spin"></i></span>
-                          </span><br/>
-                          Bal: <span data-bind="html: dispBalance"></span>
-                          <span data-bind="html: dispEscrowedBalance"></span>
-                    <span data-bind="visible: balanceChangePending"
-                          title="Balance change pending"><i class="icon-append fa fa-spinner fa-spin"></i></span></p>
-                      <div class="balancesAssetIcons">
-                    <span data-bind="visible: locked()" class="balancesAssetIcon"
-                          title="Token is locked"><i class="icon-append fa fa-lock"></i></span>
-                      </div>
-                  </div>
-
-              </div></div>
-              <div class="row" style="margin-left: 5px; margin-right: 5px;">
-                  <div>
-                      <h4 class="alert-heading padding-bottom-10"><span>My Card Balances:</span></h4>
-
-                  </div>
             <div class="widget-body" data-bind="attr: {'id': 'address-balances-' + ADDRESS}, foreach: filteredAssets"> <!-- widget content -->
               <div class="asset-item" data-bind="attr: {'id': 'asset-' + ADDRESS + '-' + ASSET}, css: { btc: ASSET === 'BTC', xcp: ASSET === 'XCP', bcy: ASSET === 'BITCRYSTALS',  othersasset:  ((ASSET !== 'BTC' && ASSET !== 'XCP') && ASSET !== 'BITCRYSTALS')}">
 
@@ -199,7 +155,7 @@
                     <span data-bind="visible: locked()" class="balancesAssetIcon"
                         title="Token is locked"><i class="icon-append fa fa-lock"></i></span>
                 </div>
-                 </div></div>
+                 </div>
             </div> <!-- end widget content body -->
           </div> <!-- end widget div -->
         </div> <!-- end widget -->
@@ -512,7 +468,7 @@
               </div>
             </div>
           </div></section>
-        </fieldset>
+        <fieldset>
       </div>
       <div class="modal-footer" data-bind="visible: sweepingProgressionMessage()==''">
         <button type="button" class="btn btn-default" data-bind="click: hide, locale: 'cancel'"></button>
@@ -628,7 +584,7 @@
       </div>
       <div class="modal-body no-padding">
         <div class="formPadded">
-            <div class="alert alert-warning"><i class="fa-fw fa fa-info"></i><span data-bind="locale: 'private_key_warning'"></span></div>
+            <div class="alert alert-warning"><i class="fa-fw fa fa-info"></i><span data-bind="locale: 'private_key_warning'"></div>
 
             <center>
                 <a href="#" class="font-lg" data-bind="visible: !privateKeyText(), click: displayPrivateKey, locale: 'show_private_key'"></a>
