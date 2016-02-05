@@ -140,41 +140,41 @@
       Please note that these links work a bit different than
       traditional href="" links. See documentation for details.
       -->
-      <ul>
+      <ul class="nav nav-pills nav-stacked">
         <li class="">
           <a href="pages/balances.html">
-            <i class="fa fa-lg fa-fw fa-user"></i> <span class="menu-item-parent" data-bind="locale: 'my_balance'"></span>
+            <i class="fa fa-lg fa-fw fa-lock"></i> <span class="menu-item-parent">Wallet View</span>
           </a>
         </li>
 
         <li class="">
-          <a href="#">
-            <i class="fa fa-lg fa-fw fa-exchange"></i> <span class="menu-item-parent" data-bind="locale: 'exchange'"></span>
-          </a>
-          <ul>
-            <li>
-              <a href="pages/exchange.html">
-                <i class="fa fa-lg fa-fw fa-bar-chart-o"></i> <span data-bind="locale: 'markets'"></span>
+
+
+              <a href="pages/exchange.html" id="changemarket_index">
+                <i class="fa fa-lg fa-fw fa-bar-chart-o"></i> <span>Buy Or Sell Cards</span>
               </a>
             </li>
-            <li>
+        <li class="">
               <a href="pages/openorders.html">
-                <i class="fa fa-lg fa-fw fa-circle-o"></i> <span data-bind="locale: 'open_orders'"></span>
+                <i class="fa fa-lg fa-fw fa-circle-o"></i> <span>My Open Orders</span>
               </a>
             </li>
-            <li>
+        <li class="">
               <a href="pages/ordermatches.html">
                 <i class="fa fa-lg fa-fw fa-book"></i> <span data-bind="locale: 'my_order_history'"></span>
               </a>
             </li>
-          </ul>
-        </li>
 
-        <li class="" data-bind="visible: FEATURE_HISTORY">
+        </li>
+        <li class="">
           <a href="pages/history.html">
-            <i class="fa fa-lg fa-fw fa-book"></i> <span class="menu-item-parent" data-bind="locale: 'history'"></span>
+            <i class="fa fa-lg fa-fw fa-folder"></i> <span>Account History</span>
           </a>
         </li>
+
+        </li>
+
+
 
       </ul>
     </nav>
@@ -366,12 +366,13 @@
                 <table id="HomeAssetPairMarketInfo" class="table table-striped table-bordered table-hover datatable_basic">
                   <thead>
                   <tr class="centerHeader">
-                    <th data-bind="locale: 'card_image'"></th>
+                    <th style="width: 250px !important" data-bind="locale: 'card_image'"></th>
                     <th data-bind="locale: 'market'"></th>
                     <th>High Buy Offer</th>
                     <th>Low Sell Offer</th>
                     <th data-bind="locale: '24h_volume'"></th>
                     <th>Total Issued</th>
+                    <th>Card Divisible?</th>
 
 
 
@@ -380,7 +381,7 @@
                   </thead>
                   <tbody data-bind="foreach: allHomePairs">
                   <tr>
-                    <td style="text-align:center">
+                    <td style="text-align: center;width: 250px !important;">
 
                       <img data-bind="attr: {'src': 'https://sogparty.com/pages/SOGImages/' + base_asset + '.jpg', height:'240', width: '160'}">
                       <p>
@@ -404,6 +405,10 @@
                       <span data-bind="text: quote_asset"></span>
                     </td>
                     <td class="number" data-bind="text: supply"></td>
+                    <td style="with-space:nowrap">
+                   <span data-bind="text: divisible"></span>
+
+                    </td>
 
 
 
@@ -691,10 +696,10 @@
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" data-bind="click: hide" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4 class="modal-title" data-bind="locale: 'make_a_donation'"></h4>
+          <h4 class="modal-title">Donate To SOGParty Development</h4>
         </div>
         <div class="modal-body no-padding">
-          <p class="formPadded" data-bind="locale: 'donation_desc'"></p>
+          <p class="formPadded">SOGParty is self-funded by its developer X-ETHeREAL-X. You can show your appreciation by donating BTC or XCP to help cover the costs of operating this platform.</p>
 
           <form class="smart-form"><fieldset>
 
@@ -724,6 +729,7 @@
                   <label class="radioBtn btn btn-lg" data-bind="css: { 'btn-success': donationCurrency() == 'XCP' }">
                     <input type="radio" name="donationCurrency" value="XCP" data-bind="btnGroupChecked: donationCurrency">XCP
                   </label>
+
                 </div>
               </div>
             </div></section>
@@ -733,7 +739,7 @@
                 <span class="sellColor" data-bind="text: quantity"></span>
                 <span class="sellColor" data-bind="text: donationCurrency"></span>
               </b>
-              <span data-bind="locale: 'to_support_counterparty'"></span>
+              <span>To help support SOGParty. </span>
             </p>
           </fieldset></form>
           <p class="formPaddedBot">

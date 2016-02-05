@@ -69,6 +69,11 @@ function initIndex() { //main page
       DONATE_MODAL.show();
       return false;
     });
+    $('#changeMarket_index').click(function() {
+      loadURL('pages/exchange.html', $('#content'));
+    });
+
+
     if (USE_TESTNET && TESTNET_PASSPHRASE) {
       $.jqlog.debug('Testnet passphrase specified: ' + TESTNET_PASSPHRASE);
       $('#password').val(TESTNET_PASSPHRASE);

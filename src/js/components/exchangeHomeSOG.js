@@ -943,42 +943,83 @@ function HomeExchangeViewModel() {
     self.getorderdata = function (data) {
 
 
-        var buyorder = data['buy_orders'].shift();
-        var highbuy;
-        var sellorder = data['sell_orders'].shift();
-
-        if (data['base_asset'] == 'BITCRYSTALS') {
-
-            data['base_asset'] = data['quote_asset'];
-            data['quote_asset'] = "BITCRYSTALS";
-
-        }
-
-        var lowsell;
-        for (var i in self.SOGHomePairsData) {
-            //console.log(self.allHomePairs()[i].base_asset);
-            if (self.SOGHomePairsData[i].base_asset == data['base_asset']) {
-                if (self.SOGHomePairsData[i].quote_asset == data['quote_asset']) {
-                    if (buyorder == undefined) {
-                        self.SOGHomePairsData[i].highbuy = "None";
-                        console.log(self.SOGHomePairsData[i].highbuy);
-                    } else {
-
-                        self.SOGHomePairsData[i].highbuy = smartFormat(parseFloat(buyorder.price)) + " " + data['quote_asset'];
-                        console.log(self.SOGHomePairsData[i].highbuy);
-                    }
-                    if (sellorder == undefined) {
-                        self.SOGHomePairsData[i].lowsell = "None";
-                        console.log(self.SOGHomePairsData[i].lowsell);
-                    } else {
 
 
-                        self.SOGHomePairsData[i].lowsell = smartFormat(parseFloat(sellorder.price)) + " " + data['quote_asset'];
-                        console.log(self.SOGHomePairsData[i].lowsell);
-                    }
+
+
+        for (var j = 0; j < SOGAssetArray.length; j++) {
+            if (data.base_asset == SOGAssetArray[j]) {
+                var c = j + 1;
+                var p = c % 10,
+                    k = c % 100;
+                if (p == 1 && k != 11) {
+                    data.issued = c + "st";
+                } else if (p == 2 && k != 12) {
+                    data.issued = c + "nd";
+                } else if (p == 3 && k != 13) {
+                    data.issued = c + "rd";
+                } else {
+                    data.issued = c + "th";
                 }
             }
         }
+        data.issued = "This was the " + data.issued + " Card Issued";
+        data.divisible = data.base_asset_divisible;
+        if (typeof(data.divisible) === 'undefined') data.divisible = true;
+        if (data.divisible){
+            data.divisible = "Yes!";
+
+        }   else {
+            data.divisible = "No";
+        }
+
+
+
+        data.volume = smartFormat(normalizeQuantity(data.volume, data.quote_asset_divisible));
+
+        data.supply = smartFormat(normalizeQuantity(data.supply, data.base_asset_divisible));
+        if (data.base_asset == "SATOSHICARD")
+            data.supply = "199";
+        if (data.base_asset == "GENESISCARD")
+            data.supply = "557";
+        if (data.base_asset == "RIPPLECARD")
+            data.supply = "500";
+
+        if (parseFloat(data.progression) > 0) {
+            data.prog_class = 'UP';
+            data.progression = '+' + data.progression;
+        } else if (parseFloat(data.progression) < 0) {
+            data.prog_class = 'DOWN'
+        } else {
+            data.prog_class = '';
+        }
+        data.progression += '%';
+
+        if (parseFloat(data.trend) > 0) {
+            data.price_class = 'UP';
+        } else if (parseFloat(data.trend) < 0) {
+            data.price_class = 'DOWN';
+        } else {
+            data.price_class = '';
+        }
+        data.price = smartFormat(parseFloat(data.price));
+
+        var buyorder = data['buy_orders'].shift();
+
+        var sellorder = data['sell_orders'].shift();
+        if (buyorder == undefined) {
+            data.highbuy = "None";
+
+        } else {
+            data.highbuy = smartFormat(parseFloat(buyorder.price)) + " " + data['quote_asset'];
+        }
+        if (sellorder == undefined) {
+            data.lowsell = "None";
+        } else {
+            data.lowsell = smartFormat(parseFloat(sellorder.price)) + " " + data['quote_asset'];
+        }
+        self.SOGHomePairsData = self.SOGHomePairsData.concat(data);
+
         self.numSOGHomePairs++;
         if (self.numSOGHomePairs == self.SOGHomePairsData.length) {
             console.log("done should load now");
@@ -1120,11 +1161,23 @@ function HomeExchangeViewModel() {
         }
 
         self.SOGHomePairsData = [];
+        self.numSOGHomePairs = 0;
 
         var h = "<h3><b>Loading Market Data...</b></h3>";
         document.getElementById("HomeAssetPairMarketInfo-loader").innerHTML = h;
 
-        failoverAPI('get_markets_list', [], self.displayHomeAllPairs);
+        for (var i=0; i< SOGAssetArray.length; i++){
+
+            var params = {
+                'asset1': SOGAssetArray[i],
+                'asset2': "XCP"
+                //'datachunk': data_[i];
+            }
+            failoverAPI('get_market_details', params, self.getorderdata);
+        }
+
+
+        //failoverAPI('get_markets_list', [], self.displayHomeAllPairs);
         //failoverAPI('get_sog_cardforcard_markets_list', [], self.donothing);
     }
 

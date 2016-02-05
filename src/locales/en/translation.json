@@ -63,7 +63,7 @@
   "last_updated": "Last updated:",
   "pending_actions": "Pending Actions",
   "required_btc_pays": "Required BTC Pays",
-  "donate": "Keep SOG Party Free - Donate!",
+  "donate": "Support SOGParty - Donate!",
   "my_balance": "My Balances",
   "exchange": "Exchange",
   "markets": "Markets",
@@ -491,7 +491,7 @@
   "type": "Type",
   "description": "Description",
 
-  "my_account_balances": "My Currently Owned Cards",
+  "my_account_balances": "My Spells of Genesis Wallet",
   "create_new_address": "Create New Address",
   "create_regular_address": "Create Regular Address",
   "create_armory_address": "Create Armory Offline Address",

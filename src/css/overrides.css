@@ -61,7 +61,9 @@ span.logoText {
     height: 49px !important;
     line-height: 49px !important;
     margin: 0 !important;
-    background: url(../images/logo-small.png) no-repeat 10px 8px;
+    background: url(../images/logo-bitcrystal.png) no-repeat 10px 8px;
+    background-size: contain;
+
     padding-left: 65px;
 }
 #logo span.logoText {
