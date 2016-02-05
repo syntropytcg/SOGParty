@@ -32,121 +32,125 @@
 
   <div class="alert alert-info">
     <i class="fa-fw fa fa-exchange"></i>
-    <span>NEW MESSAGE PUT IT HERE</span>
+    <span data-bind="locale: 'diligence_is_advised'"></span>
   </div>
-    <div class="container" id="pairscontainer" style="background-color: #EEE; border: 1px solid #CCC">
+
   <div class="row"> <!-- row -->
 
 
+    <article class="col-xs-12 col-sm-12 col-md-6 col-lg-6"> <!-- NEW WIDGET START -->
+      <!-- Widget ID (each widget will need unique ID)-->
+      <div class="jarviswidget defaultWidgetColor" id="wid-id-orderInputSelection" data-widget-editbutton="false" data-widget-sortable="false" data-widget-deletebutton="false" data-widget-colorbutton="false" data-widget-fullscreenbutton="false" data-widget-togglebutton="false"  data-widget-grid="false" >
+          <header>
+            <span class="widget-icon"> <i class="fa fa-rocket"></i> </span>
+            <h3 data-bind="locale: 'top_pairs'"></h3>
+            <div class="clearfix"></div>
+          </header>
+          <div> <!-- widget div-->
+            <div class="widget-body min-height-0 no-padding" style="min-height:0 !important" data-bind="validationOptions: { insertMessages: false }"> <!-- widget content -->
 
+              <div class="topPairsGrid" data-bind="foreach: topUserPairs">
+                <a href="#" data-bind="click: $parent.selectMarket, attr: {class: pair_classes}">
+                  <span data-bind="text:base_asset"></span>/<span data-bind="text:quote_asset"></span>
+                </a>
+              </div>
 
-      <article class="col-xs-12 col-sm-12 col-md-6 col-lg-6"> <!-- NEW WIDGET START -->
-          <!-- Widget ID (each widget will need unique ID)-->
-          <div class="jarviswidget defaultWidgetColor" id="wid-id-select-other-pair" data-widget-editbutton="false" data-widget-sortable="false" data-widget-deletebutton="false" data-widget-colorbutton="false" data-widget-fullscreenbutton="false" data-widget-togglebutton="false"  data-widget-grid="false" >
-              <header>
-                  <span class="widget-icon"> <i class="fa fa-rocket"></i> </span>
-                  <h3>Offer A New Trade</h3>
-                  <div class="clearfix"></div>
-              </header>
-              <div> <!-- widget div-->
-                  <div class="widget-body min-height-0 no-padding" style="min-height:0 !important" data-bind="validationOptions: { insertMessages: false }"> <!-- widget content -->
-                      <div class="row" style="height:90px">
-                          <section class="col col-lg-4 col-sm-4">
-                              <div style="padding:10px">
-                                  <label for="asset1" class="control-label font-medlg">I Want To Get:</label>
-                                  <label class="input" style="margin-bottom:0">
-                                      <input type="text" id="asset1" name="asset1" class="form-control input" type="text" placeholder="Card Or Currency Name" data-bind="value: asset1" />
-                                  </label>
-                                  <span class="errorColor" data-bind="validationMessage: asset1"></span>
-                              </div>
-                          </section>
-                          <section class="col col-lg-4 col-sm-4">
-                              <div style="padding:10px">
-                                  <label for="asset2" class="control-label font-medlg">I Have To Offer:</label>
-                                  <label class="input" style="margin-bottom:0">
-                                      <input type="text" id="asset2" name="asset2" class="form-control input" type="text" placeholder="Card Or Currency Name" data-bind="value: asset2" />
-                                  </label>
+            </div>
+         </div> <!-- end widget div -->
+      </div> <!-- end widget -->
+    </article> <!-- WIDGET END -->
 
-                                  <div class="btn-group">
-                                      <button id="NewCardTradingButton" style="float: right" data-bind="click: selectedQuoteAsset" type="button" class="btn btn-primary btn-md">Go!</button>
-                                  </div>
-                                  </span>
-
-                                  <span class="errorColor" data-bind="validationMessage: asset2"></span>
-                              </div>
-                          </section>
+    <article class="col-xs-12 col-sm-12 col-md-6 col-lg-6"> <!-- NEW WIDGET START -->
+      <!-- Widget ID (each widget will need unique ID)-->
+      <div class="jarviswidget defaultWidgetColor" id="wid-id-select-other-pair" data-widget-editbutton="false" data-widget-sortable="false" data-widget-deletebutton="false" data-widget-colorbutton="false" data-widget-fullscreenbutton="false" data-widget-togglebutton="false"  data-widget-grid="false" >
+          <header>
+            <span class="widget-icon"> <i class="fa fa-rocket"></i> </span>
+            <h3 data-bind="locale: 'select_another_pair'"></h3>
+            <div class="clearfix"></div>
+          </header>
+          <div> <!-- widget div-->
+            <div class="widget-body min-height-0 no-padding" style="min-height:0 !important" data-bind="validationOptions: { insertMessages: false }"> <!-- widget content -->
+                <div class="row" style="height:90px">
+                    <section class="col col-lg-4 col-sm-4">
+                      <div style="padding:10px">
+                        <label for="asset1" class="control-label font-medlg" data-bind="locale: 'token_1'"></label>
+                        <label class="input" style="margin-bottom:0">
+                            <input type="text" id="asset1" name="asset1" class="form-control input" type="text" placeholder="Asset name" data-bind="value: asset1" />
+                        </label>
+                        <span class="errorColor" data-bind="validationMessage: asset1"></span>
                       </div>
-                  </div>
-              </div> <!-- end widget div -->
-          </div> <!-- end widget -->
-      </article> <!-- WIDGET END -->
+                    </section>
+                    <section class="col-md-3">
+                      <div style="padding-top:10px">
+                        <label for="asset2" class="control-label font-medlg"  data-bind="locale: 'token_2'"></label>
+                        <div class="btn-group buySellBtnGroup" data-toggle="buttons" style="margin-bottom:0">
+                          <label class="radioBtn btn" data-bind="css: { 'btn-success': selectedQuoteAsset() == 'XCP', 'active': selectedQuoteAsset() == 'XCP'}">
+                            <input type="radio" value="XCP" data-bind="btnGroupChecked: selectedQuoteAsset">XCP</label>
+                          <label class="radioBtn btn" data-bind="css: { 'btn-success': selectedQuoteAsset() == 'Other', 'active': selectedQuoteAsset() == 'Other'}">
+                            <input type="radio" value="Other" data-bind="btnGroupChecked: selectedQuoteAsset">Other</label>
+                        </div>
+                        <span class="errorColor" data-bind="validationMessage: asset2"></span>
+                      </div>
+                    </section>
+                    <section class="col col-lg-4 col-sm-4" data-bind="visible: selectedQuoteAsset() == 'Other'">
+                      <div style="padding-top:10px">
+                        <label for="asset2" class="control-label font-medlg" style="display:block">&nbsp;</label>
+                        <label class="input">
+                            <input type="text" id="asset2" name="asset2" class="form-control input" type="text" placeholder="Asset name" data-bind="value: asset2" />
+                        </label>
+                      </div>
+                    </section>
+                </div>
+            </div>
+         </div> <!-- end widget div -->
+      </div> <!-- end widget -->
+    </article> <!-- WIDGET END -->
+
+  </div> <!-- end row -->
 
 
-
-
-  <div data-bind="fadeVisibleInOnly: dexHome()" class="row"> <!-- row -->
+  <div data-bind="fadeVisibleInOnly: dexHome() && allPairs().length > 0" class="row"> <!-- row -->
     <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> <!-- NEW WIDGET START -->
       <div class="jarviswidget defaultWidgetColor" id="wid-id-assetPairMarketInfo" data-widget-editbutton="false" data-widget-sortable="false" data-widget-deletebutton="false" data-widget-colorbutton="false" data-widget-fullscreenbutton="false" data-widget-togglebutton="false"  data-widget-grid="false">
         <header>
-            <div id="AssetPairMarketInfo-loader"></div>
-            <div id="AssetPairMarketInfo-loader-done" style="display: none;">
-            <h3><b>Filter Card Sale Markets By Currency</b></h3><span>   </span></span><div class='btn-group'><button class='btn btn-primary btn-md' data-bind='click: fetchAllPairsByXCP'>XCP</button><span>     </span><button class='btn btn-primary btn-md' data-bind='click: fetchAllPairsByBCY'>BITCRYSTALS</button></div>
-            </div>
-
+            <span class="widget-icon"> <i class="fa fa-chain"></i> </span>
+            <h3 data-bind="locale: 'all_pairs'"></h3>
+            <div class="clearfix"></div>
         </header>
-
-              <div class="clearfix"></div>
-
-
         <div> <!-- widget div-->
             <div class="widget-body no-padding"> <!-- widget content -->
                 <div class="widget-body-toolbar">
                 </div>
-                <table id="AssetPairMarketInfo" class="table table-striped table-bordered table-hover datatable_basic">
+                <table id="assetPairMarketInfo" class="table table-striped table-bordered table-hover datatable_basic">
                     <thead>
-                    <tr class="centerHeader">
-                        <th data-bind="locale: 'card_image'"></th>
-                        <th data-bind="locale: 'market'"></th>
-                        <th>High Buy Offer</th>
-                        <th>Low Sell Offer</th>
-                        <th data-bind="locale: '24h_volume'"></th>
-                        <th>Total Issued</th>
-
-
-
-
-                    </tr>
+                        <tr class="centerHeader">
+                            <th>#</th>
+                            <th data-bind="locale: 'market'"></th>
+                            <th data-bind="locale: 'price'"></th>
+                            <th data-bind="locale: '24h_volume'"></th>
+                            <th data-bind="locale: 'supply'"></th>
+                            <th data-bind="locale: 'market_cap'"></th>
+                            <th data-bind="locale: '24h_change'"></th>
+                        </tr>
                     </thead>
                     <tbody data-bind="foreach: allPairs">
-                    <tr data-bind="click: $parent.selectMarket">
-                        <td style="text-align:center">
-
-                            <img data-bind="attr: {'src': 'https://sogparty.com/pages/SOGImages/' + base_asset + '.jpg', height:'240', width: '160'}">
-                            <p>
-                                <b><span data-bind="text: issued"></span></b>
-                            </p>
-                        </td>
-                        <td style="with-space:nowrap">
-                            <b><span data-bind="text: base_asset"></span></b> / <span data-bind="text: quote_asset"></span>
-
-                        </td>
-                        <td style="with-space:nowrap">
-                            <b><span data-bind="text: highbuy"></span></b>
-
-                        </td>
-                        <td style="with-space:nowrap">
-                            <b><span data-bind="text: lowsell"></span></b>
-
-                        </td>
-                        <td>
-                            <span data-bind="text: volume || '0'"></span>
-                            <span data-bind="text: quote_asset"></span>
-                        </td>
-                        <td class="number" data-bind="text: supply"></td>
-
-
-
-                    </tr>
+                        <tr data-bind="click: $parent.selectMarket">
+                            <td class="number" data-bind="text: pos"></td>
+                            <td style="with-space:nowrap">
+                                <b><span data-bind="text: base_asset"></span></b> / <span data-bind="text: quote_asset"></span>
+                            </td>
+                            <td style="text-align:right" data-bind="attr: {class: price_class}">
+                                <span data-bind="text: price"></span>
+                                <span data-bind="text: quote_asset"></span>
+                            </td>
+                            <td class="number">
+                                <span data-bind="text: volume || '0'"></span>
+                                <span data-bind="text: quote_asset"></span>
+                            </td>
+                            <td class="number" data-bind="text: supply + ' ' + base_asset"></td>
+                            <td class="number" data-bind="text: market_cap + ' ' + quote_asset"></td>
+                            <td style="text-align:center" data-bind="text: progression, attr: {class: prog_class}"></td>
+                        </tr>
                     </tbody>
                 </table>
             </div> <!-- end widget content -->
@@ -154,7 +158,7 @@
       </div> <!-- end widget -->
     </article> <!-- WIDGET END -->
 
-  </div> </div><!-- end row -->
+  </div> <!-- end row -->
 
 
   <div class="alert alert-info font-medlg" data-bind="fadeVisibleInOnly: !dexHome() && currentMarketPrice() == 0">

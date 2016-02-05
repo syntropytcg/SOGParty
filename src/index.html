@@ -146,27 +146,35 @@
             <i class="fa fa-lg fa-fw fa-user"></i> <span class="menu-item-parent" data-bind="locale: 'my_balance'"></span>
           </a>
         </li>
+
         <li class="">
-          <a href="pages/exchange.html">
-            <i class="fa fa-lg fa-fw fa-bar-chart-o"></i> <span>Buy/Sell Cards</span>
+          <a href="#">
+            <i class="fa fa-lg fa-fw fa-exchange"></i> <span class="menu-item-parent" data-bind="locale: 'exchange'"></span>
           </a>
-        </li>
-        <li class="">
-          <a href="pages/trading.html">
-            <i class="fa fa-lg fa-fw fa-bar-chart-o"></i> <span>Trade Cards</span>
-          </a>
-        </li>
-        <li class="">
-          <a href="pages/openorders.html">
-            <i class="fa fa-lg fa-fw fa-circle-o"></i> <span data-bind="locale: 'open_orders'"></span>
-          </a>
-        </li>
-        <li class="">
-          <a href="pages/ordermatches.html">
-            <i class="fa fa-lg fa-fw fa-book"></i> <span data-bind="locale: 'my_order_history'"></span>
-          </a>
+          <ul>
+            <li>
+              <a href="pages/exchange.html">
+                <i class="fa fa-lg fa-fw fa-bar-chart-o"></i> <span data-bind="locale: 'markets'"></span>
+              </a>
+            </li>
+            <li>
+              <a href="pages/openorders.html">
+                <i class="fa fa-lg fa-fw fa-circle-o"></i> <span data-bind="locale: 'open_orders'"></span>
+              </a>
+            </li>
+            <li>
+              <a href="pages/ordermatches.html">
+                <i class="fa fa-lg fa-fw fa-book"></i> <span data-bind="locale: 'my_order_history'"></span>
+              </a>
+            </li>
+          </ul>
         </li>
 
+        <li class="" data-bind="visible: FEATURE_HISTORY">
+          <a href="pages/history.html">
+            <i class="fa fa-lg fa-fw fa-book"></i> <span class="menu-item-parent" data-bind="locale: 'history'"></span>
+          </a>
+        </li>
 
       </ul>
     </nav>
@@ -347,9 +355,9 @@
         <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> <!-- NEW WIDGET START -->
           <div class="jarviswidget defaultWidgetColor" id="wid-id-HomeAssetPairMarketInfo" data-widget-editbutton="false" data-widget-sortable="false" data-widget-deletebutton="false" data-widget-colorbutton="false" data-widget-fullscreenbutton="false" data-widget-togglebutton="false"  data-widget-grid="false">
             <header>
-              <span class="widget-icon"> <i class="fa fa-chain"></i> </span>
-              <h3><b>Trending Card Sale Markets - Login To Buy or Sell!</b></h3>
+              <div id="HomeAssetPairMarketInfo-loader">
 
+              </div>
             </header>
             <div> <!-- widget div-->
               <div class="widget-body no-padding"> <!-- widget content -->

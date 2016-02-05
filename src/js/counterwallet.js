@@ -55,7 +55,7 @@ var cwAPIUrls = ko.observableArray([]);
 var disabledFeatures = ko.observableArray([]);
 
 function produceCWServerList() {
-  //cwURLs(_.shuffle(cwURLs())); //randomly shuffle the list to decide the server try order...
+  cwURLs(_.shuffle(cwURLs())); //randomly shuffle the list to decide the server try order...
   $.jqlog.debug("MultiAPI Backends: " + JSON.stringify(cwURLs()));
 
   cwBaseURLs(jQuery.map(cwURLs(), function(element) {

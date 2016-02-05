@@ -679,6 +679,7 @@ function ExchangeViewModel() {
   }
 
   self.fetchTopUserPairs = function() {
+    return;
     var params = {
       'addresses': WALLET.getAddressesList(),
       'max_pairs': 12
@@ -735,8 +736,250 @@ function ExchangeViewModel() {
 
   /* ALL PAIRS LIST */
   self.allPairs = ko.observableArray([]);
+  self.numSOGPairs = 0;
+  self.SOGPairsData = [];
+  self.AssetPairLoading = ko.observable(false);
+
+
+  self.getorderdata = function (data) {
+
+
+    var buyorder = data['buy_orders'].shift();
+    var highbuy;
+    var sellorder = data['sell_orders'].shift();
+
+    if (data['base_asset'] == 'BITCRYSTALS') {
+
+      data['base_asset'] = data['quote_asset'];
+      data['quote_asset'] = "BITCRYSTALS";
+
+    }
+
+    var lowsell;
+    for (var i in self.SOGPairsData) {
+      //console.log(self.allHomePairs()[i].base_asset);
+      if (self.SOGPairsData[i].base_asset == data['base_asset']) {
+        if (self.SOGPairsData[i].quote_asset == data['quote_asset']) {
+          if (buyorder == undefined) {
+            self.SOGPairsData[i].highbuy = "None";
+
+          } else {
+
+            self.SOGPairsData[i].highbuy = smartFormat(parseFloat(buyorder.price)) + " " + data['quote_asset'];
+
+          }
+          if (sellorder == undefined) {
+            self.SOGPairsData[i].lowsell = "None";
+
+          } else {
+
+
+            self.SOGPairsData[i].lowsell = smartFormat(parseFloat(sellorder.price)) + " " + data['quote_asset'];
+
+          }
+        }
+      }
+    }
+    self.numSOGPairs++;
+    if (self.numSOGPairs == self.SOGPairsData.length) {
+
+
+      document.getElementById("AssetPairMarketInfo-loader").style.display = "none";
+      document.getElementById("AssetPairMarketInfo-loader-done").style.display = "block";
+
+      self.allPairs([]);
+      $('#AssetPairMarketInfo').dataTable().fnClearTable();
+      self.allPairs(self.SOGPairsData);
+      runDataTables('#AssetPairMarketInfo', true, {});
+      spinner.stop();
+    } else {
+
+      var h = "<h3><b>Loading Market Data For Market Number " + self.numSOGPairs + " Out Of " +self.SOGPairsData.length+"</b></h3>";
+      document.getElementById("AssetPairMarketInfo-loader").innerHTML = h;
+
+    }
+
+
+  }
+
+
+  self.displayAllPairs = function (data_) {
+
+
+
+
+
+    var single = [];
+    var newdata = [];
+    var counter = -1;
+
+    for (var i in data_) {
+      var basesog = false;
+      var quotesog = false;
+      single = data_[i];
+      for (var j = 0; j < SOGAssetArray.length; j++) {
+        if (data_[i].base_asset == SOGAssetArray[j]) {
+          basesog = true;
+
+        }
+      }
+      for (var k = 0; k < SOGAssetArray.length; k++) {
+        if (data_[i].quote_asset == SOGAssetArray[k]) {
+
+          quotesog = true;
+        }
+      }
+      if (basesog && quotesog) {
+        //card for card, not on homepage
+        continue;
+      }
+      if (basesog || quotesog) {
+        counter++;
+        newdata[counter] = single;
+
+      }
+    }
+    data_ = newdata;
+
+
+    for (var i in data_) {
+      for (var j = 0; j < SOGAssetArray.length; j++) {
+        if (data_[i].base_asset == SOGAssetArray[j]) {
+          var c = j + 1;
+          var p = c % 10,
+              k = c % 100;
+          if (p == 1 && k != 11) {
+            data_[i].issued = c + "st";
+          } else if (p == 2 && k != 12) {
+            data_[i].issued = c + "nd";
+          } else if (p == 3 && k != 13) {
+            data_[i].issued = c + "rd";
+          } else {
+            data_[i].issued = c + "th";
+          }
+        }
+      }
+      data_[i].issued = "This was the " + data_[i].issued + " Card Issued";
+
+      data_[i].volume = smartFormat(normalizeQuantity(data_[i].volume, data_[i].quote_divisibility));
+
+      data_[i].supply = smartFormat(normalizeQuantity(data_[i].supply, data_[i].base_divisibility));
+      if (data_[i].base_asset == "SATOSHICARD")
+        data_[i].supply = "199";
+      if (data_[i].base_asset == "GENESISCARD")
+        data_[i].supply = "557";
+      if (data_[i].base_asset == "RIPPLECARD")
+        data_[i].supply = "500";
+      data_[i].market_cap = smartFormat(normalizeQuantity(data_[i].market_cap, data_[i].quote_divisibility));
+      if (parseFloat(data_[i].progression) > 0) {
+        data_[i].prog_class = 'UP';
+        data_[i].progression = '+' + data_[i].progression;
+      } else if (parseFloat(data_[i].progression) < 0) {
+        data_[i].prog_class = 'DOWN'
+      } else {
+        data_[i].prog_class = '';
+      }
+      data_[i].progression += '%';
+
+      if (parseFloat(data_[i].trend) > 0) {
+        data_[i].price_class = 'UP';
+      } else if (parseFloat(data_[i].trend) < 0) {
+        data_[i].price_class = 'DOWN';
+      } else {
+        data_[i].price_class = '';
+      }
+      data_[i].price = smartFormat(parseFloat(data_[i].price));
+      var single = data_[i];
+
+      data_[i].highbuy = "Loading...";
+      data_[i].lowsell = "Loading...";
+    }
+
+
+    self.SOGPairsData = data_;
+
+    if (data_.length) {
+      //console.log(self.SOGHomePairsData.length);
+      self.numSOGPairs = 0;
+
+      for (var i in data_) {
+
+        var params = {
+          'asset1': data_[i].base_asset,
+          'asset2': data_[i].quote_asset
+          //'datachunk': data_[i];
+        }
+        failoverAPI('get_market_details', params, self.getorderdata);
+      }
+
+      //runDataTables('#HomeAssetPairMarketInfo', true,{});
+    }
+  }
+
+
+
+  self.fetchAllPairs = function () {
+    try {
+      self.allPairs([]);
+      $('#AssetPairMarketInfo').dataTable().fnClearTable();
+    } catch (e) {
+    }
+    self.AssetPairLoading(false);
+    self.SOGPairsData = [];
+    document.getElementById("AssetPairMarketInfo-loader-done").style.display = "none";
+
+    var target = document.getElementById('AssetPairMarketInfo');
+    spinner = new Spinner(opts).spin(target);
+    var h = "<h3><b>Loading Market Data...</b></h3>";
+    document.getElementById("AssetPairMarketInfo-loader").innerHTML = h;
+
+    failoverAPI('get_markets_list', {}, self.displayAllPairs);
+    //failoverAPI('get_sog_cardforcard_markets_list', [], self.donothing);
+  }
+
+  self.fetchAllPairsByXCP = function () {
+    try {
+      self.allPairs([]);
+      $('#AssetPairMarketInfo').dataTable().fnClearTable();
+    } catch (e) {
+    }
+    var target = document.getElementById('AssetPairMarketInfo');
+    spinner = new Spinner(opts).spin(target);
+    self.SOGPairsData = [];
+    document.getElementById("AssetPairMarketInfo-loader-done").style.display = "none";
+    var h = "<h3><b>Loading Market Data...</b></h3>";
+    document.getElementById("AssetPairMarketInfo-loader").innerHTML = h;
+
+    var params = {'quote_asset': 'XCP'};
+
+    failoverAPI('get_markets_list', params, self.displayAllPairs);
+    //failoverAPI('get_sog_cardforcard_markets_list', [], self.donothing);
+  }
+
+  self.fetchAllPairsByBCY = function () {
+    try {
+      self.allPairs([]);
+      $('#AssetPairMarketInfo').dataTable().fnClearTable();
+    } catch (e) {
+    }
+    var target = document.getElementById('AssetPairMarketInfo');
+    spinner = new Spinner(opts).spin(target);
+    self.SOGPairsData = [];
+    document.getElementById("AssetPairMarketInfo-loader-done").style.display = "none";
+    var h = "<h3><b>Loading Market Data...</b></h3>";
+    document.getElementById("AssetPairMarketInfo-loader").innerHTML = h;
+    var params = {'quote_asset': 'BITCRYSTALS'};
+    failoverAPI('get_markets_list', params, self.displayAllPairs);
+    //failoverAPI('get_sog_cardforcard_markets_list', [], self.donothing);
+  }
+
+
+
+  /* OLD
+  self.allPairs = ko.observableArray([]);
 
   self.displayAllPairs = function(data) {
+
     for (var i in data) {
       data[i].volume = smartFormat(normalizeQuantity(data[i].volume, data[i].quote_divisibility));
       data[i].supply = smartFormat(normalizeQuantity(data[i].supply, data[i].base_divisibility));
@@ -773,7 +1016,7 @@ function ExchangeViewModel() {
     } catch (e) {}
     failoverAPI('get_markets_list', [], self.displayAllPairs);
   }
-
+*/
   /* MARKET DETAILS */
 
   self.displayMarketDetails = function(data) {
@@ -901,7 +1144,7 @@ function ExchangeViewModel() {
   }
 
   self.init = function() {
-    self.fetchTopUserPairs();
+    //self.fetchTopUserPairs();
     self.fetchAllPairs();
 
     //Get a list of all assets
@@ -939,7 +1182,7 @@ function ExchangeViewModel() {
 
   self.refresh = function() {
     if (self.dexHome()) {
-      self.fetchTopUserPairs();
+      //self.fetchTopUserPairs();
       self.fetchAllPairs();
     } else {
       self.fetchMarketDetails();

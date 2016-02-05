@@ -44,51 +44,49 @@ function HomeExchangeViewModel() {
      */
 
     self.selectedQuoteAsset = ko.observable();
-    self.selectedQuoteAsset.subscribe(function(value) {
+    self.selectedQuoteAsset.subscribe(function (value) {
         if (value == 'XCP') self.asset2(value);
         else self.asset2('');
     });
 
     self.selectedSOGQuoteAsset = ko.observable();
-    self.selectedSOGQuoteAsset.subscribe(function(value) {
+    self.selectedSOGQuoteAsset.subscribe(function (value) {
         if (value == 'BITCRYSTALS') self.asset2(value);
         else self.asset2('');
     })
 
 
-
-
-    self.assetPair = ko.computed(function() {
-        if(!self.asset1() || !self.asset2()) return null;
+    self.assetPair = ko.computed(function () {
+        if (!self.asset1() || !self.asset2()) return null;
         var pair = assetsToAssetPair(self.asset1(), self.asset2());
         return pair; //2 element array, as [baseAsset, quoteAsset]
     }, self);
-    self.dispAssetPair = ko.computed(function() {
-        if(!self.assetPair()) return null;
+    self.dispAssetPair = ko.computed(function () {
+        if (!self.assetPair()) return null;
         var pair = self.assetPair();
         if (pair[1] == 'BITCRYSTALS')
             return pair[0] + "/BCY";
         else
             return pair[0] + "/" + pair[1];
     }, self);
-    self.dispAssetPair.subscribeChanged(function(newValue, prevValue) {
+    self.dispAssetPair.subscribeChanged(function (newValue, prevValue) {
         self.currentMarketPrice(0);
     });
-    self.baseAsset = ko.computed(function() {
-        if(!self.assetPair()) return null;
+    self.baseAsset = ko.computed(function () {
+        if (!self.assetPair()) return null;
         return self.assetPair()[0];
     }, self);
-    self.quoteAsset = ko.computed(function() {
-        if(!self.assetPair()) return null;
+    self.quoteAsset = ko.computed(function () {
+        if (!self.assetPair()) return null;
         return self.assetPair()[1];
     }, self);
-    self.baseAssetIsDivisible = ko.computed(function() {
-        if(!self.assetPair()) return null;
+    self.baseAssetIsDivisible = ko.computed(function () {
+        if (!self.assetPair()) return null;
         //return false;  //no more dividing cards!
         return self.baseAsset() == self.asset1() ? self.asset1IsDivisible() : self.asset2IsDivisible();
     }, self);
-    self.quoteAssetIsDivisible = ko.computed(function() {
-        if(!self.assetPair()) return null;
+    self.quoteAssetIsDivisible = ko.computed(function () {
+        if (!self.assetPair()) return null;
         return self.quoteAsset() == self.asset1() ? self.asset1IsDivisible() : self.asset2IsDivisible();
     }, self);
 
@@ -98,7 +96,7 @@ function HomeExchangeViewModel() {
             timeout: 400
         }
     });
-    self.delayedAssetPairSelection.subscribeChanged(function(newValue, prevValue) {
+    self.delayedAssetPairSelection.subscribeChanged(function (newValue, prevValue) {
         if (newValue == null || !self.validationModelBaseOrders.isValid() || self.asset1() == self.asset2()) {
             self.dexHome(true);
             return;
@@ -125,17 +123,17 @@ function HomeExchangeViewModel() {
 
 
     self.balances = {};
-    self.currency= ko.observable();
-    self.card= ko.observable();
+    self.currency = ko.observable();
+    self.card = ko.observable();
     self.currentMarketPrice = ko.observable();
     self.marketProgression24h = ko.observable();
-    self.baseAssetImage = ko .observable('');
+    self.baseAssetImage = ko.observable('');
 
-    self.marketProgression24hDisp = ko.computed(function() {
+    self.marketProgression24hDisp = ko.computed(function () {
         var span = $('<span></span>').css('font-size', '12px').css('color', '#000');
-        if (self.marketProgression24h()==0) {
+        if (self.marketProgression24h() == 0) {
             span.text('0%');
-        } else if (self.marketProgression24h()>0) {
+        } else if (self.marketProgression24h() > 0) {
             span.text('+' + self.marketProgression24h() + '%').addClass('txt-color-greenDark');
         } else {
             span.text('-' + self.marketProgression24h() + '%').addClass('txt-color-red');
@@ -170,24 +168,24 @@ function HomeExchangeViewModel() {
     self.selectedAddressForSell = ko.observable();
     self.availableBalanceForSell = ko.observable();
 
-    self.availableAddressesForSell = ko.computed(function() { //stores BuySellAddressInDropdownItemModel objects
-        if(!self.baseAsset()) return null; //must have a sell asset selected
+    self.availableAddressesForSell = ko.computed(function () { //stores BuySellAddressInDropdownItemModel objects
+        if (!self.baseAsset()) return null; //must have a sell asset selected
         //Get a list of all of my available addresses with the specified sell asset balance
         var addresses = WALLET.getAddressesList(true);
         var addressesWithBalance = [];
         var bal = null, address = null, addressObj = null;
-        for(var i = 0; i < addresses.length; i++) {
+        for (var i = 0; i < addresses.length; i++) {
             address = addresses[i][0];
             addressObj = WALLET.getAddressObj(address);
             bal = WALLET.getBalance(address, self.baseAsset());
-            if(addressObj.IS_WATCH_ONLY) continue; //don't list watch addresses, obviously
-            if(bal) {
+            if (addressObj.IS_WATCH_ONLY) continue; //don't list watch addresses, obviously
+            if (bal) {
                 addressesWithBalance.push(new BuySellAddressInDropdownItemModel(addresses[i][0], addresses[i][1], self.baseAsset(), bal));
                 self.balances[addresses[i][0] + '_' + self.baseAsset()] = parseFloat(bal);
             }
         }
 
-        addressesWithBalance.sort(function(left, right) {
+        addressesWithBalance.sort(function (left, right) {
             return left.BALANCE == right.BALANCE ? 0 : (left.BALANCE > right.BALANCE ? -1 : 1);
         });
 
@@ -202,28 +200,27 @@ function HomeExchangeViewModel() {
         }
 
 
-
         return addressesWithBalance;
     }, self);
 
-    self.selectedAddressForSell.subscribe(function(value) {
+    self.selectedAddressForSell.subscribe(function (value) {
         if (!value) return;
         var bal = self.balances[value + '_' + self.baseAsset()];
         self.availableBalanceForSell(bal);
         self.obtainableForSell(mulFloat(bal, self.highestBidPrice()));
     })
 
-    self.sellPrice.subscribe(function(price) {
+    self.sellPrice.subscribe(function (price) {
         if (!self.sellPriceHasFocus() || !self.sellAmount()) return;
         self.sellTotal(noExponents(mulFloat(self.sellAmount(), price)));
     })
 
-    self.sellAmount.subscribe(function(amount) {
+    self.sellAmount.subscribe(function (amount) {
         if (!self.sellAmountHasFocus() || !self.sellPrice()) return;
         self.sellTotal(noExponents(mulFloat(self.sellPrice(), amount)));
     })
 
-    self.sellTotal.subscribe(function(total) {
+    self.sellTotal.subscribe(function (total) {
         if (!self.sellTotalHasFocus() || !self.sellPrice()) return;
         if (total == 0) {
             self.sellAmount(0);
@@ -250,7 +247,7 @@ function HomeExchangeViewModel() {
         sellTotal: self.sellTotal
     });
 
-    self.sellFee = ko.computed(function() {
+    self.sellFee = ko.computed(function () {
         var give_quantity = denormalizeQuantity(self.sellAmount(), self.baseAssetIsDivisible());
         var fee_provided = MIN_FEE;
         return normalizeQuantity(fee_provided);
@@ -258,7 +255,7 @@ function HomeExchangeViewModel() {
 
     self.sellRedeemableFee = ko.observable(normalizeQuantity(2 * MULTISIG_DUST_SIZE));
 
-    self.selectBuyOrder = function(order, notFromClick) {
+    self.selectBuyOrder = function (order, notFromClick) {
         var price = new Decimal(cleanHtmlPrice(order.price));
         var amount1 = new Decimal(self.availableBalanceForSell());
         var amount2 = new Decimal(order.base_depth);
@@ -284,7 +281,7 @@ function HomeExchangeViewModel() {
         }
     }
 
-    self.setMaxSellAmount = function() {
+    self.setMaxSellAmount = function () {
         var amount = self.availableBalanceForSell();
         if (self.sellPrice()) {
             if (self.quoteAssetIsDivisible()) {
@@ -298,7 +295,7 @@ function HomeExchangeViewModel() {
         self.sellAmount(amount);
     }
 
-    self.doSell = function() {
+    self.doSell = function () {
         var give_quantity = denormalizeQuantity(self.sellAmount(), self.baseAssetIsDivisible());
         var get_quantity = denormalizeQuantity(self.sellTotal(), self.quoteAssetIsDivisible());
         var fee_required = 0;
@@ -318,7 +315,7 @@ function HomeExchangeViewModel() {
             expiration: expiration
         }
 
-        var onSuccess = function(txHash, data, endpoint, addressType, armoryUTx) {
+        var onSuccess = function (txHash, data, endpoint, addressType, armoryUTx) {
             trackEvent('Exchange', 'Sell', self.dispAssetPair());
 
             var message = "";
@@ -334,7 +331,7 @@ function HomeExchangeViewModel() {
         WALLET.doTransaction(self.selectedAddressForSell(), "create_order", params, onSuccess);
     }
 
-    self.sell = function() {
+    self.sell = function () {
         if (!self.sellValidation.isValid()) {
             self.sellValidation.errors.showAllMessages();
             return false;
@@ -356,7 +353,7 @@ function HomeExchangeViewModel() {
 
         estimatedTotalPrice = smartFormat(estimatedTotalPrice);
 
-        message  = '<table class="confirmOrderBox">';
+        message = '<table class="confirmOrderBox">';
         message += '<tr><td><b>' + i18n.t('price') + ': </b></td><td style="text-align:right">' + self.sellPrice() + '</td><td>' + self.quoteAsset() + '/' + self.baseAsset() + '</td></tr>';
         message += '<tr><td><b>' + i18n.t('amount') + ': </b></td><td style="text-align:right">' + self.sellAmount() + '</td><td>' + self.baseAsset() + '</td></tr>';
         message += '<tr><td><b>' + i18n.t('total') + ': </b></td><td style="text-align:right">' + self.sellTotal() + '</td><td>' + self.quoteAsset() + '</td></tr>';
@@ -370,7 +367,7 @@ function HomeExchangeViewModel() {
                 "cancel": {
                     label: i18n.t("close"),
                     className: "btn-danger",
-                    callback: function() {
+                    callback: function () {
                         bootbox.hideAll();
                         return false;
                     }
@@ -378,7 +375,7 @@ function HomeExchangeViewModel() {
                 "confirm": {
                     label: i18n.t("confirm_order"),
                     className: "btn-primary",
-                    callback: function() {
+                    callback: function () {
                         bootbox.hideAll();
                         self.doSell();
                         return true;
@@ -419,24 +416,24 @@ function HomeExchangeViewModel() {
     self.selectedAddressForBuy = ko.observable();
     self.availableBalanceForBuy = ko.observable();
 
-    self.availableAddressesForBuy = ko.computed(function() { //stores BuySellAddressInDropdownItemModel objects
-        if(!self.quoteAsset()) return null; //must have a sell asset selected
+    self.availableAddressesForBuy = ko.computed(function () { //stores BuySellAddressInDropdownItemModel objects
+        if (!self.quoteAsset()) return null; //must have a sell asset selected
         //Get a list of all of my available addresses with the specified sell asset balance
         var addresses = WALLET.getAddressesList(true);
         var addressesWithBalance = [];
         var bal = null, address = null, addressObj = null;
-        for(var i = 0; i < addresses.length; i++) {
+        for (var i = 0; i < addresses.length; i++) {
             address = addresses[i][0];
             addressObj = WALLET.getAddressObj(address);
             bal = WALLET.getBalance(address, self.quoteAsset());
-            if(addressObj.IS_WATCH_ONLY) continue; //don't list watch addresses, obviously
-            if(bal) {
+            if (addressObj.IS_WATCH_ONLY) continue; //don't list watch addresses, obviously
+            if (bal) {
                 addressesWithBalance.push(new BuySellAddressInDropdownItemModel(addresses[i][0], addresses[i][1], self.quoteAsset(), bal));
                 self.balances[addresses[i][0] + '_' + self.quoteAsset()] = parseFloat(bal);
             }
         }
 
-        addressesWithBalance.sort(function(left, right) {
+        addressesWithBalance.sort(function (left, right) {
             return left.BALANCE == right.BALANCE ? 0 : (left.BALANCE > right.BALANCE ? -1 : 1);
         });
 
@@ -453,7 +450,7 @@ function HomeExchangeViewModel() {
         return addressesWithBalance;
     }, self);
 
-    self.selectedAddressForBuy.subscribe(function(value) {
+    self.selectedAddressForBuy.subscribe(function (value) {
         var bal = self.balances[value + '_' + self.quoteAsset()];
         self.availableBalanceForBuy(bal);
         if (self.lowestAskPrice()) {
@@ -465,17 +462,17 @@ function HomeExchangeViewModel() {
         }
     })
 
-    self.buyPrice.subscribe(function(price) {
+    self.buyPrice.subscribe(function (price) {
         if (!self.buyPriceHasFocus() || !self.buyAmount()) return;
         self.buyTotal(noExponents(mulFloat(self.buyAmount(), price)));
     })
 
-    self.buyAmount.subscribe(function(amount) {
+    self.buyAmount.subscribe(function (amount) {
         if (!self.buyAmountHasFocus() || !self.buyPrice()) return;
         self.buyTotal(noExponents(mulFloat(self.buyPrice(), amount)));
     })
 
-    self.buyTotal.subscribe(function(total) {
+    self.buyTotal.subscribe(function (total) {
         if (!self.buyTotalHasFocus() || !self.buyPrice()) return;
         if (total == 0) {
             self.buyAmount(0);
@@ -502,7 +499,7 @@ function HomeExchangeViewModel() {
         buyAmount: self.buyAmount
     });
 
-    self.buyFee = ko.computed(function() {
+    self.buyFee = ko.computed(function () {
         var give_quantity = denormalizeQuantity(self.buyTotal(), self.quoteAssetIsDivisible());
         var fee_provided = MIN_FEE;
         return normalizeQuantity(fee_provided);
@@ -510,7 +507,7 @@ function HomeExchangeViewModel() {
 
     self.buyRedeemableFee = ko.observable(normalizeQuantity(2 * MULTISIG_DUST_SIZE));
 
-    self.selectSellOrder = function(order, notFromClick) {
+    self.selectSellOrder = function (order, notFromClick) {
         var price = new Decimal(cleanHtmlPrice(order.price));
         var amount = new Decimal(order.base_depth);
         var total1 = price.mul(amount);
@@ -536,10 +533,10 @@ function HomeExchangeViewModel() {
         }
     }
 
-    self.setMaxBuyAmount = function() {
+    self.setMaxBuyAmount = function () {
         var total = self.availableBalanceForBuy();
         if (self.buyPrice()) {
-            if (total==0) {
+            if (total == 0) {
                 self.buyAmount(0);
             } else {
                 if (self.baseAssetIsDivisible()) {
@@ -554,7 +551,7 @@ function HomeExchangeViewModel() {
         self.buyTotal(total);
     }
 
-    self.doBuy = function() {
+    self.doBuy = function () {
         var give_quantity = denormalizeQuantity(self.buyTotal(), self.quoteAssetIsDivisible());
         var get_quantity = denormalizeQuantity(self.buyAmount(), self.baseAssetIsDivisible());
         var fee_required = 0;
@@ -574,7 +571,7 @@ function HomeExchangeViewModel() {
             expiration: expiration
         }
 
-        var onSuccess = function(txHash, data, endpoint, addressType, armoryUTx) {
+        var onSuccess = function (txHash, data, endpoint, addressType, armoryUTx) {
             trackEvent('Exchange', 'Buy', self.dispAssetPair());
 
             var message = "";
@@ -590,7 +587,7 @@ function HomeExchangeViewModel() {
         WALLET.doTransaction(self.selectedAddressForBuy(), "create_order", params, onSuccess);
     }
 
-    self.buy = function() {
+    self.buy = function () {
         if (!self.buyValidation.isValid()) {
             self.buyValidation.errors.showAllMessages();
             return false;
@@ -612,7 +609,7 @@ function HomeExchangeViewModel() {
 
         estimatedTotalPrice = smartFormat(estimatedTotalPrice);
 
-        message  = '<table class="confirmOrderBox">';
+        message = '<table class="confirmOrderBox">';
         message += '<tr><td><b>' + i18n.t('price') + ': </b></td><td style="text-align:right">' + self.buyPrice() + '</td><td>' + self.quoteAsset() + '/' + self.baseAsset() + '</td></tr>';
         message += '<tr><td><b>' + i18n.t('amount') + ': </b></td><td style="text-align:right">' + self.buyAmount() + '</td><td>' + self.baseAsset() + '</td></tr>';
         message += '<tr><td><b>' + i18n.t('total') + ': </b></td><td style="text-align:right">' + self.buyTotal() + '</td><td>' + self.quoteAsset() + '</td></tr>';
@@ -626,7 +623,7 @@ function HomeExchangeViewModel() {
                 "cancel": {
                     label: i18n.t("close"),
                     className: "btn-danger",
-                    callback: function() {
+                    callback: function () {
                         bootbox.hideAll();
                         return false;
                     }
@@ -634,7 +631,7 @@ function HomeExchangeViewModel() {
                 "confirm": {
                     label: i18n.t("confirm_order"),
                     className: "btn-primary",
-                    callback: function() {
+                    callback: function () {
                         bootbox.hideAll();
                         self.doBuy();
                         return true;
@@ -650,7 +647,7 @@ function HomeExchangeViewModel() {
     /* TOP USER PAIRS */
     self.topUserPairs = ko.observableArray([]);
 
-    self.displayTopUserPairs = function(dataRAW) {
+    self.displayTopUserPairs = function (dataRAW) {
         var data = ko.observableArray([]);
         for (var i in dataRAW) {
             for (var j = 0; j < numSOGAssets; j++) {
@@ -662,10 +659,10 @@ function HomeExchangeViewModel() {
 
         for (var p in data) {
             var classes = ['top_user_pair'];
-            if (data[p]['trend']>0) classes.push('txt-color-greenDark');
-            else if (data[p]['trend']<0) classes.push('txt-color-red');
-            if (parseFloat(data[p]['progression'])>0) classes.push('progression-up');
-            else if (parseFloat(data[p]['progression'])<0) classes.push('progression-down');
+            if (data[p]['trend'] > 0) classes.push('txt-color-greenDark');
+            else if (data[p]['trend'] < 0) classes.push('txt-color-red');
+            if (parseFloat(data[p]['progression']) > 0) classes.push('progression-up');
+            else if (parseFloat(data[p]['progression']) < 0) classes.push('progression-down');
             if (data[p]['my_order_count']) classes.push('with-open-order');
             classes.push("pair_" + data[p]['base_asset'] + data[p]['quote_asset']);
             data[p]['pair_classes'] = classes.join(" ");
@@ -673,7 +670,7 @@ function HomeExchangeViewModel() {
         self.topUserPairs(data);
     }
 
-    self.fetchTopUserPairs = function() {
+    self.fetchTopUserPairs = function () {
         var params = {
             'addresses': WALLET.getAddressesList(),
             'max_pairs': 12
@@ -684,7 +681,7 @@ function HomeExchangeViewModel() {
     /* USER OPEN ORDERS */
     self.userOpenOrders = ko.observableArray([]);
 
-    self.displayOpenUserOrders = function(data) {
+    self.displayOpenUserOrders = function (data) {
         for (var i in data) {
 
             data[i].amount = formatHtmlPrice(normalizeQuantity(data[i].amount, self.baseAssetIsDivisible()));
@@ -695,7 +692,7 @@ function HomeExchangeViewModel() {
         self.userOpenOrders(data);
     }
 
-    self.fetchOpenUserOrders = function() {
+    self.fetchOpenUserOrders = function () {
         self.userOpenOrders([]);
         var params = {
             'asset1': self.asset1(),
@@ -708,7 +705,7 @@ function HomeExchangeViewModel() {
     /* USER OPEN ORDERS */
     self.userLastTrades = ko.observableArray([]);
 
-    self.displayUserLastTrades = function(data) {
+    self.displayUserLastTrades = function (data) {
         for (var i in data) {
             data[i].amount = formatHtmlPrice(normalizeQuantity(data[i].amount, self.baseAssetIsDivisible()));
             data[i].total = formatHtmlPrice(normalizeQuantity(data[i].total, self.quoteAssetIsDivisible()));
@@ -718,7 +715,7 @@ function HomeExchangeViewModel() {
         self.userLastTrades(data);
     }
 
-    self.fetchUserLastTrades = function() {
+    self.fetchUserLastTrades = function () {
         self.userOpenOrders([]);
         var params = {
             'asset1': self.asset1(),
@@ -731,7 +728,7 @@ function HomeExchangeViewModel() {
     /* ALL PAIRS LIST */
     self.allPairs = ko.observableArray([]);
 
-    self.displayAllPairs = function(dataRAW) {
+    self.displayAllPairs = function (dataRAW) {
         var data = ko.observableArray([]);
         for (var i in dataRAW) {
             for (var j = 0; j < numSOGAssets; j++) {
@@ -740,16 +737,19 @@ function HomeExchangeViewModel() {
                         'asset1': dataRAW[i].base_asset,
                         'asset2': dataRAW[i].quote_asset
                     }
-                    failoverAPI('get_market_details', params, function(marketData) {
+                    failoverAPI('get_market_details', params, function (marketData) {
                         if (marketData['sell_orders'].length > 0) {
                             var sells = ko.observableArray(marketData['sell_orders']);
-                            sells = sells.sort(function (left, right) { return left.price == right.price ? 0 : (left.price < right.price ? -1 : 1) });
+                            sells = sells.sort(function (left, right) {
+                                return left.price == right.price ? 0 : (left.price < right.price ? -1 : 1)
+                            });
                             dataRaw[i].push({'lowAsk': sells[0].price});
                             dataRaw[i].push({'lowAskVol': sells[0].amount});
                         } else {
                             dataRaw[i].push({'lowAsk': 0});
                             dataRaw[i].push({'lowAskVol': 0});
-                        };
+                        }
+                        ;
 
                         if (marketData['buy_orders'].length > 0) {
                             var buys = ko.observableArray(marketData['buy_orders']);
@@ -798,24 +798,27 @@ function HomeExchangeViewModel() {
             data[i].highBidVol = smartFormat(parseFloat(data[i].highBidVol));
             data[i].highAskVol = smartFormat(parseFloat(data[i].highAskVol));
         }
-        data = data.sort(function (left, right) { return left.quote_asset == right.quote_asset ? 0 : (left.quote_asset < right.quote_asset ? -1 : 1) });
+        data = data.sort(function (left, right) {
+            return left.quote_asset == right.quote_asset ? 0 : (left.quote_asset < right.quote_asset ? -1 : 1)
+        });
         self.allPairs(data);
-        if(self.allPairs().length) {
-            runDataTables('#assetPairMarketInfo', true, { "aaSorting": [ [0, 'asc'] ] });
+        if (self.allPairs().length) {
+            runDataTables('#assetPairMarketInfo', true, {"aaSorting": [[0, 'asc']]});
 
         }
     }
 
-    self.fetchAllPairs = function() {
+    self.fetchAllPairs = function () {
         try {
             self.allPairs([]);
             $('#assetPairMarketInfo').dataTable().fnClearTable();
-        } catch(e) {}
+        } catch (e) {
+        }
         failoverAPI('get_markets_list', [], self.displayAllPairs);
     }
 
 
-    self.displayAllPairsByCurrency = function(dataRAW) {
+    self.displayAllPairsByCurrency = function (dataRAW) {
         var data = ko.observableArray([]);
         var cur = self.currency;
         for (var i in dataRAW) {
@@ -851,25 +854,28 @@ function HomeExchangeViewModel() {
             }
             data[i].price = smartFormat(parseFloat(data[i].price));
         }
-        data = data.sort(function (left, right) { return left.quote_asset == right.quote_asset ? 0 : (left.quote_asset < right.quote_asset ? -1 : 1) });
+        data = data.sort(function (left, right) {
+            return left.quote_asset == right.quote_asset ? 0 : (left.quote_asset < right.quote_asset ? -1 : 1)
+        });
         self.allPairs(data);
-        if(self.allPairs().length) {
-            runDataTables('#assetPairMarketInfo', true, { "aaSorting": [ [0, 'asc'] ] });
+        if (self.allPairs().length) {
+            runDataTables('#assetPairMarketInfo', true, {"aaSorting": [[0, 'asc']]});
 
         }
     }
 
-    self.fetchAllPairsByCurrency = function(currency_) {
+    self.fetchAllPairsByCurrency = function (currency_) {
 
         try {
             self.allPairs([]);
             $('#assetPairMarketInfo').dataTable().fnClearTable();
-        } catch(e) {}
+        } catch (e) {
+        }
         self.currency = currency_;
         failoverAPI('get_markets_list', [], self.displayAllPairsByCurrency);
     }
 
-    self.displayAllPairsByCard = function(dataRAW) {
+    self.displayAllPairsByCard = function (dataRAW) {
         var data = ko.observableArray([]);
         var cur = self.card;
         for (var i in dataRAW) {
@@ -908,21 +914,24 @@ function HomeExchangeViewModel() {
             }
             data[i].price = smartFormat(parseFloat(data[i].price));
         }
-        data = data.sort(function (left, right) { return left.quote_asset == right.quote_asset ? 0 : (left.quote_asset < right.quote_asset ? -1 : 1) });
+        data = data.sort(function (left, right) {
+            return left.quote_asset == right.quote_asset ? 0 : (left.quote_asset < right.quote_asset ? -1 : 1)
+        });
         self.allPairs(data);
-        if(self.allPairs().length) {
-            runDataTables('#assetPairMarketInfo', true, { "aaSorting": [ [0, 'asc'] ] });
+        if (self.allPairs().length) {
+            runDataTables('#assetPairMarketInfo', true, {"aaSorting": [[0, 'asc']]});
 
         }
     }
 
 
-    self.fetchAllPairsByCard = function(card_) {
+    self.fetchAllPairsByCard = function (card_) {
 
         try {
             self.allPairs([]);
             $('#assetPairMarketInfo').dataTable().fnClearTable();
-        } catch(e) {}
+        } catch (e) {
+        }
         self.card = card_;
         failoverAPI('get_markets_list', [], self.displayAllPairsByCard);
     }
@@ -931,15 +940,14 @@ function HomeExchangeViewModel() {
     self.SOGHomePairsData = [];
 
 
-    self.getorderdata = function(data) {
+    self.getorderdata = function (data) {
 
 
         var buyorder = data['buy_orders'].shift();
-
         var highbuy;
         var sellorder = data['sell_orders'].shift();
 
-        if (data['base_asset'] == 'BITCRYSTALS'){
+        if (data['base_asset'] == 'BITCRYSTALS') {
 
             data['base_asset'] = data['quote_asset'];
             data['quote_asset'] = "BITCRYSTALS";
@@ -973,28 +981,27 @@ function HomeExchangeViewModel() {
         }
         self.numSOGHomePairs++;
         if (self.numSOGHomePairs == self.SOGHomePairsData.length) {
-        console.log("done should load now");
+            console.log("done should load now");
+            var h = "<h3><b>Trending Card Sale Markets - Login To Buy, Sell, or Trade!</b></h3>";
+            document.getElementById("HomeAssetPairMarketInfo-loader").innerHTML = h;
 
-
-        self.allHomePairs([]);
-        $('#HomeAssetPairMarketInfo').dataTable().fnClearTable();
-        self.allHomePairs(self.SOGHomePairsData);
-        runDataTables('#HomeAssetPairMarketInfo', true, {});
+            self.allHomePairs([]);
+            $('#HomeAssetPairMarketInfo').dataTable().fnClearTable();
+            self.allHomePairs(self.SOGHomePairsData);
+            runDataTables('#HomeAssetPairMarketInfo', true, {});
             spinner.stop();
+        } else {
+
+            var h = "<h3><b>Loading Market Data For Market Number " + self.numSOGHomePairs + " Out Of " +self.SOGHomePairsData.length+"</b></h3>";
+            document.getElementById("HomeAssetPairMarketInfo-loader").innerHTML = h;
+
+        }
+
+
     }
 
 
-
-
-
-
-
-
-
-    }
-
-
-    self.displayHomeAllPairs = function(data_) {
+    self.displayHomeAllPairs = function (data_) {
 
         var single = [];
         var newdata = [];
@@ -1077,29 +1084,13 @@ function HomeExchangeViewModel() {
             }
             data_[i].price = smartFormat(parseFloat(data_[i].price));
             var single = data_[i];
-           /* for using custom api
-            var buyorders = single['buy_orders'].shift();
-            var sellorders = single['sell_orders'].shift();
 
-            if (buyorders == undefined)
-                data_[i].highbuy = "None";
-            else
-                data_[i].highbuy = smartFormat(parseFloat(buyorders.price)) + " " + single.quote_asset;
-
-
-
-            if (sellorders == undefined)
-                data_[i].lowsell = "None";
-            else
-               data_[i].lowsell = smartFormat(parseFloat(sellorders.price)) + " " + single.quote_asset;
-          */
             data_[i].highbuy = "Loading...";
             data_[i].lowsell = "Loading...";
         }
 
-        //data_ = data_.sort(function (left, right) { return left.volume == right.volume ? 0 : (left.volume < right.volume ? 1 : -1) });
-        //self.allHomePairs(data_);
-        self.SOGHomePairsData = self.SOGHomePairsData.concat(data_);
+
+        self.SOGHomePairsData = data_;
 
         if (data_.length) {
             //console.log(self.SOGHomePairsData.length);
@@ -1119,164 +1110,28 @@ function HomeExchangeViewModel() {
         }
     }
 
-    self.donothing = function (data){
-
-        console.log("doing nothing");
-
-    }
-
-    self.displayHomeAllPairs_step2 = function(data_) {
-
-        var single = [];
-        var newdata = [];
-        var counter = -1;
-
-        for (var i in data_) {
-            var basesog = false;
-            var quotesog = false;
-            single = data_[i];
-            for (var j = 0; j < SOGAssetArray.length; j++) {
-                if (data_[i].base_asset == SOGAssetArray[j]) {
-                    basesog = true;
-
-                }
-            }
-            for (var k = 0; k < SOGAssetArray.length; k++) {
-                if (data_[i].quote_asset == SOGAssetArray[k]) {
-
-                    quotesog = true;
-                }
-            }
-            if (basesog && quotesog) {
-                //card for card, not on homepage
-                continue;
-            }
-            if (basesog || quotesog) {
-                counter++;
-                newdata[counter] = single;
-
-            }
-        }
-        data_ = newdata;
 
 
-        for (var i in data_) {
-            for (var j = 0; j < SOGAssetArray.length; j++) {
-                if (data_[i].base_asset == SOGAssetArray[j]) {
-                    var c = j + 1;
-                    var p = c % 10,
-                        k = c % 100;
-                    if (p == 1 && k != 11) {
-                        data_[i].issued = c + "st";
-                    } else if (p == 2 && k != 12) {
-                        data_[i].issued = c + "nd";
-                    } else if (p == 3 && k != 13) {
-                        data_[i].issued = c + "rd";
-                    } else {
-                        data_[i].issued = c + "th";
-                    }
-                }
-            }
-            data_[i].issued = "This was the " + data_[i].issued + " Card Issued";
-
-            data_[i].volume = smartFormat(normalizeQuantity(data_[i].volume, data_[i].quote_divisibility));
-
-            data_[i].supply = smartFormat(normalizeQuantity(data_[i].supply, data_[i].base_divisibility));
-            if (data_[i].base_asset == "SATOSHICARD")
-                data_[i].supply = "199";
-            if (data_[i].base_asset == "GENESISCARD")
-                data_[i].supply = "557";
-            if (data_[i].base_asset == "RIPPLECARD")
-                data_[i].supply = "500";
-            data_[i].market_cap = smartFormat(normalizeQuantity(data_[i].market_cap, data_[i].quote_divisibility));
-            if (parseFloat(data_[i].progression) > 0) {
-                data_[i].prog_class = 'UP';
-                data_[i].progression = '+' + data_[i].progression;
-            } else if (parseFloat(data_[i].progression) < 0) {
-                data_[i].prog_class = 'DOWN'
-            } else {
-                data_[i].prog_class = '';
-            }
-            data_[i].progression += '%';
-
-            if (parseFloat(data_[i].trend) > 0) {
-                data_[i].price_class = 'UP';
-            } else if (parseFloat(data_[i].trend) < 0) {
-                data_[i].price_class = 'DOWN';
-            } else {
-                data_[i].price_class = '';
-            }
-            data_[i].price = smartFormat(parseFloat(data_[i].price));
-            var single = data_[i];
-            /* for using custom api
-             var buyorders = single['buy_orders'].shift();
-             var sellorders = single['sell_orders'].shift();
-
-             if (buyorders == undefined)
-             data_[i].highbuy = "None";
-             else
-             data_[i].highbuy = smartFormat(parseFloat(buyorders.price)) + " " + single.quote_asset;
-
-
-
-             if (sellorders == undefined)
-             data_[i].lowsell = "None";
-             else
-             data_[i].lowsell = smartFormat(parseFloat(sellorders.price)) + " " + single.quote_asset;
-             */
-            data_[i].highbuy = "Loading...";
-            data_[i].lowsell = "Loading...";
-        }
-
-        //data_ = data_.sort(function (left, right) { return left.volume == right.volume ? 0 : (left.volume < right.volume ? 1 : -1) });
-        //self.allHomePairs(data_);
-        self.SOGHomePairsData = self.SOGHomePairsData.concat(data_);
-
-        if (self.SOGHomePairsData.length) {
-            //console.log(self.SOGHomePairsData.length);
-            self.numSOGHomePairs = 0;
-
-            for (var i in self.SOGHomePairsData) {
-
-                var params = {
-                    'asset1': data_[i].base_asset,
-                    'asset2': data_[i].quote_asset
-                    //'datachunk': data_[i];
-                }
-                failoverAPI('get_market_details', params, self.getorderdata);
-            }
-
-            //runDataTables('#HomeAssetPairMarketInfo', true,{});
-        }
-    }
-    self.fetchAllHomePairs = function(){
+    self.fetchAllHomePairs = function () {
         try {
             self.allHomePairs([]);
             $('#HomeAssetPairMarketInfo').dataTable().fnClearTable();
-        } catch(e) {}
+        } catch (e) {
+        }
 
         self.SOGHomePairsData = [];
-        /*
-        var params = {
-            'quote_asset': 'BITCRYSTALS'
-            //'datachunk': data_[i];
-        }
-        */
-        var params = {
-            'quote_asset': 'XCP'
-            //'datachunk': data_[i];
-        }
 
+        var h = "<h3><b>Loading Market Data...</b></h3>";
+        document.getElementById("HomeAssetPairMarketInfo-loader").innerHTML = h;
 
-        failoverAPI('get_markets_list', params, self.displayHomeAllPairs);
+        failoverAPI('get_markets_list', [], self.displayHomeAllPairs);
         //failoverAPI('get_sog_cardforcard_markets_list', [], self.donothing);
     }
 
 
-
     /* MARKET DETAILS */
 
-    self.displayMarketDetails = function(data) {
+    self.displayMarketDetails = function (data) {
 
         if (data['base_asset_infos'] && data['base_asset_infos']['valid_image']) {
             self.baseAssetImage(assetImageUrl(data['base_asset']));
@@ -1295,8 +1150,14 @@ function HomeExchangeViewModel() {
 
         self.bidBook([])
         self.askBook([])
-        try { $('#asset1OpenBuyOrders').dataTable().fnClearTable(); } catch(err) { }
-        try { $('#asset2OpenBuyOrders').dataTable().fnClearTable(); } catch(err) { }
+        try {
+            $('#asset1OpenBuyOrders').dataTable().fnClearTable();
+        } catch (err) {
+        }
+        try {
+            $('#asset2OpenBuyOrders').dataTable().fnClearTable();
+        } catch (err) {
+        }
 
         base_depth = 0;
         var buy_orders = [];
@@ -1356,7 +1217,10 @@ function HomeExchangeViewModel() {
         self.askBook(data['sell_orders'])
 
         self.tradeHistory([]);
-        try { $('#tradeHistory').dataTable().fnClearTable(); } catch(err) { }
+        try {
+            $('#tradeHistory').dataTable().fnClearTable();
+        } catch (err) {
+        }
 
         for (var i in data['last_trades']) {
             data['last_trades'][i]['price'] = formatHtmlPrice(roundAmount(data['last_trades'][i]['price']));
@@ -1365,8 +1229,8 @@ function HomeExchangeViewModel() {
             data['last_trades'][i].block_time = moment(data['last_trades'][i].block_time * 1000).format('YYYY/MM/DD hh:mm:ss A Z');
         }
         self.tradeHistory(data['last_trades']);
-        if(self.tradeHistory().length) {
-            runDataTables('#tradeHistory', true, { "aaSorting": [ [1, 'desc'] ] });
+        if (self.tradeHistory().length) {
+            runDataTables('#tradeHistory', true, {"aaSorting": [[1, 'desc']]});
         }
 
         self.fetchOpenUserOrders();
@@ -1374,7 +1238,7 @@ function HomeExchangeViewModel() {
 
     }
 
-    self.selectMarket = function(item) {
+    self.selectMarket = function (item) {
         self.asset1(item.base_asset);
         if (item.quote_asset == 'XCP') {
             self.selectedQuoteAsset(item.quote_asset);
@@ -1385,7 +1249,7 @@ function HomeExchangeViewModel() {
         trackEvent('Exchange', 'MarketSelected', self.dispAssetPair());
     }
 
-    self.fetchMarketDetails = function(item) {
+    self.fetchMarketDetails = function (item) {
         self.highestBidPrice(0);
         self.lowestAskPrice(0);
         self.sellPrice(0);
@@ -1400,7 +1264,7 @@ function HomeExchangeViewModel() {
         failoverAPI('get_market_details', params, self.displayMarketDetails);
     }
 
-    self.init = function() {
+    self.init = function () {
         self.fetchAllHomePairs();
 
         //Get a list of all assets
@@ -1409,7 +1273,7 @@ function HomeExchangeViewModel() {
         data = ['XCP'].concat(data);
         data = ['BTC'].concat(data);
         data = ['BITCRYSTALS'].concat(data);
-        data =  SOGAssetArray.concat(data);
+        data = SOGAssetArray.concat(data);
         self.allAssets(data);
 
         //Set up typeahead bindings manually for now (can't get knockout and typeahead playing well together...)
@@ -1421,19 +1285,19 @@ function HomeExchangeViewModel() {
         assets.initialize();
         $('#asset1, #asset2').typeahead(null, {
             source: assets.ttAdapter(),
-            displayKey: function(obj) {
+            displayKey: function (obj) {
                 return obj;
             }
-        }).on('typeahead:selected', function($e, datum) {
-            if($($e.target).attr('name') == 'asset1')
+        }).on('typeahead:selected', function ($e, datum) {
+            if ($($e.target).attr('name') == 'asset1')
                 self.asset1(datum); //gotta do a manual update...doesn't play well with knockout
-            else if($($e.target).attr('name') == 'asset2')
+            else if ($($e.target).attr('name') == 'asset2')
                 self.asset2(datum); //gotta do a manual update...doesn't play well with knockout
         });
 
     }
 
-    self.refresh = function() {
+    self.refresh = function () {
         if (self.dexHome()) {
             self.fetchTopUserPairs();
             self.fetchAllPairs();
@@ -1442,21 +1306,24 @@ function HomeExchangeViewModel() {
         }
     }
 
-    self.metricsRefreshPriceChart = function() {
+    self.metricsRefreshPriceChart = function () {
         var deferred = $.Deferred();
         //now that an asset pair is picked, we can show a price chart for that pair
-        failoverAPI("get_market_price_history", {'asset1': self.asset1(), 'asset2': self.asset2()}, function(data, endpoint) {
+        failoverAPI("get_market_price_history", {
+            'asset1': self.asset1(),
+            'asset2': self.asset2()
+        }, function (data, endpoint) {
             deferred.resolve();
-            if(data.length) {
+            if (data.length) {
                 ExchangeViewModel.doChart(self.dispAssetPair(), $('#priceHistory'), data);
             }
-        }, function(jqXHR, textStatus, errorThrown, endpoint) {
+        }, function (jqXHR, textStatus, errorThrown, endpoint) {
             deferred.resolve();
             return defaultErrorHandler(jqXHR, textStatus, errorThrown, endpoint);
         });
     }
 
-    self.cancelOrder = function(order) {
+    self.cancelOrder = function (order) {
 
         if (WALLET.cancelOrders.indexOf(order.tx_hash) != -1) {
 
@@ -1473,7 +1340,7 @@ function HomeExchangeViewModel() {
                     "cancel": {
                         label: i18n.t("close"),
                         className: "btn-danger",
-                        callback: function() {
+                        callback: function () {
                             bootbox.hideAll();
                             return false;
                         }
@@ -1481,7 +1348,7 @@ function HomeExchangeViewModel() {
                     "confirm": {
                         label: i18n.t("confirm_cancellation"),
                         className: "btn-primary",
-                        callback: function() {
+                        callback: function () {
                             bootbox.hideAll();
                             self.cancelOpenOrder(order);
                             return true;
@@ -1495,7 +1362,7 @@ function HomeExchangeViewModel() {
 
     }
 
-    self.cancelOpenOrder = function(order) {
+    self.cancelOpenOrder = function (order) {
         var params = {
             offer_hash: order.tx_hash,
             source: order.source,
@@ -1503,7 +1370,7 @@ function HomeExchangeViewModel() {
             _tx_index: order.tx_index
         }
 
-        var onSuccess = function(txHash, data, endpoint, addressType, armoryUTx) {
+        var onSuccess = function (txHash, data, endpoint, addressType, armoryUTx) {
             trackEvent('Exchange', 'OrderCanceled');
             WALLET.showTransactionCompleteDialog("<b>" + i18n.t("order_was_cancelled") + "</b> " + i18n.t(ACTION_PENDING_NOTICE),
                 "<b>" + i18n.t("order_will_be_cancelled") + "</b>", armoryUTx);
