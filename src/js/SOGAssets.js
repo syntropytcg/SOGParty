@@ -42,7 +42,8 @@ var SOGAssetArray = [
     "EMERALDCARD",
     "CARDAMBER",
     "WHEREBCYCARD",
-    "GOBLINCARD"
+    "GOBLINCARD",
+    "SATOSHILITE"
 ];
 
 var numSOGAssets = SOGAssetArray.length

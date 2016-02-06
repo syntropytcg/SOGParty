@@ -27,3 +27,6 @@ var opts = {
 }
 var target = document.getElementById('HomeAssetPairMarketInfo');
 var spinner = new Spinner(opts).spin(target);
+
+
+

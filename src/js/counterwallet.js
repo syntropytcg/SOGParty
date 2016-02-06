@@ -2,6 +2,9 @@
  * GLOBAL INITALIZATION
  ***********/
 
+var serverdone = false;
+var homedidinit = false;
+
 //Set up logging (jqlog) and monkey patch jqlog with a debug function
 $.jqlog.enabled(true);
 $.jqlog.debug = function(object, options) {
@@ -64,6 +67,10 @@ function produceCWServerList() {
   cwAPIUrls(jQuery.map(cwURLs(), function(element) {
     return element + (USE_TESTNET ? '/_t_api' : '/_api');
   }));
+
+  window.EXCHANGE_Home = new HomeExchangeViewModel();
+  ko.applyBindings(EXCHANGE_Home, document.getElementById("homepairsgrid"));
+  EXCHANGE_Home.fetchAllHomePairs();
 
   /*if (!homeCalled) {
     //homeCalled = true;

@@ -5,28 +5,28 @@
 SoGParty
 ================
 
-- This is a hobby/project forking counterwallet and adapting it specifically for Spells of Genesis. BTC/XCP/BCY donation address: 1KJ6SPUi7oAJ8q5nSGuv8SujUDeieKy5GF 
-- Note this counterwallet fork uses extended and different API calls to reduce latency, ensure only real SOG assets are available, and to enable new functionality (like price displays in bid/vol and ask/vol). This must be run with my **[forked counterblock implementation](https://github.com/x-ETHeREAL-x/SOGPartyBlock)** to enable the custom API calls. 
+- This is a hobby/project forking counterwallet and adapting it specifically for Spells of Genesis. This project is going to be entered into the DEVPARTY contest, please vote for it!
+- Note #1: SOGPARTY uses extended and different API calls. SOGParty should be be run with my **[forked counterblock implementation](https://github.com/x-ETHeREAL-x/SOGPartyBlock)** to enable the custom API calls. 
+- Note #2: SOGPARTY's ShapeShift.io integration requires  my **[forked ShapeShift Skeleton](https://github.com/x-ETHeREAL-x/ShapeShift-Skeleton)** to enable ShapeShift functionality in the wallet. 
 
-Beta Testing Systems (Not Live)
+
+Beta Testing System
 -------------------
 
-* Primary server -- Mainnet: **[SoGParty.com](https://sogparty.com/)**
+* Primary server -- Mainnet: **[SoGParty.com/BETA](https://sogparty.com/BETA)**
 
 
 SOG-Specific DEX and Wallet Features
 ----------
 
 - Asset limitation; only SOG card assets and BTC/BCY/XCP displayed
-- Standard high bid/vol - low ask/vol style market discovery
+- Standard high bid - low ask style market discovery
 - Card image associates with markets and wallet
 - Balances sort fixed with currencies (BTC, BCY, XCP) first with images
 - Non-focus on XCP currency, improved discovery of BTC/BCY markets
-- Card-for-card trading markets 
 - Streamlined UI 
 - Homepage display of trending markets
-- SOG specific warnings (e.g., regard divisible cards)
-- restructuring of buy pages
+
 
 
 Included Standard Counterwallet Features
@@ -51,7 +51,7 @@ Browser Support
 
 Notably, Internet Explorer is **not** supported, due to its lack of full Content-Security-Policy support (even with IE 11).
 
-**Mobile**
+**Mobile (Not Tested Yet!)** 
 
 - IOS Safari 7+
 - Android Browser 4.4+

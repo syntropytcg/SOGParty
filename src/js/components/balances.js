@@ -816,7 +816,14 @@ function SweepModalViewModel() {
   });
 
   self.addressForPrivateKey.subscribe(function(address) {
+
+
+
+
+
     //set up handler on changes in private key to generate a list of balances
+
+
     self.sweepAssetsCost = {'BTC': MIN_FEE + REGULAR_DUST_SIZE};
     if (!address || address == '') return;
 
@@ -1872,6 +1879,52 @@ function SignTransactionModalViewModel() {
   }
 
 }
+
+var ssframe = document.createElement("iframe");
+var loadonce = true;
+
+function ShapeShiftModalViewModel() {
+  var self = this;
+
+  self.shown = ko.observable(false);
+    self.iframe = document.createElement("iframe");
+
+
+    self.init = function(){
+
+
+        document.getElementById("shapeshiftmodeldiv").appendChild(ssframe);
+        if (loadonce){
+            loadonce = false;
+            ssframe.height = "100%";
+            ssframe.width = "100%";
+            ssframe.style = "overflow=auto !important";
+            ssframe.src = "https://sogparty.com/shapeshift/";
+
+        }
+
+
+
+
+
+
+    }
+  self.show = function() {
+    //doshapeshift modal  #shapeshiftmodeldiv
+      self.shown(true);
+
+
+  }
+
+  self.hide = function() {
+    self.shown(false);
+  }
+
+
+
+}
+
+
 
 function ArmoryBroadcastTransactionModalViewModel() {
   var self = this;

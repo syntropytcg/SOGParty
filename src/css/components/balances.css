@@ -1,3 +1,39 @@
+.ssmodal {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1050;
+  display: none;
+
+  width: 1000px;
+  height: 600px;
+  -webkit-overflow-scrolling: touch;
+  outline: 0;
+}
+.ssmodal2 {
+
+  width: 1000px;
+  height: 575px;
+  -webkit-overflow-scrolling: touch;
+  outline: 0;
+}
+.ssmodal4 {
+
+  width: 1000px;
+
+}
+
+.ssmodal3 {
+
+
+  width: 1000px;
+
+  -webkit-overflow-scrolling: touch;
+  outline: 0;
+}
+
 
 button#createNewAddress { margin: 12px; }
 
@@ -194,7 +230,7 @@ div#showAssetInfoModal table tbody {
   margin-left: 10px;
   margin-top: 2px;
 }
-
+.base-asset-item.ss          { color: #fff; background-color: #28394d; border-color: #120446; height: 100px;}
 .base-asset-item.btc          { color: #a94442; background-color: #ebccd1; border-color: #c4aaaf; height: 100px;}
 .base-asset-item.xcp          { color: #3c763d; background-color: #d6e9c6; border-color: #b2c2a5; height: 100px;}
 .base-asset-item.bcy          { color: #3c763d; background-color: #d6e9c6; border-color: #b2c2a5; height: 100px;}

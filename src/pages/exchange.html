@@ -16,7 +16,7 @@
 
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" data-bind="visible: !dexHome()">
       <h1 style="text-align:center;position:relative;margin:0">
-        <a id="changeMarket" class="btn btn-lg btn-primary" style="vertical-align:text-bottom;">
+        <a id="changeMarket" class="btn btn-md btn-primary" style="vertical-align:text-bottom;">
           <span class="fa fa-arrow-left"><span>
           <span data-bind="locale: 'all_markets'"></span>
         </a>
@@ -30,12 +30,9 @@
 
   </div>
 
-  <div class="alert alert-info">
-    <i class="fa-fw fa fa-exchange"></i>
-    <span>NEW MESSAGE PUT IT HERE</span>
-  </div>
 
-  <div class="row container"> <!-- row -->
+
+  <div class="row container" data-bind="visible: dexHome()"> <!-- row -->
 
 
 
@@ -87,6 +84,7 @@
               </div> <!-- end widget div -->
           </div> <!-- end widget -->
       </article> <!-- WIDGET END -->
+      </div>
 
 
 
@@ -201,311 +199,8 @@
   </div> <!-- end row -->
 
 
-  <div class="row" data-bind="visible: userOpenOrders().length > 0">
 
-    <article class="col-xs-12 col-sm-12 col-md-6 col-lg-6"> <!-- NEW WIDGET START -->
-      <div class="jarviswidget defaultWidgetColor" id="wid-id-orderBook" data-widget-editbutton="false" data-widget-deletebutton="false"
-       data-widget-colorbutton="false" data-widget-fullscreenbutton="false" data-widget-togglebutton="false" data-widget-sortable="false" data-widget-grid="false" data-bind="fadeVisibleInOnly: validationModelBaseOrders.isValid() && !dexHome()">
-        <header>
-            <span class="widget-icon"> <i class="fa fa-sort-amount-desc"></i> </span>
-            <h3 data-bind="locale: 'my_trades_history'"></h3>
-            <div class="clearfix"></div>
-        </header>
-        <div> <!-- widget div-->
-            <div class="widget-body no-padding"> <!-- widget content -->
-              <div class="custom-scroll table-responsive" style="height: 200px;">
-                <table class="orderBook table table-striped table-bordered table-condensed table-hover">
-                    <thead>
-                        <tr class="centerHeader">
-                            <th data-bind="locale: 'type'"></th>
-                            <th data-bind="locale: 'block_time'"></th>
-                            <th><span data-bind="locale: 'price'"></span> [<span data-bind="text: quoteAsset"></span>]</th>
-                            <th><span data-bind="locale: 'amount'"></span> [<span data-bind="text: baseAsset"></span>]</th>
-                            <th><span data-bind="locale: 'total'"></span> [<span data-bind="text: quoteAsset"></span>]</th>
-                            <th><span data-bind="locale: 'status'"></span></th>
-                        </tr>
-                    </thead>
-                    <tbody data-bind="foreach: userLastTrades"> <!-- descending order -->
-                        <tr>
-                            <td data-bind="text: type, attr: {class: type}"></td>
-                            <td data-bind="text: block_time" style="white-space:nowrap"></td>
-                            <td data-bind="html: price"></td>
-                            <td data-bind="html: amount"></td> <!-- quantity (count) -->
-                            <td data-bind="html: total"></td>
-                            <td data-bind="text: status"></td>
-                        </tr>
-                    </tbody>
-                </table>
-              </div>
-            </div> <!-- end widget content -->
-        </div> <!-- end widget div -->
-      </div> <!-- end widget -->
-    </article> <!-- WIDGET END -->
 
-    <article class="col-xs-12 col-sm-12 col-md-6 col-lg-6"> <!-- NEW WIDGET START -->
-      <div class="jarviswidget defaultWidgetColor" id="wid-id-orderBook" data-widget-editbutton="false" data-widget-deletebutton="false"
-       data-widget-colorbutton="false" data-widget-fullscreenbutton="false" data-widget-togglebutton="false" data-widget-sortable="false" data-widget-grid="false" data-bind="fadeVisibleInOnly: validationModelBaseOrders.isValid() && !dexHome()">
-        <header>
-            <span class="widget-icon"> <i class="fa fa-sort-amount-desc"></i> </span>
-            <h3 data-bind="locale: 'my_open_orders'"></h3>
-            <div class="clearfix"></div>
-        </header>
-        <div> <!-- widget div-->
-            <div class="widget-body no-padding"> <!-- widget content -->
-                <div class="custom-scroll table-responsive" style="height:200px;">
-                  <table class="orderBook table table-striped table-bordered table-condensed table-hover">
-                      <thead>
-                          <tr class="centerHeader">
-                              <th data-bind="locale: 'type'"></th>
-                              <th><span data-bind="locale: 'price'"></span> [<span data-bind="text: baseAsset + '/' + quoteAsset"></span>]</th>
-                              <th><span data-bind="locale: 'amount'"></span> [<span data-bind="text: baseAsset"></span>]</th>
-                              <th><span data-bind="locale: 'total'"></span> [<span data-bind="text: quoteAsset"></span>]</th>
-                              <th data-bind="locale: 'completion'"></th>
-                              <th data-bind="locale: 'action'"></th>
-                          </tr>
-                      </thead>
-                      <tbody data-bind="foreach: userOpenOrders"> <!-- descending order -->
-                          <tr>
-                              <td data-bind="text: type, attr: {class: type}"></td>
-                              <td data-bind="html: price"></td>
-                              <td data-bind="html: amount"></td> <!-- quantity (count) -->
-                              <td data-bind="html: total"></td>
-                              <td data-bind="text: completion"></td>
-                              <td>
-                                <a class="btn btn-default btn-xs" data-bind="click: $parent.cancelOrder, locale: 'cancel', attr: {'id': 'btcancel_' + tx_hash}, css: {disabled: cancelled }"></a>
-                              </td>
-                          </tr>
-                      </tbody>
-                  </table>
-                </div>
-            </div> <!-- end widget content -->
-        </div> <!-- end widget div -->
-      </div> <!-- end widget -->
-    </article> <!-- WIDGET END -->
-
-  </div> <!-- end row -->
-
-  <div class="row">
-
-    <article class="col-xs-12 col-sm-12 col-md-6 col-lg-6"> <!-- NEW WIDGET START -->
-      <div class="jarviswidget defaultWidgetColor" id="wid-id-orderBook" data-widget-editbutton="false" data-widget-deletebutton="false"
-       data-widget-colorbutton="false" data-widget-fullscreenbutton="false" data-widget-togglebutton="false" data-widget-sortable="false" data-widget-grid="false" data-bind="fadeVisibleInOnly: validationModelBaseOrders.isValid() && !dexHome()">
-        <header>
-            <span class="widget-icon"> <i class="fa fa-sort-amount-desc"></i> </span>
-            <h3 class="tradeForm" data-bind="text: 'Buy ' + baseAsset"></h3>
-            <div class="clearfix"></div>
-        </header>
-        <div> <!-- widget div-->
-          <div class="widget-body no-padding buyForm"> <!-- widget content -->
-            <form class="form-horizontal">
-              <div class="table-responsive">
-                <table class="table buySellForm">
-                  <tbody>
-                    <tr>
-                      <td colspan="2">
-                      <div class="form-group">
-                        <label class="control-label col-xs-2" data-bind="locale: 'address'"></label>
-                        <div class="col-xs-10">
-                          <select id="buyFromAddress" data-bind="options: availableAddressesForBuy, optionsValue: 'ADDRESS', optionsText: 'SELECT_LABEL', select2: {  minimumResultsForSearch: 10, escapeMarkup: 'direct' }, value: selectedAddressForBuy" style="width:100%;"></select>
-                        </div>
-                      </div></td>
-                      <td></td>
-                    </tr>
-                    <tr class="bold">
-                      <td colspan="2">
-                      <div class="form-group">
-                        <label class="control-label nopad col-xs-6" data-bind="locale: 'your_balance'"></label>
-                        <div class="col-xs-6 number" data-bind="text: availableBalanceForBuy, click: setMaxBuyAmount" style="cursor:pointer"></div>
-                      </div></td>
-                      <td data-bind="text: quoteAsset"></td>
-                    </tr>
-                    <tr>
-                      <td colspan="2">
-                      <div class="form-group">
-                        <label class="control-label nopad col-xs-6" data-bind="locale: 'lowest_ask_price'"></label>
-                        <div class="col-xs-6 number" data-bind="text:lowestAskPrice"></div>
-                      </div></td>
-                      <td data-bind="text: quoteAsset + '/' + baseAsset"></td>
-                    </tr>
-                    <tr>
-                      <td colspan="2">
-                      <div class="form-group">
-                        <label class="control-label nopad col-xs-6" data-bind="locale: 'obtainable'"></label>
-                        <div class="col-xs-6 number" data-bind="text: obtainableForBuy"></div>
-                      </div></td>
-                      <td data-bind="text: baseAsset"></td>
-                    </tr>
-                    <tr>
-                      <td colspan="2">
-                      <div class="form-group">
-                        <label class="control-label col-xs-2" data-bind="locale: 'price'"></label>
-                        <div class="col-xs-10">
-                          <input type="text" class="form-control input-sm number" type="text" data-bind="value: buyPrice, hasFocus: buyPriceHasFocus, valueUpdate: 'input', enable: availableBalanceForBuy() > 0"/>
-                          <span class="invalid text-danger" data-bind="validationMessage: buyPrice"></span>
-                        </div>
-                      </div></td>
-                      <td data-bind="text: quoteAsset + '/' + baseAsset"></td>
-                    </tr>
-                    <tr>
-                      <td colspan="2">
-                      <div class="form-group">
-                        <label class="control-label col-xs-2" data-bind="locale: 'amount'"></label>
-                        <div class="col-xs-10">
-                          <input type="text" class="form-control input-sm number" type="text" data-bind="value: buyAmount, hasFocus: buyAmountHasFocus, valueUpdate: 'input', enable: availableBalanceForBuy() > 0"/>
-                          <span class="invalid text-danger" data-bind="validationMessage: buyAmount"></span>
-                        </div>
-                      </div></td>
-                      <td data-bind="text: baseAsset"></td>
-                    </tr>
-                    <tr>
-                      <td colspan="2">
-                      <div class="form-group">
-                        <label class="control-label col-xs-2" data-bind="locale: 'total'"></label>
-                        <div class="col-xs-10">
-                          <input type="text" class="form-control input-sm number" type="text" data-bind="value: buyTotal, hasFocus: buyTotalHasFocus, valueUpdate: 'input', enable: availableBalanceForBuy() > 0"/>
-                          <span class="invalid text-danger" data-bind="validationMessage: buyTotal"></span>
-                        </div>
-                      </div></td>
-                      <td data-bind="text: quoteAsset"></td>
-                    </tr>
-                    <tr>
-                      <td colspan="2">
-                      <div class="form-group">
-                        <label class="control-label nopad col-xs-6" data-bind="locale: 'miners_fee'"></label>
-                        <div class="col-xs-6 number" data-bind="text: buyFee"></div>
-                      </div></td>
-                      <td>BTC</td>
-                    </tr>
-                    <tr>
-                      <td colspan="2">
-                      <div class="form-group">
-                        <label class="control-label nopad col-xs-6" data-bind="locale: 'redeemable_fee'"></label>
-                        <div class="col-xs-6 number" data-bind="text: buyRedeemableFee"></div>
-                      </div></td>
-                      <td>BTC</td>
-                    </tr>
-                    <tr>
-                      <td colspan="3" style="text-align:center"><a id="buyButton" class="btn btn-default btn-lg" data-bind="click: buy">Buy (<span data-bind="text: quoteAsset + '→' + baseAsset"></span>)</a></td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </form>
-          </div> <!-- end widget content -->
-        </div> <!-- end widget div -->
-      </div> <!-- end widget -->
-    </article> <!-- WIDGET END -->
-
-    <article class="col-xs-12 col-sm-12 col-md-6 col-lg-6"> <!-- NEW WIDGET START -->
-      <div class="jarviswidget defaultWidgetColor" id="wid-id-orderBook" data-widget-editbutton="false" data-widget-deletebutton="false"
-       data-widget-colorbutton="false" data-widget-fullscreenbutton="false" data-widget-togglebutton="false" data-widget-sortable="false" data-widget-grid="false" data-bind="fadeVisibleInOnly: validationModelBaseOrders.isValid() && !dexHome()">
-        <header>
-            <span class="widget-icon"> <i class="fa fa-sort-amount-desc"></i> </span>
-            <h3 class="tradeForm" data-bind="text: 'Sell ' + baseAsset"></h3>
-            <div class="clearfix"></div>
-        </header>
-        <div> <!-- widget div-->
-          <div class="widget-body no-padding sellForm"> <!-- widget content -->
-            <form class="form-horizontal">
-              <div class="table-responsive">
-                <table class="table buySellForm">
-                  <tbody>
-                    <tr>
-                      <td colspan="2">
-                      <div class="form-group">
-                        <label class="control-label col-xs-2" data-bind="locale: 'address'"></label>
-                        <div class="col-xs-10">
-                          <select style="width: 100%;" id="sellFromAddress" data-bind="options: availableAddressesForSell, optionsValue: 'ADDRESS', optionsText: 'SELECT_LABEL', select2: {  minimumResultsForSearch: 10, escapeMarkup: 'direct' }, value: selectedAddressForSell, enable: availableBalanceForSell() > 0"></select>
-                        </div>
-                      </div></td>
-                      <td></td>
-                    </tr>
-                    <tr class="bold">
-                      <td colspan="2">
-                      <div class="form-group">
-                        <label class="control-label nopad col-xs-6" data-bind="locale: 'your_balance'"></label>
-                        <div class="col-xs-6 number" data-bind="text: availableBalanceForSell, click: setMaxSellAmount" style="cursor:pointer" class="number"></div>
-                      </div></td>
-                      <td data-bind="text: baseAsset"></td>
-                    </tr>
-                    <tr>
-                      <td colspan="2">
-                      <div class="form-group">
-                        <label class="control-label nopad col-xs-6" data-bind="locale: 'highest_bid_price'"></label>
-                        <div class="col-xs-6 number" data-bind="text:highestBidPrice"></div>
-                      </div></td>
-                      <td data-bind="text: quoteAsset + '/' + baseAsset"></td>
-                    </tr>
-                    <tr>
-                      <td colspan="2">
-                      <div class="form-group">
-                        <label class="control-label nopad col-xs-6" data-bind="locale: 'obtainable'"></label>
-                        <div class="col-xs-6 number" data-bind="text: obtainableForSell"></div>
-                      </div></td>
-                      <td data-bind="text: quoteAsset"></td>
-                    </tr>
-                    <tr>
-                      <td colspan="2">
-                      <div class="form-group">
-                        <label class="control-label col-xs-2" data-bind="locale: 'price'"></label>
-                        <div class="col-xs-10">
-                          <input type="text" class="form-control input-sm number" type="text" data-bind="value: sellPrice, hasFocus: sellPriceHasFocus, valueUpdate: 'input', enable: availableBalanceForSell() > 0"/>
-                          <span class="invalid text-danger" data-bind="validationMessage: sellPrice"></span>
-                        </div>
-                      </div></td>
-                      <td data-bind="text: quoteAsset + '/' + baseAsset"></td>
-                    </tr>
-                    <tr>
-                      <td colspan="2">
-                      <div class="form-group">
-                        <label class="control-label col-xs-2" data-bind="locale: 'amount'"></label>
-                        <div class="col-xs-10">
-                          <input type="text" class="form-control input-sm number" type="text" data-bind="value: sellAmount, hasFocus: sellAmountHasFocus, valueUpdate: 'input', enable: availableBalanceForSell() > 0"/>
-                          <span class="invalid text-danger" data-bind="validationMessage: sellAmount"></span>
-                        </div>
-                      </div></td>
-                      <td data-bind="text: baseAsset"></td>
-                    </tr>
-                    <tr>
-                      <td colspan="2">
-                      <div class="form-group">
-                        <label class="control-label col-xs-2" data-bind="locale: 'total'"></label>
-                        <div class="col-xs-10">
-                          <input type="text" class="form-control input-sm number" type="text" data-bind="value: sellTotal, hasFocus: sellTotalHasFocus, valueUpdate: 'input', enable: availableBalanceForSell() > 0"/>
-                          <span class="invalid text-danger" data-bind="validationMessage: sellTotal"></span>
-                        </div>
-                      </div></td>
-                      <td data-bind="text: quoteAsset"></td>
-                    </tr>
-                    <tr>
-                      <td colspan="2">
-                      <div class="form-group">
-                        <label class="control-label nopad col-xs-6" data-bind="locale: 'miners_fee'"></label>
-                        <div class="col-xs-6 number" data-bind="text: sellFee"></div>
-                      </div></td>
-                      <td>BTC</td>
-                    </tr>
-                    <tr>
-                      <td colspan="2">
-                      <div class="form-group">
-                        <label class="control-label nopad col-xs-6" data-bind="locale: 'redeemable_fee'"></label>
-                        <div class="col-xs-6 number" data-bind="text: sellRedeemableFee"></div>
-                      </div></td>
-                      <td>BTC</td>
-                    </tr>
-                    <tr>
-                      <td colspan="3" style="text-align:center"><a id="sellButton" class="btn btn-default btn-lg" data-bind="click: sell"><span data-bind="locale: 'Sell'"></span> (<span data-bind="text:baseAsset + '→' + quoteAsset"></span>)</a></td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </form>
-          </div> <!-- end widget content -->
-        </div> <!-- end widget div -->
-      </div> <!-- end widget -->
-    </article> <!-- WIDGET END -->
-
-  </div> <!-- end row -->
 
 
 
@@ -578,8 +273,313 @@
     </article> <!-- WIDGET END -->
 
   </div> <!-- end row -->
+      <div class="row" data-bind="visible: userOpenOrders().length > 0">
 
-  <div class="row" data-bind="fadeVisibleInOnly: validationModelBaseOrders.isValid() && !dexHome() && tradeHistory().length > 0">
+          <article class="col-xs-12 col-sm-12 col-md-6 col-lg-6"> <!-- NEW WIDGET START -->
+              <div class="jarviswidget defaultWidgetColor" id="wid-id-orderBook" data-widget-editbutton="false" data-widget-deletebutton="false"
+                   data-widget-colorbutton="false" data-widget-fullscreenbutton="false" data-widget-togglebutton="false" data-widget-sortable="false" data-widget-grid="false" data-bind="fadeVisibleInOnly: validationModelBaseOrders.isValid() && !dexHome()">
+                  <header>
+                      <span class="widget-icon"> <i class="fa fa-sort-amount-desc"></i> </span>
+                      <h3 data-bind="locale: 'my_trades_history'"></h3>
+                      <div class="clearfix"></div>
+                  </header>
+                  <div> <!-- widget div-->
+                      <div class="widget-body no-padding"> <!-- widget content -->
+                          <div class="custom-scroll table-responsive" style="height: 200px;">
+                              <table class="orderBook table table-striped table-bordered table-condensed table-hover">
+                                  <thead>
+                                  <tr class="centerHeader">
+                                      <th data-bind="locale: 'type'"></th>
+                                      <th data-bind="locale: 'block_time'"></th>
+                                      <th><span data-bind="locale: 'price'"></span> [<span data-bind="text: quoteAsset"></span>]</th>
+                                      <th><span data-bind="locale: 'amount'"></span> [<span data-bind="text: baseAsset"></span>]</th>
+                                      <th><span data-bind="locale: 'total'"></span> [<span data-bind="text: quoteAsset"></span>]</th>
+                                      <th><span data-bind="locale: 'status'"></span></th>
+                                  </tr>
+                                  </thead>
+                                  <tbody data-bind="foreach: userLastTrades"> <!-- descending order -->
+                                  <tr>
+                                      <td data-bind="text: type, attr: {class: type}"></td>
+                                      <td data-bind="text: block_time" style="white-space:nowrap"></td>
+                                      <td data-bind="html: price"></td>
+                                      <td data-bind="html: amount"></td> <!-- quantity (count) -->
+                                      <td data-bind="html: total"></td>
+                                      <td data-bind="text: status"></td>
+                                  </tr>
+                                  </tbody>
+                              </table>
+                          </div>
+                      </div> <!-- end widget content -->
+                  </div> <!-- end widget div -->
+              </div> <!-- end widget -->
+          </article> <!-- WIDGET END -->
+
+          <article class="col-xs-12 col-sm-12 col-md-6 col-lg-6"> <!-- NEW WIDGET START -->
+              <div class="jarviswidget defaultWidgetColor" id="wid-id-orderBook" data-widget-editbutton="false" data-widget-deletebutton="false"
+                   data-widget-colorbutton="false" data-widget-fullscreenbutton="false" data-widget-togglebutton="false" data-widget-sortable="false" data-widget-grid="false" data-bind="fadeVisibleInOnly: validationModelBaseOrders.isValid() && !dexHome()">
+                  <header>
+                      <span class="widget-icon"> <i class="fa fa-sort-amount-desc"></i> </span>
+                      <h3 data-bind="locale: 'my_open_orders'"></h3>
+                      <div class="clearfix"></div>
+                  </header>
+                  <div> <!-- widget div-->
+                      <div class="widget-body no-padding"> <!-- widget content -->
+                          <div class="custom-scroll table-responsive" style="height:200px;">
+                              <table class="orderBook table table-striped table-bordered table-condensed table-hover">
+                                  <thead>
+                                  <tr class="centerHeader">
+                                      <th data-bind="locale: 'type'"></th>
+                                      <th><span data-bind="locale: 'price'"></span> [<span data-bind="text: baseAsset + '/' + quoteAsset"></span>]</th>
+                                      <th><span data-bind="locale: 'amount'"></span> [<span data-bind="text: baseAsset"></span>]</th>
+                                      <th><span data-bind="locale: 'total'"></span> [<span data-bind="text: quoteAsset"></span>]</th>
+                                      <th data-bind="locale: 'completion'"></th>
+                                      <th data-bind="locale: 'action'"></th>
+                                  </tr>
+                                  </thead>
+                                  <tbody data-bind="foreach: userOpenOrders"> <!-- descending order -->
+                                  <tr>
+                                      <td data-bind="text: type, attr: {class: type}"></td>
+                                      <td data-bind="html: price"></td>
+                                      <td data-bind="html: amount"></td> <!-- quantity (count) -->
+                                      <td data-bind="html: total"></td>
+                                      <td data-bind="text: completion"></td>
+                                      <td>
+                                          <a class="btn btn-default btn-xs" data-bind="click: $parent.cancelOrder, locale: 'cancel', attr: {'id': 'btcancel_' + tx_hash}, css: {disabled: cancelled }"></a>
+                                      </td>
+                                  </tr>
+                                  </tbody>
+                              </table>
+                          </div>
+                      </div> <!-- end widget content -->
+                  </div> <!-- end widget div -->
+              </div> <!-- end widget -->
+          </article> <!-- WIDGET END -->
+
+      </div> <!-- end row -->
+      <div class="row">
+
+          <article class="col-xs-12 col-sm-12 col-md-6 col-lg-6"> <!-- NEW WIDGET START -->
+              <div class="jarviswidget defaultWidgetColor" id="wid-id-orderBook" data-widget-editbutton="false" data-widget-deletebutton="false"
+                   data-widget-colorbutton="false" data-widget-fullscreenbutton="false" data-widget-togglebutton="false" data-widget-sortable="false" data-widget-grid="false" data-bind="fadeVisibleInOnly: validationModelBaseOrders.isValid() && !dexHome()">
+                  <header>
+                      <span class="widget-icon"> <i class="fa fa-sort-amount-desc"></i> </span>
+                      <h3 class="tradeForm" data-bind="text: 'Buy ' + baseAsset"></h3>
+                      <div class="clearfix"></div>
+                  </header>
+                  <div> <!-- widget div-->
+                      <div class="widget-body no-padding buyForm"> <!-- widget content -->
+                          <form class="form-horizontal">
+                              <div class="table-responsive">
+                                  <table class="table buySellForm">
+                                      <tbody>
+                                      <tr>
+                                          <td colspan="2">
+                                              <div class="form-group">
+                                                  <label class="control-label col-xs-2" data-bind="locale: 'address'"></label>
+                                                  <div class="col-xs-10">
+                                                      <select id="buyFromAddress" data-bind="options: availableAddressesForBuy, optionsValue: 'ADDRESS', optionsText: 'SELECT_LABEL', select2: {  minimumResultsForSearch: 10, escapeMarkup: 'direct' }, value: selectedAddressForBuy" style="width:100%;"></select>
+                                                  </div>
+                                              </div></td>
+                                          <td></td>
+                                      </tr>
+                                      <tr class="bold">
+                                          <td colspan="2">
+                                              <div class="form-group">
+                                                  <label class="control-label nopad col-xs-6" data-bind="locale: 'your_balance'"></label>
+                                                  <div class="col-xs-6 number" data-bind="text: availableBalanceForBuy, click: setMaxBuyAmount" style="cursor:pointer"></div>
+                                              </div></td>
+                                          <td data-bind="text: quoteAsset"></td>
+                                      </tr>
+                                      <tr>
+                                          <td colspan="2">
+                                              <div class="form-group">
+                                                  <label class="control-label nopad col-xs-6" data-bind="locale: 'lowest_ask_price'"></label>
+                                                  <div class="col-xs-6 number" data-bind="text:lowestAskPrice"></div>
+                                              </div></td>
+                                          <td data-bind="text: quoteAsset + '/' + baseAsset"></td>
+                                      </tr>
+                                      <tr>
+                                          <td colspan="2">
+                                              <div class="form-group">
+                                                  <label class="control-label nopad col-xs-6" data-bind="locale: 'obtainable'"></label>
+                                                  <div class="col-xs-6 number" data-bind="text: obtainableForBuy"></div>
+                                              </div></td>
+                                          <td data-bind="text: baseAsset"></td>
+                                      </tr>
+                                      <tr>
+                                          <td colspan="2">
+                                              <div class="form-group">
+                                                  <label class="control-label col-xs-2" data-bind="locale: 'price'"></label>
+                                                  <div class="col-xs-10">
+                                                      <input type="text" class="form-control input-sm number" type="text" data-bind="value: buyPrice, hasFocus: buyPriceHasFocus, valueUpdate: 'input', enable: availableBalanceForBuy() > 0"/>
+                                                      <span class="invalid text-danger" data-bind="validationMessage: buyPrice"></span>
+                                                  </div>
+                                              </div></td>
+                                          <td data-bind="text: quoteAsset + '/' + baseAsset"></td>
+                                      </tr>
+                                      <tr>
+                                          <td colspan="2">
+                                              <div class="form-group">
+                                                  <label class="control-label col-xs-2" data-bind="locale: 'amount'"></label>
+                                                  <div class="col-xs-10">
+                                                      <input type="text" class="form-control input-sm number" type="text" data-bind="value: buyAmount, hasFocus: buyAmountHasFocus, valueUpdate: 'input', enable: availableBalanceForBuy() > 0"/>
+                                                      <span class="invalid text-danger" data-bind="validationMessage: buyAmount"></span>
+                                                  </div>
+                                              </div></td>
+                                          <td data-bind="text: baseAsset"></td>
+                                      </tr>
+                                      <tr>
+                                          <td colspan="2">
+                                              <div class="form-group">
+                                                  <label class="control-label col-xs-2" data-bind="locale: 'total'"></label>
+                                                  <div class="col-xs-10">
+                                                      <input type="text" class="form-control input-sm number" type="text" data-bind="value: buyTotal, hasFocus: buyTotalHasFocus, valueUpdate: 'input', enable: availableBalanceForBuy() > 0"/>
+                                                      <span class="invalid text-danger" data-bind="validationMessage: buyTotal"></span>
+                                                  </div>
+                                              </div></td>
+                                          <td data-bind="text: quoteAsset"></td>
+                                      </tr>
+                                      <tr>
+                                          <td colspan="2">
+                                              <div class="form-group">
+                                                  <label class="control-label nopad col-xs-6" data-bind="locale: 'miners_fee'"></label>
+                                                  <div class="col-xs-6 number" data-bind="text: buyFee"></div>
+                                              </div></td>
+                                          <td>BTC</td>
+                                      </tr>
+                                      <tr>
+                                          <td colspan="2">
+                                              <div class="form-group">
+                                                  <label class="control-label nopad col-xs-6" data-bind="locale: 'redeemable_fee'"></label>
+                                                  <div class="col-xs-6 number" data-bind="text: buyRedeemableFee"></div>
+                                              </div></td>
+                                          <td>BTC</td>
+                                      </tr>
+                                      <tr>
+                                          <td colspan="3" style="text-align:center"><a id="buyButton" class="btn btn-default btn-lg" data-bind="click: buy">Buy (<span data-bind="text: quoteAsset + '→' + baseAsset"></span>)</a></td>
+                                      </tr>
+                                      </tbody>
+                                  </table>
+                              </div>
+                          </form>
+                      </div> <!-- end widget content -->
+                  </div> <!-- end widget div -->
+              </div> <!-- end widget -->
+          </article> <!-- WIDGET END -->
+
+          <article class="col-xs-12 col-sm-12 col-md-6 col-lg-6"> <!-- NEW WIDGET START -->
+              <div class="jarviswidget defaultWidgetColor" id="wid-id-orderBook" data-widget-editbutton="false" data-widget-deletebutton="false"
+                   data-widget-colorbutton="false" data-widget-fullscreenbutton="false" data-widget-togglebutton="false" data-widget-sortable="false" data-widget-grid="false" data-bind="fadeVisibleInOnly: validationModelBaseOrders.isValid() && !dexHome()">
+                  <header>
+                      <span class="widget-icon"> <i class="fa fa-sort-amount-desc"></i> </span>
+                      <h3 class="tradeForm" data-bind="text: 'Sell ' + baseAsset"></h3>
+                      <div class="clearfix"></div>
+                  </header>
+                  <div> <!-- widget div-->
+                      <div class="widget-body no-padding sellForm"> <!-- widget content -->
+                          <form class="form-horizontal">
+                              <div class="table-responsive">
+                                  <table class="table buySellForm">
+                                      <tbody>
+                                      <tr>
+                                          <td colspan="2">
+                                              <div class="form-group">
+                                                  <label class="control-label col-xs-2" data-bind="locale: 'address'"></label>
+                                                  <div class="col-xs-10">
+                                                      <select style="width: 100%;" id="sellFromAddress" data-bind="options: availableAddressesForSell, optionsValue: 'ADDRESS', optionsText: 'SELECT_LABEL', select2: {  minimumResultsForSearch: 10, escapeMarkup: 'direct' }, value: selectedAddressForSell, enable: availableBalanceForSell() > 0"></select>
+                                                  </div>
+                                              </div></td>
+                                          <td></td>
+                                      </tr>
+                                      <tr class="bold">
+                                          <td colspan="2">
+                                              <div class="form-group">
+                                                  <label class="control-label nopad col-xs-6" data-bind="locale: 'your_balance'"></label>
+                                                  <div class="col-xs-6 number" data-bind="text: availableBalanceForSell, click: setMaxSellAmount" style="cursor:pointer" class="number"></div>
+                                              </div></td>
+                                          <td data-bind="text: baseAsset"></td>
+                                      </tr>
+                                      <tr>
+                                          <td colspan="2">
+                                              <div class="form-group">
+                                                  <label class="control-label nopad col-xs-6" data-bind="locale: 'highest_bid_price'"></label>
+                                                  <div class="col-xs-6 number" data-bind="text:highestBidPrice"></div>
+                                              </div></td>
+                                          <td data-bind="text: quoteAsset + '/' + baseAsset"></td>
+                                      </tr>
+                                      <tr>
+                                          <td colspan="2">
+                                              <div class="form-group">
+                                                  <label class="control-label nopad col-xs-6" data-bind="locale: 'obtainable'"></label>
+                                                  <div class="col-xs-6 number" data-bind="text: obtainableForSell"></div>
+                                              </div></td>
+                                          <td data-bind="text: quoteAsset"></td>
+                                      </tr>
+                                      <tr>
+                                          <td colspan="2">
+                                              <div class="form-group">
+                                                  <label class="control-label col-xs-2" data-bind="locale: 'price'"></label>
+                                                  <div class="col-xs-10">
+                                                      <input type="text" class="form-control input-sm number" type="text" data-bind="value: sellPrice, hasFocus: sellPriceHasFocus, valueUpdate: 'input', enable: availableBalanceForSell() > 0"/>
+                                                      <span class="invalid text-danger" data-bind="validationMessage: sellPrice"></span>
+                                                  </div>
+                                              </div></td>
+                                          <td data-bind="text: quoteAsset + '/' + baseAsset"></td>
+                                      </tr>
+                                      <tr>
+                                          <td colspan="2">
+                                              <div class="form-group">
+                                                  <label class="control-label col-xs-2" data-bind="locale: 'amount'"></label>
+                                                  <div class="col-xs-10">
+                                                      <input type="text" class="form-control input-sm number" type="text" data-bind="value: sellAmount, hasFocus: sellAmountHasFocus, valueUpdate: 'input', enable: availableBalanceForSell() > 0"/>
+                                                      <span class="invalid text-danger" data-bind="validationMessage: sellAmount"></span>
+                                                  </div>
+                                              </div></td>
+                                          <td data-bind="text: baseAsset"></td>
+                                      </tr>
+                                      <tr>
+                                          <td colspan="2">
+                                              <div class="form-group">
+                                                  <label class="control-label col-xs-2" data-bind="locale: 'total'"></label>
+                                                  <div class="col-xs-10">
+                                                      <input type="text" class="form-control input-sm number" type="text" data-bind="value: sellTotal, hasFocus: sellTotalHasFocus, valueUpdate: 'input', enable: availableBalanceForSell() > 0"/>
+                                                      <span class="invalid text-danger" data-bind="validationMessage: sellTotal"></span>
+                                                  </div>
+                                              </div></td>
+                                          <td data-bind="text: quoteAsset"></td>
+                                      </tr>
+                                      <tr>
+                                          <td colspan="2">
+                                              <div class="form-group">
+                                                  <label class="control-label nopad col-xs-6" data-bind="locale: 'miners_fee'"></label>
+                                                  <div class="col-xs-6 number" data-bind="text: sellFee"></div>
+                                              </div></td>
+                                          <td>BTC</td>
+                                      </tr>
+                                      <tr>
+                                          <td colspan="2">
+                                              <div class="form-group">
+                                                  <label class="control-label nopad col-xs-6" data-bind="locale: 'redeemable_fee'"></label>
+                                                  <div class="col-xs-6 number" data-bind="text: sellRedeemableFee"></div>
+                                              </div></td>
+                                          <td>BTC</td>
+                                      </tr>
+                                      <tr>
+                                          <td colspan="3" style="text-align:center"><a id="sellButton" class="btn btn-default btn-lg" data-bind="click: sell"><span data-bind="locale: 'Sell'"></span> (<span data-bind="text:baseAsset + '→' + quoteAsset"></span>)</a></td>
+                                      </tr>
+                                      </tbody>
+                                  </table>
+                              </div>
+                          </form>
+                      </div> <!-- end widget content -->
+                  </div> <!-- end widget div -->
+              </div> <!-- end widget -->
+          </article> <!-- WIDGET END -->
+
+      </div> <!-- end row -->
+
+
+      <div class="row" data-bind="fadeVisibleInOnly: validationModelBaseOrders.isValid() && !dexHome() && tradeHistory().length > 0">
     <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> <!-- NEW WIDGET START -->
       <div class="jarviswidget defaultWidgetColor" id="wid-id-tradeHistory" data-widget-editbutton="false" data-widget-sortable="false" data-widget-deletebutton="false" data-widget-colorbutton="false" data-widget-fullscreenbutton="false" data-widget-togglebutton="false" data-widget-grid="false">
         <header>

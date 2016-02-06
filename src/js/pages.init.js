@@ -22,13 +22,14 @@ function initIndex() { //main page
   window.SUPPORT_MODAL = new SupportModalViewModel();
   window.DONATE_MODAL = new DonationViewModel();
   window.CREATE_SUPPORT_CASE_VIEW_MODEL = new CreateSupportCaseViewModel();
-  window.EXCHANGE_Home = new HomeExchangeViewModel();
+
 
 
   $(document).ready(function() {
 
-    ko.applyBindings(EXCHANGE_Home, document.getElementById("homepairsgrid"));
-    EXCHANGE_Home.fetchAllHomePairs();
+
+
+
     ko.applyBindings(LOGON_VIEW_MODEL, document.getElementById("logon"));
     ko.applyBindings(LICENSE_MODAL, document.getElementById("licenseModal"));
     ko.applyBindings(LOGON_PASSWORD_MODAL, document.getElementById("logonPassphaseModal"));
@@ -69,6 +70,7 @@ function initIndex() { //main page
       DONATE_MODAL.show();
       return false;
     });
+
     $('#changeMarket_index').click(function() {
       loadURL('pages/exchange.html', $('#content'));
     });
@@ -123,12 +125,14 @@ function initBalances() {
   window.BROADCAST_MODAL = new BroadcastModalViewModel();
   window.SIGN_TRANSACTION_MODAL = new SignTransactionModalViewModel();
   window.ARMORY_BROADCAST_TRANSACTION = new ArmoryBroadcastTransactionModalViewModel();
+  window.SHAPESHIFT_MODAL = new ShapeShiftModalViewModel();
 
   ko.applyBindings({}, document.getElementById("balanceHeader"));
   ko.applyBindings({}, document.getElementById("alertBuyXcp"));
   ko.applyBindings({}, document.getElementById("gettingStartedNotice"));
   ko.applyBindings({}, document.getElementById("oldWalletDetectedNotice"));
   ko.applyBindings(CHANGE_ADDRESS_LABEL_MODAL, document.getElementById("changeAddressLabelModal"));
+  ko.applyBindings(SHAPESHIFT_MODAL, document.getElementById("shapeshiftModal"));
   ko.applyBindings(CREATE_NEW_ADDRESS_MODAL, document.getElementById("createNewAddressModal"));
   ko.applyBindings(SEND_MODAL, document.getElementById("sendModal"));
   ko.applyBindings(SWEEP_MODAL, document.getElementById("sweepModal"));
@@ -138,6 +142,8 @@ function initBalances() {
   ko.applyBindings(BROADCAST_MODAL, document.getElementById("broadcastModal"));
   ko.applyBindings(SIGN_TRANSACTION_MODAL, document.getElementById("signTransactionModal"));
   ko.applyBindings(ARMORY_BROADCAST_TRANSACTION, document.getElementById("armoryBroadcastTransactionModal"));
+
+  SHAPESHIFT_MODAL.init();
 
   if (!isBound("left-panel")) {
     ko.applyBindings({
@@ -198,6 +204,11 @@ function initBalances() {
       SUPPORT_MODAL.show('general');
       return false;
     });
+    $('#ssbutton').click(function(e) {
+      SHAPESHIFT_MODAL.show();
+      return false;
+    });
+
 
     //Called on first load, and every switch back to the balances page
     if (window._BALANCES_HAS_LOADED_ALREADY === undefined) {

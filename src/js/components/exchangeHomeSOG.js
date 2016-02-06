@@ -5,7 +5,7 @@
 function HomeExchangeViewModel() {
     var self = this;
     self.dexHome = ko.observable(true);
-
+    self.doneinit = false;
     self._lastWindowWidth = null;
 
     self.latestTrades = ko.observableArray([]); //populated with the VIEW_PRICES_NUM_LATEST_TRADES latest trades (of any asset pair)
@@ -1021,7 +1021,7 @@ function HomeExchangeViewModel() {
         self.SOGHomePairsData = self.SOGHomePairsData.concat(data);
 
         self.numSOGHomePairs++;
-        if (self.numSOGHomePairs == self.SOGHomePairsData.length) {
+        if (self.SOGHomePairsData.length == SOGAssetArray.length) {
             console.log("done should load now");
             var h = "<h3><b>Trending Card Sale Markets - Login To Buy, Sell, or Trade!</b></h3>";
             document.getElementById("HomeAssetPairMarketInfo-loader").innerHTML = h;
@@ -1033,7 +1033,7 @@ function HomeExchangeViewModel() {
             spinner.stop();
         } else {
 
-            var h = "<h3><b>Loading Market Data For Market Number " + self.numSOGHomePairs + " Out Of " +self.SOGHomePairsData.length+"</b></h3>";
+            var h = "<h3><b>Loading Market Data For Market Number " + self.SOGHomePairsData.length + " Out Of " +SOGAssetArray.length+"</b></h3>";
             document.getElementById("HomeAssetPairMarketInfo-loader").innerHTML = h;
 
         }
@@ -1154,6 +1154,7 @@ function HomeExchangeViewModel() {
 
 
     self.fetchAllHomePairs = function () {
+
         try {
             self.allHomePairs([]);
             $('#HomeAssetPairMarketInfo').dataTable().fnClearTable();
@@ -1169,8 +1170,8 @@ function HomeExchangeViewModel() {
         for (var i=0; i< SOGAssetArray.length; i++){
 
             var params = {
-                'asset1': SOGAssetArray[i],
-                'asset2': "XCP"
+                'asset1': "XCP",
+                'asset2': SOGAssetArray[i]
                 //'datachunk': data_[i];
             }
             failoverAPI('get_market_details', params, self.getorderdata);
