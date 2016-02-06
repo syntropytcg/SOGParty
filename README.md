@@ -6,8 +6,12 @@ SoGParty
 ================
 
 - This is a hobby/project forking counterwallet and adapting it specifically for Spells of Genesis. This project is going to be entered into the DEVPARTY contest, please vote for it!
- 
 - Note: SOGPARTY's ShapeShift.io integration requires  my **[forked ShapeShift Skeleton](https://github.com/x-ETHeREAL-x/ShapeShift-Skeleton)** to enable ShapeShift functionality in the wallet. 
+
+Devparty Contest 
+-------------------
+
+Please vote for SOGParty.com in the **[Devparty Development Contest!](http://counterparty.io/devparty/)**
 
 
 Beta Testing System
