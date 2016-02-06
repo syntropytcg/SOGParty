@@ -853,13 +853,13 @@ function ExchangeViewModel() {
                 data.highbuy = "None";
 
             } else {
-                var m = buyorder.amount / buyorder.total;
+                var m = smartFormat(1.0 / parseFloat(buyorder.price));
                 data.highbuy = m + " " + data['quote_asset'];
             }
             if (sellorder == undefined) {
                 data.lowsell = "None";
             } else {
-                var m = sellorder.amount / sellorder.total;
+                var m = smartFormat(1.0 / parseFloat(sellorder.price));
                 data.lowsell = m + " " + data['quote_asset'];
             }
 
