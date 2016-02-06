@@ -1058,7 +1058,7 @@ function ExchangeViewModel() {
             var params = {
                 'asset1': SOGAssetArray[i],
                 'asset2': "XCP"
-                //'datachunk': data_[i];
+
             };
             failoverAPI('get_market_details', params, self.getorderdata);
         }
@@ -1113,8 +1113,7 @@ function ExchangeViewModel() {
         }
 
 
-        //failoverAPI('get_markets_list', [], self.displayHomeAllPairs);
-        //failoverAPI('get_sog_cardforcard_markets_list', [], self.donothing);
+
     }
 
     self.fetchAllPairs = function () {
