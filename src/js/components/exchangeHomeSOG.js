@@ -972,6 +972,15 @@ function HomeExchangeViewModel() {
         }   else {
             data.divisible = "No";
         }
+        var last = data['last_trades'].shift();
+        if (last == undefined) {
+            data.lasttrade = "None";
+        } else {
+            data.lasttrade = smartFormat(parseFloat(last.price)) + " " + data['quote_asset'] + " (" + last.type + ")";
+        }
+
+
+
 
 
 

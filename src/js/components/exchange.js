@@ -791,6 +791,22 @@ function ExchangeViewModel() {
         }   else {
             data.divisible = "No";
         }
+        if (rev) {
+            var last = data['last_trades'].shift();
+            if (last == undefined) {
+                data.lasttrade = "None";
+            } else {
+                data.lasttrade = smartFormat(1.0 / parseFloat(last.price)) + " " + data['quote_asset'] + " (" + last.type + ")";
+            }
+        }else{
+            var last = data['last_trades'].shift();
+            if (last == undefined) {
+                data.lasttrade = "None";
+            } else {
+                data.lasttrade = smartFormat(parseFloat(last.price)) + " " + data['quote_asset'] + " (" + last.type + ")";
+            }
+
+        }
 
 
         data.volume = smartFormat(normalizeQuantity(data.volume, data.quote__asset_divisible)) + " " + data.quote_asset;
@@ -1007,6 +1023,30 @@ function ExchangeViewModel() {
         } catch (e) {
         }
 
+        var opts = {
+            lines: 13 // The number of lines to draw
+            , length: 16 // The length of each line
+            , width: 9 // The line thickness
+            , radius: 17 // The radius of the inner circle
+            , scale: 1 // Scales overall size of the spinner
+            , corners: 1 // Corner roundness (0..1)
+            , color: '#000' // #rgb or #rrggbb or array of colors
+            , opacity: 0.45 // Opacity of the lines
+            , rotate: 31 // The rotation offset
+            , direction: 1 // 1: clockwise, -1: counterclockwise
+            , speed: 1.3 // Rounds per second
+            , trail: 60 // Afterglow percentage
+            , fps: 20 // Frames per second when using setTimeout() as a fallback for CSS
+            , zIndex: 2e9 // The z-index (defaults to 2000000000)
+            , className: 'spinner' // The CSS class to assign to the spinner
+            , top: '49%' // Top position relative to parent
+            , left: '51%' // Left position relative to parent
+            , shadow: false // Whether to render a shadow
+            , hwaccel: false // Whether to use hardware acceleration
+            , position: 'absolute' // Element positioning
+        }
+        var target = document.getElementById('AssetPairMarketInfo');
+        spinner = new Spinner(opts).spin(target);
         self.SOGHomePairsData = [];
         self.numSOGHomePairs = 0;
         document.getElementById("AssetPairMarketInfo-loader-done").style.display = "none";
@@ -1078,30 +1118,7 @@ function ExchangeViewModel() {
     }
 
     self.fetchAllPairs = function () {
-        var opts = {
-            lines: 13 // The number of lines to draw
-            , length: 16 // The length of each line
-            , width: 9 // The line thickness
-            , radius: 17 // The radius of the inner circle
-            , scale: 1 // Scales overall size of the spinner
-            , corners: 1 // Corner roundness (0..1)
-            , color: '#000' // #rgb or #rrggbb or array of colors
-            , opacity: 0.45 // Opacity of the lines
-            , rotate: 31 // The rotation offset
-            , direction: 1 // 1: clockwise, -1: counterclockwise
-            , speed: 1.3 // Rounds per second
-            , trail: 60 // Afterglow percentage
-            , fps: 20 // Frames per second when using setTimeout() as a fallback for CSS
-            , zIndex: 2e9 // The z-index (defaults to 2000000000)
-            , className: 'spinner' // The CSS class to assign to the spinner
-            , top: '49%' // Top position relative to parent
-            , left: '51%' // Left position relative to parent
-            , shadow: false // Whether to render a shadow
-            , hwaccel: false // Whether to use hardware acceleration
-            , position: 'absolute' // Element positioning
-        }
-        var target = document.getElementById('AssetPairMarketInfo');
-        spinner = new Spinner(opts).spin(target);
+
 
         self.fetchAllHomePairs();
         /*
@@ -1125,30 +1142,7 @@ function ExchangeViewModel() {
     };
 
     self.fetchAllPairsByXCP = function () {
-        var opts = {
-            lines: 13 // The number of lines to draw
-            , length: 16 // The length of each line
-            , width: 9 // The line thickness
-            , radius: 17 // The radius of the inner circle
-            , scale: 1 // Scales overall size of the spinner
-            , corners: 1 // Corner roundness (0..1)
-            , color: '#000' // #rgb or #rrggbb or array of colors
-            , opacity: 0.45 // Opacity of the lines
-            , rotate: 31 // The rotation offset
-            , direction: 1 // 1: clockwise, -1: counterclockwise
-            , speed: 1.3 // Rounds per second
-            , trail: 60 // Afterglow percentage
-            , fps: 20 // Frames per second when using setTimeout() as a fallback for CSS
-            , zIndex: 2e9 // The z-index (defaults to 2000000000)
-            , className: 'spinner' // The CSS class to assign to the spinner
-            , top: '49%' // Top position relative to parent
-            , left: '51%' // Left position relative to parent
-            , shadow: false // Whether to render a shadow
-            , hwaccel: false // Whether to use hardware acceleration
-            , position: 'absolute' // Element positioning
-        }
-        var target = document.getElementById('AssetPairMarketInfo');
-        spinner = new Spinner(opts).spin(target);
+
 
         self.fetchAllPairsByBase("XCP");
         /*
@@ -1172,30 +1166,7 @@ function ExchangeViewModel() {
     };
 
     self.fetchAllPairsByBCY = function () {
-        var opts = {
-            lines: 13 // The number of lines to draw
-            , length: 16 // The length of each line
-            , width: 9 // The line thickness
-            , radius: 17 // The radius of the inner circle
-            , scale: 1 // Scales overall size of the spinner
-            , corners: 1 // Corner roundness (0..1)
-            , color: '#000' // #rgb or #rrggbb or array of colors
-            , opacity: 0.45 // Opacity of the lines
-            , rotate: 31 // The rotation offset
-            , direction: 1 // 1: clockwise, -1: counterclockwise
-            , speed: 1.3 // Rounds per second
-            , trail: 60 // Afterglow percentage
-            , fps: 20 // Frames per second when using setTimeout() as a fallback for CSS
-            , zIndex: 2e9 // The z-index (defaults to 2000000000)
-            , className: 'spinner' // The CSS class to assign to the spinner
-            , top: '49%' // Top position relative to parent
-            , left: '51%' // Left position relative to parent
-            , shadow: false // Whether to render a shadow
-            , hwaccel: false // Whether to use hardware acceleration
-            , position: 'absolute' // Element positioning
-        }
-        var target = document.getElementById('AssetPairMarketInfo');
-        spinner = new Spinner(opts).spin(target);
+
 
         self.fetchAllPairsByBase("BITCRYSTALS");
         /*
@@ -1217,30 +1188,7 @@ function ExchangeViewModel() {
     }
 
     self.fetchAllPairsByBTC = function () {
-        var opts = {
-            lines: 13 // The number of lines to draw
-            , length: 16 // The length of each line
-            , width: 9 // The line thickness
-            , radius: 17 // The radius of the inner circle
-            , scale: 1 // Scales overall size of the spinner
-            , corners: 1 // Corner roundness (0..1)
-            , color: '#000' // #rgb or #rrggbb or array of colors
-            , opacity: 0.45 // Opacity of the lines
-            , rotate: 31 // The rotation offset
-            , direction: 1 // 1: clockwise, -1: counterclockwise
-            , speed: 1.3 // Rounds per second
-            , trail: 60 // Afterglow percentage
-            , fps: 20 // Frames per second when using setTimeout() as a fallback for CSS
-            , zIndex: 2e9 // The z-index (defaults to 2000000000)
-            , className: 'spinner' // The CSS class to assign to the spinner
-            , top: '49%' // Top position relative to parent
-            , left: '51%' // Left position relative to parent
-            , shadow: false // Whether to render a shadow
-            , hwaccel: false // Whether to use hardware acceleration
-            , position: 'absolute' // Element positioning
-        }
-        var target = document.getElementById('AssetPairMarketInfo');
-        spinner = new Spinner(opts).spin(target);
+
         self.fetchAllPairsByBase("BTC");
     }
 

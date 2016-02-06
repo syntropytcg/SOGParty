@@ -119,7 +119,7 @@
                         <th data-bind="locale: 'market'"></th>
                         <th>High Buy Offer</th>
                         <th>Low Sell Offer</th>
-                        <th data-bind="locale: '24h_volume'"></th>
+                        <th>Last Trade</th>
                         <th>Total Issued</th>
                         <th>Card Divisible?</th>
 
@@ -151,7 +151,7 @@
 
                         </td>
                         <td>
-                            <span data-bind="text: volume || '0'"></span>
+                            <span data-bind="text: lasttrade"></span>
 
                         </td>
                         <td class="number" data-bind="text: supply"></td>
