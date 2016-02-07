@@ -7,7 +7,7 @@ function SimpleBuyViewModel() {
 
   self.init = function() {
     failoverAPI('get_vennd_machine', [], self.prepareMachinesData);
-  }
+  };
 
   self.prepareMachinesData = function(data) {
 
@@ -24,7 +24,7 @@ function SimpleBuyViewModel() {
       };
       var sellAttributes = [];
 
-      var types = data[m]['type'] == 'gateway' ? {'buy': 1, 'sell': 1} : {'buy': 1}
+      var types = data[m]['type'] == 'gateway' ? {'buy': 1, 'sell': 1} : {'buy': 1};
 
       for (var t in types) {
 
@@ -131,11 +131,11 @@ function SimpleBuyViewModel() {
       });
       $(this).find('p.description').css('height', maxHeight + 'px');
     })
-  }
+  };
 
   self.buy = function(machine) {
     VEND_MODAL.show(machine, 'buy');
-  }
+  };
 
   self.sell = function(machine) {
     VEND_MODAL.show(machine, 'sell');
@@ -159,7 +159,7 @@ function VendingMachineViewModel() {
       message: i18n.t('quantity_exceeds_balance'),
       params: self
     }
-  }
+  };
 
   self.shown = ko.observable(false);
   self.availableAddresses = ko.observableArray([]);
@@ -192,11 +192,11 @@ function VendingMachineViewModel() {
   self.show = function(machine, action) {
     self.init(machine, action);
     self.shown(true);
-  }
+  };
 
   self.hide = function() {
     self.shown(false);
-  }
+  };
 
   self.init = function(machine, action) {
     $.jqlog.debug(machine);
@@ -219,7 +219,7 @@ function VendingMachineViewModel() {
     self.fees(machine[action]['fees']);
 
     var addresses = WALLET.getAddressesList(true);
-    var options = []
+    var options = [];
     self.noBalance(true);
     for (var i = 0; i < addresses.length; i++) {
       var balance = WALLET.getBalance(addresses[i][0], self.currency(), true);
@@ -240,7 +240,7 @@ function VendingMachineViewModel() {
       }
     }
     self.availableAddresses(options);
-  }
+  };
 
   self.send = function() {
 
@@ -267,7 +267,7 @@ function VendingMachineViewModel() {
       message += "</b> ";
 
       WALLET.showTransactionCompleteDialog(message + " " + i18n.t(ACTION_PENDING_NOTICE), message, armoryUTx);
-    }
+    };
 
     WALLET.doTransaction(self.sourceAddress(), "create_send", params, onSuccess);
     self.hide();

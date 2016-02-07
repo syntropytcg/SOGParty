@@ -53,7 +53,7 @@ function HomeExchangeViewModel() {
     self.selectedSOGQuoteAsset.subscribe(function (value) {
         if (value == 'BITCRYSTALS') self.asset2(value);
         else self.asset2('');
-    })
+    });
 
 
     self.assetPair = ko.computed(function () {
@@ -107,7 +107,7 @@ function HomeExchangeViewModel() {
         self.sellTotal(0);
         self.selectedAddressForBuy(null);
         self.selectedAddressForSell(null);
-        $('table.buySellForm span.invalid').hide() // hack
+        $('table.buySellForm span.invalid').hide(); // hack
         self.baseAssetImage('');
         self.dexHome(false);
         self.fetchMarketDetails();
@@ -208,17 +208,17 @@ function HomeExchangeViewModel() {
         var bal = self.balances[value + '_' + self.baseAsset()];
         self.availableBalanceForSell(bal);
         self.obtainableForSell(mulFloat(bal, self.highestBidPrice()));
-    })
+    });
 
     self.sellPrice.subscribe(function (price) {
         if (!self.sellPriceHasFocus() || !self.sellAmount()) return;
         self.sellTotal(noExponents(mulFloat(self.sellAmount(), price)));
-    })
+    });
 
     self.sellAmount.subscribe(function (amount) {
         if (!self.sellAmountHasFocus() || !self.sellPrice()) return;
         self.sellTotal(noExponents(mulFloat(self.sellPrice(), amount)));
-    })
+    });
 
     self.sellTotal.subscribe(function (total) {
         if (!self.sellTotalHasFocus() || !self.sellPrice()) return;
@@ -227,7 +227,7 @@ function HomeExchangeViewModel() {
         } else {
             self.sellAmount(noExponents(divFloat(total, self.sellPrice())));
         }
-    })
+    });
 
     self.sellAmount.extend({
         required: true,
@@ -279,7 +279,7 @@ function HomeExchangeViewModel() {
         if (typeof(notFromClick) != 'boolean' || notFromClick == false) {
             self.selectSellOrder(order, true);
         }
-    }
+    };
 
     self.setMaxSellAmount = function () {
         var amount = self.availableBalanceForSell();
@@ -293,7 +293,7 @@ function HomeExchangeViewModel() {
             }
         }
         self.sellAmount(amount);
-    }
+    };
 
     self.doSell = function () {
         var give_quantity = denormalizeQuantity(self.sellAmount(), self.baseAssetIsDivisible());
@@ -313,7 +313,7 @@ function HomeExchangeViewModel() {
             fee_required: fee_required,
             fee_provided: fee_provided,
             expiration: expiration
-        }
+        };
 
         var onSuccess = function (txHash, data, endpoint, addressType, armoryUTx) {
             trackEvent('Exchange', 'Sell', self.dispAssetPair());
@@ -326,10 +326,10 @@ function HomeExchangeViewModel() {
             }
 
             WALLET.showTransactionCompleteDialog(message + " " + i18n.t(ACTION_PENDING_NOTICE), message, armoryUTx);
-        }
+        };
 
         WALLET.doTransaction(self.selectedAddressForSell(), "create_order", params, onSuccess);
-    }
+    };
 
     self.sell = function () {
         if (!self.sellValidation.isValid()) {
@@ -385,7 +385,7 @@ function HomeExchangeViewModel() {
             }
         });
 
-    }
+    };
     /* SELL FORM END */
 
     /********************************************
@@ -460,17 +460,17 @@ function HomeExchangeViewModel() {
                 self.obtainableForBuy(divFloat(bal, self.lowestAskPrice()));
             }
         }
-    })
+    });
 
     self.buyPrice.subscribe(function (price) {
         if (!self.buyPriceHasFocus() || !self.buyAmount()) return;
         self.buyTotal(noExponents(mulFloat(self.buyAmount(), price)));
-    })
+    });
 
     self.buyAmount.subscribe(function (amount) {
         if (!self.buyAmountHasFocus() || !self.buyPrice()) return;
         self.buyTotal(noExponents(mulFloat(self.buyPrice(), amount)));
-    })
+    });
 
     self.buyTotal.subscribe(function (total) {
         if (!self.buyTotalHasFocus() || !self.buyPrice()) return;
@@ -479,7 +479,7 @@ function HomeExchangeViewModel() {
         } else {
             self.buyAmount(noExponents(divFloat(total, self.buyPrice())));
         }
-    })
+    });
 
     self.buyTotal.extend({
         required: true,
@@ -531,7 +531,7 @@ function HomeExchangeViewModel() {
         if (typeof(notFromClick) != 'boolean' || notFromClick == false) {
             self.selectBuyOrder(order, true);
         }
-    }
+    };
 
     self.setMaxBuyAmount = function () {
         var total = self.availableBalanceForBuy();
@@ -549,7 +549,7 @@ function HomeExchangeViewModel() {
             }
         }
         self.buyTotal(total);
-    }
+    };
 
     self.doBuy = function () {
         var give_quantity = denormalizeQuantity(self.buyTotal(), self.quoteAssetIsDivisible());
@@ -569,7 +569,7 @@ function HomeExchangeViewModel() {
             fee_required: fee_required,
             fee_provided: fee_provided,
             expiration: expiration
-        }
+        };
 
         var onSuccess = function (txHash, data, endpoint, addressType, armoryUTx) {
             trackEvent('Exchange', 'Buy', self.dispAssetPair());
@@ -582,10 +582,10 @@ function HomeExchangeViewModel() {
             }
 
             WALLET.showTransactionCompleteDialog(message + " " + i18n.t(ACTION_PENDING_NOTICE), message, armoryUTx);
-        }
+        };
 
         WALLET.doTransaction(self.selectedAddressForBuy(), "create_order", params, onSuccess);
-    }
+    };
 
     self.buy = function () {
         if (!self.buyValidation.isValid()) {
@@ -641,7 +641,7 @@ function HomeExchangeViewModel() {
             }
         });
 
-    }
+    };
     /* BUY FORM END */
 
     /* TOP USER PAIRS */
@@ -668,15 +668,15 @@ function HomeExchangeViewModel() {
             data[p]['pair_classes'] = classes.join(" ");
         }
         self.topUserPairs(data);
-    }
+    };
 
     self.fetchTopUserPairs = function () {
         var params = {
             'addresses': WALLET.getAddressesList(),
             'max_pairs': 12
-        }
+        };
         failoverAPI('get_users_pairs', params, self.displayTopUserPairs);
-    }
+    };
 
     /* USER OPEN ORDERS */
     self.userOpenOrders = ko.observableArray([]);
@@ -690,7 +690,7 @@ function HomeExchangeViewModel() {
             data[i].cancelled = WALLET.cancelOrders.indexOf(data[i].tx_hash) != -1;
         }
         self.userOpenOrders(data);
-    }
+    };
 
     self.fetchOpenUserOrders = function () {
         self.userOpenOrders([]);
@@ -698,9 +698,9 @@ function HomeExchangeViewModel() {
             'asset1': self.asset1(),
             'asset2': self.asset2(),
             'addresses': WALLET.getAddressesList()
-        }
+        };
         failoverAPI('get_market_orders', params, self.displayOpenUserOrders);
-    }
+    };
 
     /* USER OPEN ORDERS */
     self.userLastTrades = ko.observableArray([]);
@@ -713,7 +713,7 @@ function HomeExchangeViewModel() {
             data[i].price = formatHtmlPrice(parseFloat(data[i].price));
         }
         self.userLastTrades(data);
-    }
+    };
 
     self.fetchUserLastTrades = function () {
         self.userOpenOrders([]);
@@ -721,9 +721,9 @@ function HomeExchangeViewModel() {
             'asset1': self.asset1(),
             'asset2': self.asset2(),
             'addresses': WALLET.getAddressesList()
-        }
+        };
         failoverAPI('get_market_trades', params, self.displayUserLastTrades);
-    }
+    };
 
     /* ALL PAIRS LIST */
     self.allPairs = ko.observableArray([]);
@@ -736,7 +736,7 @@ function HomeExchangeViewModel() {
                     var params = {
                         'asset1': dataRAW[i].base_asset,
                         'asset2': dataRAW[i].quote_asset
-                    }
+                    };
                     failoverAPI('get_market_details', params, function (marketData) {
                         if (marketData['sell_orders'].length > 0) {
                             var sells = ko.observableArray(marketData['sell_orders']);
@@ -749,8 +749,6 @@ function HomeExchangeViewModel() {
                             dataRaw[i].push({'lowAsk': 0});
                             dataRaw[i].push({'lowAskVol': 0});
                         }
-                        ;
-
                         if (marketData['buy_orders'].length > 0) {
                             var buys = ko.observableArray(marketData['buy_orders']);
                             buys = buys.sort(function (left, right) {
@@ -806,7 +804,7 @@ function HomeExchangeViewModel() {
             runDataTables('#assetPairMarketInfo', true, {"aaSorting": [[0, 'asc']]});
 
         }
-    }
+    };
 
     self.fetchAllPairs = function () {
         try {
@@ -815,7 +813,7 @@ function HomeExchangeViewModel() {
         } catch (e) {
         }
         failoverAPI('get_markets_list', [], self.displayAllPairs);
-    }
+    };
 
 
     self.displayAllPairsByCurrency = function (dataRAW) {
@@ -862,7 +860,7 @@ function HomeExchangeViewModel() {
             runDataTables('#assetPairMarketInfo', true, {"aaSorting": [[0, 'asc']]});
 
         }
-    }
+    };
 
     self.fetchAllPairsByCurrency = function (currency_) {
 
@@ -873,7 +871,7 @@ function HomeExchangeViewModel() {
         }
         self.currency = currency_;
         failoverAPI('get_markets_list', [], self.displayAllPairsByCurrency);
-    }
+    };
 
     self.displayAllPairsByCard = function (dataRAW) {
         var data = ko.observableArray([]);
@@ -922,7 +920,7 @@ function HomeExchangeViewModel() {
             runDataTables('#assetPairMarketInfo', true, {"aaSorting": [[0, 'asc']]});
 
         }
-    }
+    };
 
 
     self.fetchAllPairsByCard = function (card_) {
@@ -934,7 +932,7 @@ function HomeExchangeViewModel() {
         }
         self.card = card_;
         failoverAPI('get_markets_list', [], self.displayAllPairsByCard);
-    }
+    };
     self.allHomePairs = ko.observableArray([]);
     self.numSOGHomePairs = 0;
     self.SOGHomePairsData = [];
@@ -1048,7 +1046,7 @@ function HomeExchangeViewModel() {
         }
 
 
-    }
+    };
 
 
     self.displayHomeAllPairs = function (data_) {
@@ -1152,13 +1150,13 @@ function HomeExchangeViewModel() {
                     'asset1': data_[i].base_asset,
                     'asset2': data_[i].quote_asset
                     //'datachunk': data_[i];
-                }
+                };
                 failoverAPI('get_market_details', params, self.getorderdata);
             }
 
             //runDataTables('#HomeAssetPairMarketInfo', true,{});
         }
-    }
+    };
 
 
 
@@ -1182,14 +1180,14 @@ function HomeExchangeViewModel() {
                 'asset1': "XCP",
                 'asset2': SOGAssetArray[i]
                 //'datachunk': data_[i];
-            }
+            };
             failoverAPI('get_market_details', params, self.getorderdata);
         }
 
 
         //failoverAPI('get_markets_list', [], self.displayHomeAllPairs);
         //failoverAPI('get_sog_cardforcard_markets_list', [], self.donothing);
-    }
+    };
 
 
     /* MARKET DETAILS */
@@ -1211,8 +1209,8 @@ function HomeExchangeViewModel() {
         self.currentMarketPrice(roundAmount(data['price']));
         self.marketProgression24h(data['progression']);
 
-        self.bidBook([])
-        self.askBook([])
+        self.bidBook([]);
+        self.askBook([]);
         try {
             $('#asset1OpenBuyOrders').dataTable().fnClearTable();
         } catch (err) {
@@ -1276,8 +1274,8 @@ function HomeExchangeViewModel() {
             base_depth = data['sell_orders'][i]['base_depth'];
         }
 
-        self.bidBook(data['buy_orders'])
-        self.askBook(data['sell_orders'])
+        self.bidBook(data['buy_orders']);
+        self.askBook(data['sell_orders']);
 
         self.tradeHistory([]);
         try {
@@ -1299,7 +1297,7 @@ function HomeExchangeViewModel() {
         self.fetchOpenUserOrders();
         self.fetchUserLastTrades();
 
-    }
+    };
 
     self.selectMarket = function (item) {
         self.asset1(item.base_asset);
@@ -1310,7 +1308,7 @@ function HomeExchangeViewModel() {
             self.asset2(item.quote_asset);
         }
         trackEvent('Exchange', 'MarketSelected', self.dispAssetPair());
-    }
+    };
 
     self.fetchMarketDetails = function (item) {
         self.highestBidPrice(0);
@@ -1323,9 +1321,9 @@ function HomeExchangeViewModel() {
         var params = {
             'asset1': self.asset2(),
             'asset2': self.asset1()
-        }
+        };
         failoverAPI('get_market_details', params, self.displayMarketDetails);
-    }
+    };
 
     self.init = function () {
         self.fetchAllHomePairs();
@@ -1358,7 +1356,7 @@ function HomeExchangeViewModel() {
                 self.asset2(datum); //gotta do a manual update...doesn't play well with knockout
         });
 
-    }
+    };
 
     self.refresh = function () {
         if (self.dexHome()) {
@@ -1367,7 +1365,7 @@ function HomeExchangeViewModel() {
         } else {
             self.fetchMarketDetails();
         }
-    }
+    };
 
     self.metricsRefreshPriceChart = function () {
         var deferred = $.Deferred();
@@ -1384,7 +1382,7 @@ function HomeExchangeViewModel() {
             deferred.resolve();
             return defaultErrorHandler(jqXHR, textStatus, errorThrown, endpoint);
         });
-    }
+    };
 
     self.cancelOrder = function (order) {
 
@@ -1423,7 +1421,7 @@ function HomeExchangeViewModel() {
 
         }
 
-    }
+    };
 
     self.cancelOpenOrder = function (order) {
         var params = {
@@ -1431,16 +1429,16 @@ function HomeExchangeViewModel() {
             source: order.source,
             _type: 'order',
             _tx_index: order.tx_index
-        }
+        };
 
         var onSuccess = function (txHash, data, endpoint, addressType, armoryUTx) {
             trackEvent('Exchange', 'OrderCanceled');
             WALLET.showTransactionCompleteDialog("<b>" + i18n.t("order_was_cancelled") + "</b> " + i18n.t(ACTION_PENDING_NOTICE),
                 "<b>" + i18n.t("order_will_be_cancelled") + "</b>", armoryUTx);
-        }
+        };
 
         WALLET.doTransaction(order.source, "create_cancel", params, onSuccess);
     }
-};
+}
 
 

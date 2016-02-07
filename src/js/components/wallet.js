@@ -14,7 +14,7 @@ function WalletViewModel() {
   self.isOldWallet = ko.observable(false);
 
   self.cancelOrders = [];
-  var storedCancelOrders = localStorage.getObject("cancelOrders")
+  var storedCancelOrders = localStorage.getObject("cancelOrders");
   if (storedCancelOrders) {
     self.cancelOrders = storedCancelOrders;
   }
@@ -68,7 +68,7 @@ function WalletViewModel() {
     }
 
     return address;
-  }
+  };
 
   self.getAddressesList = function(withLabel) {
     if (typeof(withLabel) === 'undefined') withLabel = false;
@@ -82,7 +82,7 @@ function WalletViewModel() {
       }
     });
     return addresses;
-  }
+  };
 
   self.numAddressesUsed = function() {
     var count = 0;
@@ -93,7 +93,7 @@ function WalletViewModel() {
       }
     });
     return count;
-  }
+  };
 
   self.getBiggestXCPBalanceAddress = function() {
     var maxAmount = 0;
@@ -109,14 +109,14 @@ function WalletViewModel() {
 
     return maxAddress;
 
-  }
+  };
 
   self.getAddressObj = function(address) {
     //given an address string, return a reference to the corresponding AddressViewModel object
     return ko.utils.arrayFirst(self.addresses(), function(a) {
       return a.ADDRESS == address;
     });
-  }
+  };
 
   self.getBalance = function(address, asset, normalized) {
     if (typeof(normalized) === 'undefined') normalized = true;
@@ -131,13 +131,13 @@ function WalletViewModel() {
       return normalized ? bal : denormalizeQuantity(bal);
     }
 
-  }
+  };
 
   self.getPubkey = function(address) {
     var addressObj = self.getAddressObj(address);
     assert(addressObj);
     return addressObj.PUBKEY;
-  }
+  };
 
   self.updateBalance = function(address, asset, rawBalance, unconfirmedRawBal) {
     //Update a balance for a specific asset on a specific address. Requires that the asset exist
@@ -165,7 +165,7 @@ function WalletViewModel() {
 
     }
     return true;
-  }
+  };
 
   self.getAddressesWithAsset = function(asset) {
     var addresses = self.getAddressesList();
@@ -179,7 +179,7 @@ function WalletViewModel() {
       addressesWithAsset.push(assetObj.ADDRESS);
     }
     return addressesWithAsset;
-  }
+  };
 
   self.getTotalBalance = function(asset, normalized) { //gets the balance of an asset across all addresses
     if (typeof(normalized) === 'undefined') normalized = true;
@@ -196,7 +196,7 @@ function WalletViewModel() {
       }
     }
     return normalized ? normalizeQuantity(rawBalance, divisible) : rawBalance;
-  }
+  };
 
   self.getAssetsInWallet = function() { //gets assets that the user has a balance of
     //this is not optimized... O(n^2)
@@ -210,7 +210,7 @@ function WalletViewModel() {
       }
     }
     return _.uniq(assets);
-  }
+  };
 
   self.isAssetHolder = function(asset) {
     var addressObj = null, assetObj = null, i = null, j = null;
@@ -224,7 +224,7 @@ function WalletViewModel() {
       }
     }
     return false
-  }
+  };
 
   self.isAssetDivisibilityAvailable = function(asset) {
     var divisible = -1;
@@ -240,7 +240,7 @@ function WalletViewModel() {
       }
     }
     return divisible;
-  }
+  };
 
   self.getAssetsDivisibility = function(assets, callback) {
     var assetsDivisibility = {};
@@ -274,7 +274,7 @@ function WalletViewModel() {
     } else {
       callback(assetsDivisibility)
     }
-  }
+  };
 
   self.getAssetsOwned = function() { //gets assets the user actually owns (is issuer of)
     //this is not optimized... O(n^2)
@@ -289,7 +289,7 @@ function WalletViewModel() {
       }
     }
     return _.uniq(assets);
-  }
+  };
 
   self.refreshCounterpartyBalances = function(addresses, onSuccess) {
     //update all counterparty asset balances for the specified address (including XCP)
@@ -359,7 +359,7 @@ function WalletViewModel() {
     );
 
 
-  }
+  };
 
   self.refreshBTCBalances = function(isRecurring, addresses, onSuccess) {
     if (typeof(isRecurring) === 'undefined') isRecurring = false;
@@ -451,7 +451,7 @@ function WalletViewModel() {
         }, 60000 * 5);
       }
     });
-  }
+  };
 
   self.removeKeys = function() {
     //removes all keys (addresses) from the wallet. Normally called when logging out
@@ -460,7 +460,7 @@ function WalletViewModel() {
       a.doBTCBalanceRefresh = false;
     });
     self.addresses([]); //clear addresses
-  }
+  };
 
 
   /////////////////////////
@@ -479,7 +479,7 @@ function WalletViewModel() {
       },
       onError
     );
-  }
+  };
 
   self.signAndBroadcastTxRaw = function(key, unsignedTxHex, onSuccess, onError, verifySourceAddr, verifyDestAddr) {
     assert(verifySourceAddr, "Source address must be specified");
@@ -497,12 +497,12 @@ function WalletViewModel() {
 
       self.broadcastSignedTx(signedHex, onSuccess, onError);
     });
-  }
+  };
 
   self.signAndBroadcastTx = function(address, unsignedTxHex, onSuccess, onError, verifyDestAddr) {
     var key = WALLET.getAddressObj(address).KEY;
     self.signAndBroadcastTxRaw(key, unsignedTxHex, onSuccess, onError, address, verifyDestAddr);
-  }
+  };
 
   self.retrieveBTCBalance = function(address, onSuccess, onError) {
     //We used to have a retrieveBTCBalances function for getting balance of multiple addresses, but scrapped it
@@ -516,7 +516,7 @@ function WalletViewModel() {
         );
       },
       onError || defaultErrorHandler);
-  }
+  };
 
   self.retriveBTCAddrsInfo = function(addresses, onSuccess, onError, minConfirmations) {
     if (typeof(minConfirmations) === 'undefined') minConfirmations = 1;
@@ -561,7 +561,7 @@ function WalletViewModel() {
         return onError(jqXHR, textStatus, errorThrown); //some other error
       }
     );
-  }
+  };
 
   /////////////////////////
   //Counterparty transaction-related
@@ -576,7 +576,7 @@ function WalletViewModel() {
     }
 
     return true;
-  }
+  };
 
   self.doTransaction = function(address, action, data, onSuccess, onError) {
     assert(['sign_tx', 'broadcast_tx', 'convert_armory_signedtx_to_raw_hex'].indexOf(action) === -1,
@@ -584,7 +584,7 @@ function WalletViewModel() {
 
     if (action == 'create_cancel') {
       if (self.cancelOrders.indexOf(data['offer_hash']) != -1) {
-        $.jqlog.debug(data['offer_hash'] + ' already cancelled.')
+        $.jqlog.debug(data['offer_hash'] + ' already cancelled.');
         return;
       } else {
         $('#btcancel_' + data['offer_hash']).addClass('disabled');
@@ -668,7 +668,7 @@ function WalletViewModel() {
           if (action == 'create_cancel') {
             $('#btcancel_' + data['offer_hash']).removeClass('disabled');
           }
-          return;
+
 
         } else if (addressObj.IS_MULTISIG_ADDRESS) {
 
@@ -676,7 +676,7 @@ function WalletViewModel() {
           if (action == 'create_cancel') {
             $('#btcancel_' + data['offer_hash']).removeClass('disabled');
           }
-          return;
+
 
         } else {
 
@@ -711,7 +711,7 @@ function WalletViewModel() {
         }
 
       });
-  }
+  };
 
   self.showTransactionCompleteDialog = function(text, armoryText, armoryUTx, unsignedHex) {
     if (armoryUTx) {
@@ -723,7 +723,7 @@ function WalletViewModel() {
     } else {
       bootbox.alert(text);
     }
-  }
+  };
 
   self.storePreferences = function(callback, forLogin) {
     var params = {

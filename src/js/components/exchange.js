@@ -78,7 +78,7 @@ function ExchangeViewModel() {
         /*
         if (value == 'XCP') self.asset2(value);
         else self.asset2('')
-        */;
+         */
         self.asset2(value);
     });
 
@@ -1044,7 +1044,7 @@ function ExchangeViewModel() {
             , shadow: false // Whether to render a shadow
             , hwaccel: false // Whether to use hardware acceleration
             , position: 'absolute' // Element positioning
-        }
+        };
         var target = document.getElementById('AssetPairMarketInfo');
         spinner = new Spinner(opts).spin(target);
         self.SOGHomePairsData = [];
@@ -1062,7 +1062,7 @@ function ExchangeViewModel() {
             };
             failoverAPI('get_market_details', params, self.getorderdata);
         }
-    }
+    };
 
     self.fetchAllPairsByBase = function (base) {
         try {
@@ -1091,7 +1091,7 @@ function ExchangeViewModel() {
             , shadow: false // Whether to render a shadow
             , hwaccel: false // Whether to use hardware acceleration
             , position: 'absolute' // Element positioning
-        }
+        };
         var target = document.getElementById('AssetPairMarketInfo');
         spinner = new Spinner(opts).spin(target);
 
@@ -1114,7 +1114,7 @@ function ExchangeViewModel() {
 
 
 
-    }
+    };
 
     self.fetchAllPairs = function () {
 
@@ -1184,12 +1184,12 @@ function ExchangeViewModel() {
          failoverAPI('get_markets_list', params, self.displayAllPairs);
          //failoverAPI('get_sog_cardforcard_markets_list', [], self.donothing);
          */
-    }
+    };
 
     self.fetchAllPairsByBTC = function () {
 
         self.fetchAllPairsByBase("BTC");
-    }
+    };
 
 
     /* OLD
@@ -1487,9 +1487,7 @@ function ExchangeViewModel() {
 
         WALLET.doTransaction(order.source, "create_cancel", params, onSuccess);
     }
-};
-
-
+}
 ExchangeViewModel.doChart = function (dispAssetPair, chartDiv, data) {
     // split the data set into ohlc and volume
     var ohlc = [];

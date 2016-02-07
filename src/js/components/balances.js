@@ -34,7 +34,7 @@ function ChangeAddressLabelModalViewModel() {
   self.resetForm = function() {
     self.newLabel('');
     self.validationModel.errors.showAllMessages(false);
-  }
+  };
 
   self.submitForm = function() {
     if (!self.validationModel.isValid()) {
@@ -43,7 +43,7 @@ function ChangeAddressLabelModalViewModel() {
     }
     //data entry is valid...submit to the server
     $('#changeAddressLabelModal form').submit();
-  }
+  };
 
   self.doAction = function() {
     var addressHash = hashToB64(self.address());
@@ -56,7 +56,7 @@ function ChangeAddressLabelModalViewModel() {
       self.shown(false);
     });
     trackEvent('Balances', 'ChangeAddressLabel');
-  }
+  };
 
   self.show = function(address, existingLabel, resetForm) {
     if (typeof(resetForm) === 'undefined') resetForm = true;
@@ -69,7 +69,7 @@ function ChangeAddressLabelModalViewModel() {
     self.shown(true);
     selectText('newAddressLabel');
     trackDialogShow('ChangeAddressLabel');
-  }
+  };
 
   self.hide = function() {
     self.shown(false);
@@ -106,13 +106,13 @@ function CreateNewAddressModalViewModel() {
     if (self.multisigAddressType()) {
       return self.multisigAddressType().split("_").shift();
     }
-    return;
+
   });
   self.multisigProvided = ko.computed(function() {
     if (self.multisigAddressType()) {
       return self.multisigAddressType().split("_").pop();
     }
-    return;
+
   });
 
 
@@ -290,7 +290,7 @@ function CreateNewAddressModalViewModel() {
       'watch': i18n.t('add_watch_address'),
       'armory': i18n.t('add_armory_adress'),
       'multisig': i18n.t('add_multisig_adress')
-    }
+    };
     return title[self.addressType()];
   }, self);
 
@@ -308,7 +308,7 @@ function CreateNewAddressModalViewModel() {
     self.multisigAddress3('');
     self.multisigPubkeyAddress3('');
     self.validationModel.errors.showAllMessages(false);
-  }
+  };
 
   self.submitForm = function() {
     if (self.addressType() == 'armory' && self.watchAddress.isValidating()) {
@@ -332,7 +332,7 @@ function CreateNewAddressModalViewModel() {
 
     //data entry is valid...submit to trigger doAction()
     $('#createNewAddressModal form').submit();
-  }
+  };
 
   self.eventName = {
     'normal': 'CreateNewAddress',
@@ -391,7 +391,7 @@ function CreateNewAddressModalViewModel() {
 
     trackEvent('Balances', self.eventName[self.addressType()]);
 
-  }
+  };
 
   self.show = function(addressType, resetForm) {
     $('#createNewAddressButtons button').removeClass('disabled');
@@ -400,7 +400,7 @@ function CreateNewAddressModalViewModel() {
     self.addressType(addressType);
     self.shown(true);
     trackDialogShow(self.eventName[self.addressType()]);
-  }
+  };
 
   self.hide = function() {
     self.shown(false);
@@ -503,7 +503,7 @@ function SendModalViewModel() {
     if (!CWBitcore.isValidMultisigAddress(self.destAddress())) return;
 
     getPubkeyForAddress(val, function(data) {
-      var addresses = []
+      var addresses = [];
       if (CWBitcore.isValidMultisigAddress(self.destAddress())) {
         addresses = self.destAddress().split('_');
         addresses.pop();
@@ -511,7 +511,7 @@ function SendModalViewModel() {
       } else {
         addresses.push(self.destAddress())
       }
-      var missingPubkeys = []
+      var missingPubkeys = [];
       for (var a in addresses) {
         var address = addresses[a];
         var missing = true;
@@ -601,7 +601,7 @@ function SendModalViewModel() {
     self.missingPubkey3Address('');
 
     self.validationModel.errors.showAllMessages(false);
-  }
+  };
 
   self.submitForm = function() {
     if (!self.validationModel.isValid()) {
@@ -610,7 +610,7 @@ function SendModalViewModel() {
     }
     //data entry is valid...submit to the server
     $('#sendModal form').submit();
-  }
+  };
 
   self.maxAmount = function() {
     assert(self.normalizedBalance(), "No balance present?");
@@ -618,7 +618,7 @@ function SendModalViewModel() {
       self.quantity(subFloat(self.normalizedBalance(), normalizeQuantity(MIN_FEE)));
     else
       self.quantity(self.normalizedBalance());
-  }
+  };
 
   self.doAction = function() {
     var additionalPubkeys = [];
@@ -649,7 +649,7 @@ function SendModalViewModel() {
     );
     self.shown(false);
     trackEvent('Balances', 'Send', self.asset());
-  }
+  };
 
   self.show = function(fromAddress, asset, rawBalance, isDivisible, resetForm) {
     if (asset == 'BTC' && rawBalance == null) {
@@ -665,7 +665,7 @@ function SendModalViewModel() {
     self.divisible(isDivisible);
     self.shown(true);
     trackDialogShow('Send');
-  }
+  };
 
   self.hide = function() {
     self.shown(false);
@@ -700,7 +700,7 @@ var privateKeyValidator = function(required) {
     },
     rateLimit: {timeout: 500, method: "notifyWhenChangesStop"}
   }
-}
+};
 
 function SweepModalViewModel() {
   var self = this;
@@ -941,7 +941,7 @@ function SweepModalViewModel() {
     }
 
     self.validationModel.errors.showAllMessages(false);
-  }
+  };
 
   self.showNextMessage = function(message) {
     var width = self.sweepingCurrentStep * (100 / self.availableAssetsToSweep().length);
@@ -949,7 +949,7 @@ function SweepModalViewModel() {
     var message = i18n.t('step_x_of_y_message', self.sweepingCurrentStep, self.availableAssetsToSweep().length, message);
     self.sweepingProgressionMessage(message);
     $.jqlog.debug(message);
-  }
+  };
 
   self.submitForm = function() {
     if (!self.validationModel.isValid()) {
@@ -959,7 +959,7 @@ function SweepModalViewModel() {
 
     //data entry is valid...submit to trigger doAction()
     $('#sweepModal form').submit();
-  }
+  };
 
   self._sweepCompleteDialog = function(opsComplete) {
     var assetDisplayList = [];
@@ -992,7 +992,7 @@ function SweepModalViewModel() {
     }
     bootbox.alert(i18n.t("sweep_from_completed", self.addressForPrivateKey()) + "<br/><br/><ul>" + assetDisplayList.join('') + "</ul>"
       + " " + i18n.t(ACTION_PENDING_NOTICE), alertCallback);
-  }
+  };
 
 
   self.waitTxoutCountIncrease = function(callback) {
@@ -1008,7 +1008,7 @@ function SweepModalViewModel() {
         }
       });
     }, TRANSACTION_DELAY);
-  }
+  };
 
   self.sendBtcForFees = function(callback) {
     var cwk = new CWPrivateKey(self.privateKeyForFees());
@@ -1047,7 +1047,7 @@ function SweepModalViewModel() {
       self.btcBalanceForPrivateKey(newBalance);
       // waiting for transaction is correctly broadcasted
       self.waitTxoutCountIncrease(callback);
-    }
+    };
 
     var onTransactionCreated = function(unsignedTxHex, numTotalEndpoints, numConsensusEndpoints) {
       cwk.checkAndSignRawTransaction(unsignedTxHex, [self.addressForPrivateKey()], function(err, signedHex) {
@@ -1057,7 +1057,7 @@ function SweepModalViewModel() {
 
         WALLET.broadcastSignedTx(signedHex, onTransactionBroadcasted, onBroadcastError);
       });
-    }
+    };
 
     var onTransactionError = function() {
       if (arguments.length == 4) {
@@ -1067,7 +1067,7 @@ function SweepModalViewModel() {
         self.shown(false);
         bootbox.alert(i18n.t('consensus_error'));
       }
-    }
+    };
     var onConsensusError = onTransactionError;
     var onSysError = onTransactionError;
     var onBroadcastError = onTransactionError;
@@ -1079,7 +1079,7 @@ function SweepModalViewModel() {
     self.sweepingProgressionMessage(message);
     $.jqlog.debug(message);
     multiAPIConsensus("create_send", sendData, onTransactionCreated, onConsensusError, onSysError);
-  }
+  };
 
   // in first step, we merge all outputs for chaining: each change output serve as input for next transaction.
   // so the final balance for btc transfert is the value of last change that we get with extractChangeTxoutValue()
@@ -1132,7 +1132,7 @@ function SweepModalViewModel() {
         } else {
           bootbox.alert(i18n.t('consensus_error'));
         }
-      }
+      };
 
       var onConsensusError = onTransactionError;
       var onSysError = onTransactionError;
@@ -1147,7 +1147,7 @@ function SweepModalViewModel() {
         setTimeout(function() {
           callback(); //will trigger callback() once done
         }, TRANSACTION_DELAY);
-      }
+      };
 
       var onTransactionCreated = function(unsignedTxHex, numTotalEndpoints, numConsensusEndpoints) {
         key.checkAndSignRawTransaction(unsignedTxHex, [self.addressForPrivateKey()], function(err, signedHex) {
@@ -1157,7 +1157,7 @@ function SweepModalViewModel() {
 
           WALLET.broadcastSignedTx(signedHex, onTransactionBroadcasted, onBroadcastError);
         });
-      }
+      };
 
       $.jqlog.debug("Create merge outputs transactions");
       multiAPIConsensus("create_send", sendData, onTransactionCreated, onConsensusError, onSysError);
@@ -1166,7 +1166,7 @@ function SweepModalViewModel() {
       // Only one input, nothing to do
       callback();
     }
-  }
+  };
 
   self._doTransferAsset = function(selectedAsset, key, pubkey, opsComplete, callback) {
     assert(selectedAsset.ASSET && selectedAsset.ASSET_INFO);
@@ -1252,7 +1252,7 @@ function SweepModalViewModel() {
 
       }
     );
-  }
+  };
 
   self._doSendAsset = function(asset, key, pubkey, opsComplete, adjustedBTCQuantity, callback) {
     $.jqlog.debug('_doSendAsset: ' + asset);
@@ -1376,13 +1376,13 @@ function SweepModalViewModel() {
 
       }
     );
-  }
+  };
 
   self.showSweepError = function(asset, opsComplete) {
     $.jqlog.debug("Error sweeping " + asset);
     self.shown(false);
     self._sweepCompleteDialog(opsComplete);
-  }
+  };
 
   self.doAction = function() {
     var cwk = new CWPrivateKey(self.privateKey());
@@ -1463,7 +1463,7 @@ function SweepModalViewModel() {
         }
 
       }
-    }
+    };
 
     var launchSweep = function() {
       if (sendsToMake.length == 1 && sendsToMake[0][0] == 'BTC') {
@@ -1472,7 +1472,7 @@ function SweepModalViewModel() {
         // merge output then start sweeping.
         self.mergeOutputs(cwk, pubkey, doSweep);
       }
-    }
+    };
 
     trackEvent('Balances', self.fromOldWallet() ? 'SweepFromOldWallet' : 'Sweep');
 
@@ -1482,7 +1482,7 @@ function SweepModalViewModel() {
     } else {
       launchSweep();
     }
-  }
+  };
 
   self.show = function(resetForm, fromOldWallet, excludeOldAddress) {
     if (typeof(resetForm) === 'undefined') resetForm = true;
@@ -1492,7 +1492,7 @@ function SweepModalViewModel() {
     if (resetForm) self.resetForm(fromOldWallet);
     self.shown(true);
     trackDialogShow(fromOldWallet ? 'SweepFromOldWallet' : 'Sweep');
-  }
+  };
 
   self.hide = function() {
     self.shown(false);
@@ -1520,7 +1520,7 @@ function SignMessageModalViewModel() {
     self.message('');
     self.signedMessage('');
     self.validationModel.errors.showAllMessages(false);
-  }
+  };
 
   self.submitForm = function() {
     if (!self.validationModel.isValid()) {
@@ -1529,7 +1529,7 @@ function SignMessageModalViewModel() {
     }
     //data entry is valid...submit to trigger doAction()
     $('#signMessageModal form').submit();
-  }
+  };
 
   self.show = function(address, resetForm) {
     if (typeof(resetForm) === 'undefined') resetForm = true;
@@ -1537,11 +1537,11 @@ function SignMessageModalViewModel() {
     self.address(address);
     self.shown(true);
     trackDialogShow('SignMessage');
-  }
+  };
 
   self.hide = function() {
     self.shown(false);
-  }
+  };
 
   self.doAction = function() {
     assert(self.validationModel.isValid(), "Cannot sign");
@@ -1606,7 +1606,7 @@ function TestnetBurnModalViewModel() {
   self.resetForm = function() {
     self.btcBurnQuantity('');
     self.validationModel.errors.showAllMessages(false);
-  }
+  };
 
   self.submitForm = function() {
     if (!self.validationModel.isValid()) {
@@ -1614,7 +1614,7 @@ function TestnetBurnModalViewModel() {
       return false;
     }
     $('#testnetBurnModal form').submit();
-  }
+  };
 
   self.doAction = function() {
     //do the additional issuance (specify non-zero quantity, no transfer destination)
@@ -1636,7 +1636,7 @@ function TestnetBurnModalViewModel() {
       }
     );
     trackEvent('Balances', 'TestnetBurn');
-  }
+  };
 
   self.show = function(address, resetForm) {
     if (typeof(resetForm) === 'undefined') resetForm = true;
@@ -1655,7 +1655,7 @@ function TestnetBurnModalViewModel() {
       self.shown(true);
       trackDialogShow('TestnetBurn');
     });
-  }
+  };
 
   self.hide = function() {
     self.shown(false);
@@ -1671,7 +1671,7 @@ function DisplayPrivateKeyModalViewModel() {
   self.resetForm = function() {
     self.address(null);
     self.privateKeyText(null);
-  }
+  };
 
   self.show = function(address, resetForm) {
     if (typeof(resetForm) === 'undefined') resetForm = true;
@@ -1679,11 +1679,11 @@ function DisplayPrivateKeyModalViewModel() {
     self.address(address);
     self.shown(true);
     trackDialogShow('DisplayPrivateKey');
-  }
+  };
 
   self.hide = function() {
     self.shown(false);
-  }
+  };
 
   self.displayPrivateKey = function() {
     var wif = WALLET.getAddressObj(self.address()).KEY.getWIF();
@@ -1738,7 +1738,7 @@ function BroadcastModalViewModel() {
     self.feeFraction(0);
     self.broadcastDate(new Date());
     self.validationModel.errors.showAllMessages(false);
-  }
+  };
 
   self.show = function(addressObj, resetForm) {
     if (typeof(resetForm) === 'undefined') resetForm = true;
@@ -1747,11 +1747,11 @@ function BroadcastModalViewModel() {
     self.address(self.addressObj.ADDRESS);
     self.shown(true);
     trackDialogShow('Broadcast');
-  }
+  };
 
   self.hide = function() {
     self.shown(false);
-  }
+  };
 
   self.submitForm = function() {
     if (!self.validationModel.isValid()) {
@@ -1760,7 +1760,7 @@ function BroadcastModalViewModel() {
     }
     //data entry is valid...submit to the server
     $('#broadcastModal form').submit();
-  }
+  };
 
   self.doAction = function() {
     var params = {
@@ -1769,19 +1769,19 @@ function BroadcastModalViewModel() {
       text: self.textValue(),
       timestamp: self.broadcastDate() ? parseInt(self.broadcastDate().getTime() / 1000) : null,
       value: parseFloat(self.numericalValue())
-    }
+    };
     //$.jqlog.debug(params); 
 
     var onSuccess = function(txHash, data, endpoint, addressType, armoryUTx) {
       self.hide();
       WALLET.showTransactionCompleteDialog(i18n.t("broadcast_transmitted") + " " + i18n.t(ACTION_PENDING_NOTICE),
         i18n.t("broadcast_to_be_transmitted"), armoryUTx);
-    }
+    };
 
     var onError = function(jqXHR, textStatus, errorThrown, endpoint) {
       self.hide();
       bootbox.alert(textStatus);
-    }
+    };
 
     WALLET.doTransaction(self.address(), "create_broadcast", params, onSuccess, onError);
     trackEvent('Balances', 'Broadcast');
@@ -1808,7 +1808,7 @@ function SignTransactionModalViewModel() {
     self.signedTx('');
     self.validTx(false);
     self.validationModel.errors.showAllMessages(false);
-  }
+  };
 
   self.show = function(address, resetForm) {
     if (typeof(resetForm) === 'undefined') resetForm = true;
@@ -1816,11 +1816,11 @@ function SignTransactionModalViewModel() {
     self.address(address);
     self.shown(true);
     trackDialogShow('SignTransaction');
-  }
+  };
 
   self.hide = function() {
     self.shown(false);
-  }
+  };
 
   self.signTransaction = function() {
     assert(self.validationModel.isValid(), "Cannot sign");
@@ -1846,7 +1846,7 @@ function SignTransactionModalViewModel() {
       self.validTx(false);
     }
 
-  }
+  };
 
   self.signAndBroadcastTransaction = function() {
     var cwk = WALLET.getAddressObj(self.address()).KEY;
@@ -1867,7 +1867,7 @@ function SignTransactionModalViewModel() {
           trackEvent('Balances', 'BroadcastTransaction');
           self.shown(false);
           bootbox.alert(i18n.t("your_tx_broadcast_success") + "<br /><br /><b>" + txHash + "</b>");
-        }
+        };
         WALLET.broadcastSignedTx(self.signedTx(), onSuccess, defaultErrorHandler);
       });
 
@@ -1908,13 +1908,13 @@ function ShapeShiftModalViewModel() {
 
 
 
-    }
+    };
   self.show = function() {
     //doshapeshift modal  #shapeshiftmodeldiv
       self.shown(true);
 
 
-  }
+  };
 
   self.hide = function() {
     self.shown(false);
@@ -1942,7 +1942,7 @@ function ArmoryBroadcastTransactionModalViewModel() {
     self.address(null);
     self.signedTx('');
     self.validationModel.errors.showAllMessages(false);
-  }
+  };
 
   self.show = function(address, resetForm) {
     if (typeof(resetForm) === 'undefined') resetForm = true;
@@ -1950,11 +1950,11 @@ function ArmoryBroadcastTransactionModalViewModel() {
     self.address(address);
     self.shown(true);
     trackDialogShow('ArmoryBroadcastTransaction');
-  }
+  };
 
   self.hide = function() {
     self.shown(false);
-  }
+  };
 
   self.submitForm = function() {
     if (!self.validationModel.isValid()) {
@@ -1963,14 +1963,14 @@ function ArmoryBroadcastTransactionModalViewModel() {
     }
     //data entry is valid...submit to the server
     $('#armoryBroadcastTransactionModal form').submit();
-  }
+  };
 
   self.doAction = function() {
     var onSuccess = function(txHash, data, endpoint, addressType, armoryUTx) {
       self.hide();
       var message = i18n.t("your_tx_broadcast_success") + "<br /><br /><b>" + txHash + "</b>";
       WALLET.showTransactionCompleteDialog(message, message, armoryUTx);
-    }
+    };
 
     failoverAPI("convert_armory_signedtx_to_raw_hex", {'signed_tx_ascii': self.signedTx()},
       function(data, endpoint) {

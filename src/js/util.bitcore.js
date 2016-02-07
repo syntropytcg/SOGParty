@@ -17,7 +17,7 @@ var CWHierarchicalKey = function(passphrase, password) {
   this.basePath = 'm/0\'/0/';
   this.useOldHierarchicalKey = false;
   this.init(passphrase);
-}
+};
 
 CWHierarchicalKey.prototype.init = function(passphrase) {
   this.passphrase = passphrase;
@@ -42,12 +42,12 @@ CWHierarchicalKey.prototype.init = function(passphrase) {
    */
   this.oldHierarchicalKey = bitcore.HDPrivateKey.fromSeed(bitcore.deps.Buffer(wordArrayToBytes(bytesToWordArray(seed)), 'ascii'), NETWORK);
   this.HierarchicalKey = this.useOldHierarchicalKey ? this.oldHierarchicalKey : bitcore.HDPrivateKey.fromSeed(seed, NETWORK);
-}
+};
 
 CWHierarchicalKey.wordsToSeed = function(words) {
   var m = new Mnemonic(words);
   return m.toHex();
-}
+};
 
 CWHierarchicalKey.prototype.getOldAddressesInfos = function(callback) {
   var addresses = [];
@@ -64,30 +64,30 @@ CWHierarchicalKey.prototype.getOldAddressesInfos = function(callback) {
   }
 
   Counterblock.getBalances(addresses, cwkeys, callback);
-}
+};
 
 CWHierarchicalKey.prototype.getAddressKey = function(index) {
   checkArgType(index, "number");
   var derivedKey = this.HierarchicalKey.derive(this.basePath + index);
   return new CWPrivateKey(derivedKey.privateKey);
-}
+};
 
 CWHierarchicalKey.prototype.cryptPassphrase = function(password) {
   return CWBitcore.encrypt(this.passphrase, password);
-}
+};
 
 CWHierarchicalKey.prototype.getQuickUrl = function(password) {
   var url = location.protocol + '//' + location.hostname + '/#cp=';
   url += this.cryptPassphrase(password);
   return url;
-}
+};
 
 
 // priv: private key wif or hex
 var CWPrivateKey = function(priv) {
   this.priv = null;
   this.init(priv);
-}
+};
 
 CWPrivateKey.prototype.init = function(priv) {
   try {
@@ -98,25 +98,25 @@ CWPrivateKey.prototype.init = function(priv) {
   } catch (err) {
     this.priv = null;
   }
-}
+};
 
 CWPrivateKey.prototype.getAddress = function() {
   return this.priv.toAddress(NETWORK).toString();
-}
+};
 
 CWPrivateKey.prototype.getAltAddress = function() {
   var tmpPriv = this.priv.toObject();
   tmpPriv.compressed = !tmpPriv.compressed;
 
   return bitcore.PrivateKey(tmpPriv).toAddress(NETWORK).toString();
-}
+};
 
 CWPrivateKey.prototype.getAddresses = function() {
   return [
     this.getAddress(),
     this.getAltAddress()
   ];
-}
+};
 
 CWPrivateKey.prototype.isValid = function() {
   try {
@@ -124,7 +124,7 @@ CWPrivateKey.prototype.isValid = function() {
   } catch (err) {
     return false;
   }
-}
+};
 
 CWPrivateKey.prototype.getPub = function() {
   try {
@@ -132,7 +132,7 @@ CWPrivateKey.prototype.getPub = function() {
   } catch (err) {
     return false;
   }
-}
+};
 
 /**
  * @param {string} message
@@ -142,7 +142,7 @@ CWPrivateKey.prototype.getPub = function() {
 CWPrivateKey.prototype.signMessage = function(message, format) {
   var base64 = bitcore.Message(message).sign(this.priv); // always returns base64 string
   return bitcore.deps.Buffer(base64, 'base64').toString(format || 'base64');
-}
+};
 
 CWPrivateKey.prototype.signRawTransaction = function(unsignedHex, disableIsFullySigned, cb) {
   if (typeof disableIsFullySigned === "function") {
@@ -159,7 +159,7 @@ CWPrivateKey.prototype.signRawTransaction = function(unsignedHex, disableIsFully
       cb(err);
     });
   }
-}
+};
 
 CWPrivateKey.prototype.checkTransactionDest = function(txHex, destAdress) {
   checkArgsType(arguments, ["string", "object"]);
@@ -168,7 +168,7 @@ CWPrivateKey.prototype.checkTransactionDest = function(txHex, destAdress) {
   } catch (err) {
     return false;
   }
-}
+};
 
 CWPrivateKey.prototype.checkAndSignRawTransaction = function(unsignedHex, destAdress, disableIsFullySigned, cb) {
   if (typeof(destAdress) == 'string') {
@@ -192,22 +192,22 @@ CWPrivateKey.prototype.checkAndSignRawTransaction = function(unsignedHex, destAd
       cb(err);
     });
   }
-}
+};
 
 CWPrivateKey.prototype.getWIF = function() {
   return this.priv.toWIF();
-}
+};
 
 CWPrivateKey.prototype.encrypt = function(message) {
   return CWBitcore.encrypt(message, this.priv.toString());
-}
+};
 
 CWPrivateKey.prototype.decrypt = function(cryptedMessage) {
   return CWBitcore.decrypt(cryptedMessage, this.priv.toString());
-}
+};
 
 // TODO: rename to be more generic
-var CWBitcore = {}
+var CWBitcore = {};
 
 /**
  *
@@ -220,7 +220,7 @@ CWBitcore.isOutScript = function(script) {
     script.isMultisigOut() ||
     script.isScriptHashOut() ||
     script.isDataOut();
-}
+};
 
 CWBitcore.isValidAddress = function(val) {
   try {
@@ -228,7 +228,7 @@ CWBitcore.isValidAddress = function(val) {
   } catch (err) {
     return false;
   }
-}
+};
 
 CWBitcore.isValidMultisigAddress = function(val) {
   try {
@@ -250,7 +250,7 @@ CWBitcore.isValidMultisigAddress = function(val) {
   } catch (err) {
     return false;
   }
-}
+};
 
 CWBitcore.MultisigAddressToAddresses = function(val) {
 
@@ -265,7 +265,7 @@ CWBitcore.MultisigAddressToAddresses = function(val) {
   } else {
     return [];
   }
-}
+};
 
 CWBitcore.genKeyMap = function(cwPrivateKeys) {
   var wkMap = {};
@@ -274,7 +274,7 @@ CWBitcore.genKeyMap = function(cwPrivateKeys) {
   });
 
   return wkMap;
-}
+};
 
 /**
  *
@@ -527,7 +527,7 @@ CWBitcore.extractAddressFromTxOut = function(output) {
     default:
       throw new Error("Unknown type [" + output.script.classify() + "]");
   }
-}
+};
 
 /**
  * @param {string} source
@@ -548,7 +548,7 @@ CWBitcore.extractChangeTxoutValue = function(source, txHex) {
 
     return 0;
   }).reduce(function(value, change) { return change + value; });
-}
+};
 
 /**
  * @TODO: check the pubkey instead
@@ -610,7 +610,7 @@ CWBitcore.checkTransactionDest = function(txHex, source, dest) {
   });
 
   return outputsValid.filter(function(v) { return !v; }).length === 0;
-}
+};
 
 CWBitcore.compareOutputs = function(source, txHexs) {
   var t;
@@ -650,26 +650,26 @@ CWBitcore.compareOutputs = function(source, txHexs) {
       });
 
       return outputsValid.filter(function(v) { return !v; }).length === 0;
-    })
+    });
 
     return txHexesValid.filter(function(v) { return !v; }).length === 0;
   }
-}
+};
 
 CWBitcore.pubKeyToPubKeyHash = function(pubKey) {
   return bitcore.Address.fromPublicKey(bitcore.PublicKey(pubKey, {network: NETWORK}), NETWORK).toString();
-}
+};
 
 CWBitcore.encrypt = function(message, password) {
   return CryptoJS.AES.encrypt(message, password).toString();
-}
+};
 
 CWBitcore.decrypt = function(cryptedMessage, password) {
   return CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(cryptedMessage, password));
-}
+};
 
 CWBitcore.getQuickUrl = function(passphrase, password) {
   var url = location.protocol + '//' + location.hostname + '/#cp=';
   url += CWBitcore.encrypt(passphrase, password);
   return url;
-}
+};

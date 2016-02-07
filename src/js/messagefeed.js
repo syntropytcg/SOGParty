@@ -6,7 +6,7 @@ function MessageFeed() {
   self.OPEN_ORDERS = []; // here only for sellBTCOrdersCount
 
   self.removeOrder = function(hash) {
-    var address = false
+    var address = false;
     for (var i in self.OPEN_ORDERS) {
       if (self.OPEN_ORDERS[i]['tx_hash'] == hash) {
         address = self.OPEN_ORDERS[i]['source'];
@@ -14,7 +14,7 @@ function MessageFeed() {
       }
     }
     return address;
-  }
+  };
 
   self.restoreOrder = function() {
     //Get and populate any open orders we have
@@ -26,7 +26,7 @@ function MessageFeed() {
         self.OPEN_ORDERS = $.grep(data, function(e) { return e['status'] == 'open' && e['give_remaining'] > 0; });
       }
     );
-  }
+  };
 
 
   self.tryNextSIOMessageFeed = function() {
@@ -37,7 +37,7 @@ function MessageFeed() {
     }
     $.jqlog.log('socket.io: Trying next server: ' + cwBaseURLs()[self.failoverCurrentIndex()]);
     self.init(self.lastMessageIndexReceived());
-  }
+  };
 
   self.init = function(last_message_index) {
     self.lastMessageIndexReceived(last_message_index);
@@ -65,7 +65,7 @@ function MessageFeed() {
       if (!original_$emit.apply(socket, arguments)) {
         original_$emit.apply(socket, ['default'].concat(args));
       }
-    }
+    };
     /*socket.on('default',function(event, data) {
         $.jqlog.debug('socket.io event not trapped: ' + event + ' - data:' + JSON.stringify(data));
     });*/
@@ -99,14 +99,14 @@ function MessageFeed() {
     // producer/consumer queue pattern as this method allows us to effectively handle message gaps (i.e. just push them
     // on the head of the queue and just keep running through the queue))
     self.checkMessageQueue();
-  }
+  };
 
   self.getTxHash = function(message) {
     var txHash = message['event'] || message['tx_hash'] || (message['tx0_hash'] + message['tx1_hash']) || null;
     if (!txHash)
       $.jqlog.warn("Cannot derive a txHash for IDX " + message['_message_index'] + " (category: " + message['_category'] + ")");
     return txHash;
-  }
+  };
 
   self.checkMessageQueue = function() {
     var event = null, result = null;
@@ -127,7 +127,7 @@ function MessageFeed() {
     } else { //normal case: no gaps. call again in 1 second
       setTimeout(function() { self.checkMessageQueue(); }, 1000);
     }
-  }
+  };
 
   self.parseMempoolTransaction = function(txHash, category, message) {
 
@@ -175,7 +175,7 @@ function MessageFeed() {
       });
     }
 
-  }
+  };
 
   self.parseMessageWithFeedGapDetection = function(txHash, category, message) {
     if (!message || (message.substring && message.startswith("<html>"))) return;
@@ -232,7 +232,7 @@ function MessageFeed() {
     //this deferred will be resolved once we have successfully retrieved the missing messages
     //(the subsequent call to the function will process the missing messages, as well as what was already in the message queue)
     return deferred;
-  }
+  };
 
   self.handleMessage = function(txHash, category, message) {
     assert(self.lastMessageIndexReceived() + 1 == message['_message_index'], "Message feed resync counter increment oddity...?");

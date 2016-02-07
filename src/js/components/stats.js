@@ -29,7 +29,7 @@ function StatsHistoryViewModel() {
       $('#totalUnknownWallets').text(self.totalUnknownWallets);
       self.doWalletChart();
     });
-  }
+  };
 
   self.doTxChart = function() {
     $('#transactionStatHistory').highcharts('StockChart', {
@@ -93,7 +93,7 @@ function StatsHistoryViewModel() {
       },
       series: self.txGraphData
     });
-  }
+  };
 
   self.doWalletChart = function() {
     //$('#walletStatHistory').highcharts({
@@ -158,9 +158,9 @@ function StatsHistoryViewModel() {
       },
       series: self.walletGraphData
     });
-  }
+  };
 
-  self.showNewRow = function(elem) { if (elem.nodeType === 1) $(elem).hide().slideDown() }
+  self.showNewRow = function(elem) { if (elem.nodeType === 1) $(elem).hide().slideDown() };
 
   self.hideOldRow = function(elem) { if (elem.nodeType === 1) $(elem).slideUp(function() { $(elem).remove(); }) }
 }
@@ -189,14 +189,14 @@ function StatsTransactionHistoryViewModel() {
         self.transactions.push(new TransactionHistoryItemViewModel(data[i]));
       }
     });
-  }
+  };
 
   self.addMessage = function(message) {
     //insert at head, and pop off tail
     self.transactions.unshift(new TransactionHistoryItemViewModel(message));
     if (self.transactions().length > STATS_MAX_NUM_TRANSACTIONS)
       self.transactions.pop(); //keep it <= STATS_MAX_NUM_TRANSACTIONS
-  }
+  };
 
   self.dataTableResponsive = function(e) {
     // Responsive design for our data tables and more on this page

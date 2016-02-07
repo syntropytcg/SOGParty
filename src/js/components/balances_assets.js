@@ -2,7 +2,7 @@ function CreateAssetModalViewModel() {
   var self = this;
   self.shown = ko.observable(false);
   self.address = ko.observable('');
-  self.noEnoughXCP = ko.observable(false)
+  self.noEnoughXCP = ko.observable(false);
 
   self.tokenNameType = ko.observable('alphabetic');
   self.tokenNameType.subscribe(function(val) {
@@ -35,7 +35,7 @@ function CreateAssetModalViewModel() {
   self.generateRandomId = function() {
     var r = bigInt.randBetween(NUMERIC_ASSET_ID_MIN, NUMERIC_ASSET_ID_MAX);
     self.name('A' + r);
-  }
+  };
 
   self.resetForm = function() {
     self.name('');
@@ -43,7 +43,7 @@ function CreateAssetModalViewModel() {
     self.divisible(true);
     self.quantity(null);
     self.validationModel.errors.showAllMessages(false);
-  }
+  };
 
   self.submitForm = function() {
     if (self.name.isValidating()) {
@@ -60,7 +60,7 @@ function CreateAssetModalViewModel() {
 
     //data entry is valid...submit to the server
     $('#createAssetModal form').submit();
-  }
+  };
 
   self.doAction = function() {
     var quantity = parseFloat(self.quantity());
@@ -99,7 +99,7 @@ function CreateAssetModalViewModel() {
     );
     self.shown(false);
     trackEvent('Assets', 'CreateAsset');
-  }
+  };
 
   self.show = function(address, resetForm, noXCP) {
     self.noEnoughXCP(noXCP || false);
@@ -110,7 +110,7 @@ function CreateAssetModalViewModel() {
     self.generateRandomId();
     self.shown(true);
     trackDialogShow('CreateAsset');
-  }
+  };
 
   self.hide = function() {
     self.shown(false);
@@ -155,7 +155,7 @@ function IssueAdditionalAssetModalViewModel() {
   self.resetForm = function() {
     self.additionalIssue(null);
     self.validationModel.errors.showAllMessages(false);
-  }
+  };
 
   self.submitForm = function() {
     if (!self.validationModel.isValid()) {
@@ -163,7 +163,7 @@ function IssueAdditionalAssetModalViewModel() {
       return false;
     }
     $('#issueAdditionalAssetModal form').submit();
-  }
+  };
 
   self.doAction = function() {
     //do the additional issuance (specify non-zero quantity, no transfer destination)
@@ -190,7 +190,7 @@ function IssueAdditionalAssetModalViewModel() {
       }
     );
     trackEvent('Assets', 'IssueAdditionalAsset');
-  }
+  };
 
   self.show = function(address, divisible, asset, resetForm) {
     if (typeof(resetForm) === 'undefined') resetForm = true;
@@ -200,7 +200,7 @@ function IssueAdditionalAssetModalViewModel() {
     self.asset(asset);
     self.shown(true);
     trackDialogShow('IssueAdditionalAsset');
-  }
+  };
 
   self.hide = function() {
     self.shown(false);
@@ -227,7 +227,7 @@ function TransferAssetModalViewModel() {
   self.resetForm = function() {
     self.destAddress('');
     self.validationModel.errors.showAllMessages(false);
-  }
+  };
 
   self.submitForm = function() {
     if (!self.validationModel.isValid()) {
@@ -235,7 +235,7 @@ function TransferAssetModalViewModel() {
       return false;
     }
     $('#transferAssetModal form').submit();
-  }
+  };
 
   self.doAction = function() {
     //do the transfer (zero quantity issuance to the specified address)
@@ -261,7 +261,7 @@ function TransferAssetModalViewModel() {
       }
     );
     trackEvent('Assets', 'TransferAsset');
-  }
+  };
 
   self.show = function(sourceAddress, asset, resetForm) {
     if (typeof(resetForm) === 'undefined') resetForm = true;
@@ -270,7 +270,7 @@ function TransferAssetModalViewModel() {
     self.asset(asset);
     self.shown(true);
     trackDialogShow('TransferAsset');
-  }
+  };
 
   self.hide = function() {
     self.shown(false);
@@ -313,7 +313,7 @@ function ChangeAssetDescriptionModalViewModel() {
   self.resetForm = function() {
     self.newDescription('');
     self.validationModel.errors.showAllMessages(false);
-  }
+  };
 
   self.submitForm = function() {
     if (!self.validationModel.isValid()) {
@@ -321,7 +321,7 @@ function ChangeAssetDescriptionModalViewModel() {
       return false;
     }
     $('#changeAssetDescriptionModal form').submit();
-  }
+  };
 
   self.doAction = function() {
     //to change the desc, issue with quantity == 0 and the new description in the description field
@@ -346,7 +346,7 @@ function ChangeAssetDescriptionModalViewModel() {
       }
     );
     trackEvent('Assets', 'ChangeAssetDescription');
-  }
+  };
 
   self.show = function(address, asset, resetForm) {
     if (typeof(resetForm) === 'undefined') resetForm = true;
@@ -355,7 +355,7 @@ function ChangeAssetDescriptionModalViewModel() {
     self.asset(asset);
     self.shown(true);
     trackDialogShow('ChangeAssetDescription');
-  }
+  };
 
   self.hide = function() {
     self.shown(false);
@@ -503,11 +503,11 @@ function PayDividendModalViewModel() {
     self.availableDividendAssets([]);
     self.selectedDividendAsset(null);
     self.validationModel.errors.showAllMessages(false);
-  }
+  };
 
   self.submitForm = function() {
     $('#payDividendModal form').submit();
-  }
+  };
 
   self.doAction = function() {
     if (!self.validationModel.isValid()) {
@@ -523,12 +523,12 @@ function PayDividendModalViewModel() {
           {'field': 'quantity', 'op': '>', 'value': 0}
         ],
         'filterop': 'AND'
-      }
+      };
       failoverAPI('get_balances', params, self.sendDividend)
     } else {
       self.sendDividend();
     }
-  }
+  };
 
   self.sendDividend = function(data) {
 
@@ -537,7 +537,7 @@ function PayDividendModalViewModel() {
       quantity_per_unit: denormalizeQuantity(parseFloat(self.quantityPerUnit())),
       asset: self.assetData().asset,
       dividend_asset: self.selectedDividendAsset()
-    }
+    };
 
     if (data) {
       var dests = [];
@@ -560,7 +560,7 @@ function PayDividendModalViewModel() {
       }
     );
     trackEvent('Assets', 'PayDividend');
-  }
+  };
 
   self.showModal = function(address, resetForm) {
     if (typeof(resetForm) === 'undefined') resetForm = true;
@@ -585,14 +585,14 @@ function PayDividendModalViewModel() {
         }
       });
     });
-  }
+  };
 
   self.show = function(address, resetForm) {
     trackDialogShow('PayDividendAttempt');
     checkCountry("dividend", function() {
       self.showModal(address, resetForm);
     });
-  }
+  };
 
   self.hide = function() {
     self.shown(false);
@@ -606,12 +606,12 @@ var AssetHistoryItemModel = function(historyObj) {
 
   self.dispBlockTime = function() {
     return moment(self.HISTORYOBJ['at_block_time']).format("M/D/YY h:mm:ssa");
-  }
+  };
 
   self.dispDescription = function() {
     var desc = '';
     if (self.HISTORYOBJ['type'] == 'created') {
-      var token_desc = self.HISTORYOBJ['description']
+      var token_desc = self.HISTORYOBJ['description'];
       if (!token_desc) {
         token_desc = '<abbr title="Description was not initialized">Undefined</abbr>';
       }
@@ -694,7 +694,7 @@ function ShowAssetInfoModalViewModel() {
 
     self.shown(true);
     trackDialogShow('ShowAssetInfo');
-  }
+  };
 
   self.hide = function() {
     self.shown(false);

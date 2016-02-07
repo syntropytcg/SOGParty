@@ -95,7 +95,7 @@ PendingActionViewModel.calcText = function(category, data) {
   desc = desc.replace(/<Ad>/g, '<b class="notoAddrColor">').replace(/<\/Ad>/g, '</b>');
   desc = desc.replace(/<As>/g, '<b class="notoAssetColor">').replace(/<\/As>/g, '</b>');
   return desc;
-}
+};
 
 
 function PendingActionFeedViewModel() {
@@ -114,7 +114,7 @@ function PendingActionFeedViewModel() {
 
   self.getLocalStorageKey = function() {
     return 'pendingActions_' + WALLET.identifier();
-  }
+  };
 
   self.add = function(txHash, category, data, when) {
     if (typeof(when) === 'undefined') when = new Date();
@@ -138,7 +138,7 @@ function PendingActionFeedViewModel() {
     self.lastUpdated(new Date());
     PendingActionFeedViewModel.modifyBalancePendingFlag(category, data, true);
     WALLET.refreshBTCBalances();
-  }
+  };
 
   self.remove = function(txHash, category, btcRefreshSpecialLogic) {
     if (typeof(btcRefreshSpecialLogic) === 'undefined') btcRefreshSpecialLogic = false;
@@ -178,7 +178,7 @@ function PendingActionFeedViewModel() {
       return item['txHash'] !== txHash;
     });
     localStorage.setObject(self.getLocalStorageKey(), pendingActionsStorage);
-  }
+  };
 
   self.restoreFromLocalStorage = function(onSuccess) {
     //restore the list of any pending transactions from local storage (removing those entries for txns that have been confirmed)
@@ -235,7 +235,7 @@ PendingActionFeedViewModel.modifyBalancePendingFlag = function(category, data, f
     } else {
       assetObj.unconfirmedBalance(assetObj.unconfirmedBalance() - newUnconfirmedBalance);
     }
-  }
+  };
 
   var updateUnconfirmedBalance = function(address, asset, quantity, dividend, assetInfo) {
 
@@ -259,7 +259,7 @@ PendingActionFeedViewModel.modifyBalancePendingFlag = function(category, data, f
       }
     }
 
-  }
+  };
 
   var addressObj = null;
   if (category == 'burns') {
@@ -305,7 +305,7 @@ PendingActionFeedViewModel.modifyBalancePendingFlag = function(category, data, f
     updateUnconfirmedBalance(data['source'], 'XCP', data['wager_quantity'] * -1);
 
   }
-}
+};
 
 /*NOTE: Any code here is only triggered the first time the page is visited. Put JS that needs to run on the
   first load and subsequent ajax page switches in the .html <script> tag*/

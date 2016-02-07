@@ -65,7 +65,7 @@ function initIndex() { //main page
         LOGON_VIEW_MODEL.openWallet();
       }
       return false;
-    })
+    });
     $('#donate').click(function(e) {
       DONATE_MODAL.show();
       return false;

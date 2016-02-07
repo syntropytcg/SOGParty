@@ -92,7 +92,7 @@ function AddressViewModel(type, key, address, initialLabel, pubKeys) {
     return ko.utils.arrayFirst(self.assets(), function(a) {
       return a.ASSET == asset;
     });
-  }
+  };
 
   self.getAssetsList = function() {
     var assets = [];
@@ -100,7 +100,7 @@ function AddressViewModel(type, key, address, initialLabel, pubKeys) {
       assets.push(asset.ASSET);
     });
     return assets;
-  }
+  };
 
   self.updateEscrowedBalances = function() {
     failoverAPI("get_escrowed_balances", {'addresses': [self.ADDRESS]}, function(escrowedBalances) {
@@ -113,7 +113,7 @@ function AddressViewModel(type, key, address, initialLabel, pubKeys) {
         }
       }
     });
-  }
+  };
 
   self.initDropDown = function(asset) {
     setTimeout(function() {
@@ -135,7 +135,7 @@ function AddressViewModel(type, key, address, initialLabel, pubKeys) {
       });
 
     }, 500);
-  }
+  };
 
   self.addOrUpdateAsset = function(asset, assetInfo, initialRawBalance, escrowedBalance) {
     //Update asset property changes (ONLY establishes initial balance when logging in! -- past that, balance changes
@@ -220,31 +220,31 @@ function AddressViewModel(type, key, address, initialLabel, pubKeys) {
 
 
     }
-  }
+  };
 
   self.removeAsset = function(asset) {
     self.assets.remove(function(item) {
       return item.ASSET == asset;
     });
-  }
+  };
 
   /////////////////////////
   //Address-panel-related
   self.changeLabel = function(params) {
     CHANGE_ADDRESS_LABEL_MODAL.show(self.ADDRESS, self.label());
-  }
+  };
 
   self.showQRCode = function() {
     //Show the QR code for this address
     var qrcode = makeQRCode(self.ADDRESS);
     //Pop up a modal with this code
     bootbox.alert('<center><h4>' + i18n.t('qr_code_for', self.ADDRESS) + '</h4><br/>' + qrcode + '</center>');
-  }
+  };
 
   self.showPrivateKey = function() {
     //Show the private key code for this address
     DISPLAY_PRIVATE_KEY_MODAL.show(self.ADDRESS);
-  }
+  };
 
   self.remove = function() { //possible for watch only addresses only
     WALLET.addresses.remove(self);
@@ -265,20 +265,20 @@ function AddressViewModel(type, key, address, initialLabel, pubKeys) {
     WALLET.storePreferences(function() {
       checkURL(); //refresh the page without this address listed on it
     });
-  }
+  };
 
   self.signMessage = function() {
     SIGN_MESSAGE_MODAL.show(self.ADDRESS);
-  }
+  };
 
   self.signTransaction = function() {
     SIGN_TRANSACTION_MODAL.show(self.ADDRESS);
-  }
+  };
 
   self.armoryBroadcastTransaction = function() {
     assert(self.IS_ARMORY_OFFLINE);
     ARMORY_BROADCAST_TRANSACTION.show(self.ADDRESS);
-  }
+  };
 
   self.createAsset = function() {
     if (!WALLET.canDoTransaction(self.ADDRESS)) return false;
@@ -290,7 +290,7 @@ function AddressViewModel(type, key, address, initialLabel, pubKeys) {
     }
 
     CREATE_ASSET_MODAL.show(self.ADDRESS, true, noXCP);
-  }
+  };
 
   self.payDividend = function() {
     if (!WALLET.canDoTransaction(self.ADDRESS)) return false;
@@ -304,7 +304,7 @@ function AddressViewModel(type, key, address, initialLabel, pubKeys) {
 
   self.selectAddressText = function() {
     return selectText('address-text-' + self.ADDRESS);
-  }
+  };
 
   self.sortAssetsByName = function() {
     //Sort assets by asset name
@@ -322,7 +322,7 @@ function AddressViewModel(type, key, address, initialLabel, pubKeys) {
 
     self.lastSortDirection((self.lastSort() == 'sortAssetsByName' && self.lastSortDirection() == 'asc') ? 'desc' : 'asc');
     self.lastSort('sortAssetsByName');
-  }
+  };
 
   self.sortAssetsByBalance = function() {
     //Sort assets by balance
@@ -340,23 +340,23 @@ function AddressViewModel(type, key, address, initialLabel, pubKeys) {
 
     self.lastSortDirection((self.lastSort() == 'sortAssetsByBalance' && self.lastSortDirection() == 'asc') ? 'desc' : 'asc');
     self.lastSort('sortAssetsByBalance');
-  }
+  };
 
   self.showAllAssets = function() {
     self.assetFilter(''); //Show all assets
-  }
+  };
 
   self.showBaseAssetsOnly = function() {
     self.assetFilter('base'); //Show XCP and BTC only
-  }
+  };
 
   self.showMyAssetsOnly = function() {
     self.assetFilter('mine'); //Show all my own assets
-  }
+  };
 
   self.showOthersAssetsOnly = function() {
     self.assetFilter('others'); //Show other's (foreign) assets only
-  }
+  };
 
   self.getXCPBalance = function() {
     var xcpAsset = $.grep(self.assets(), function(value) {

@@ -25,13 +25,13 @@ NotificationViewModel.calcIconClass = function(category) {
   if (category == 'alert') return 'fa-exclamation';
   if (category == 'security') return 'fa-shield';
   return ENTITY_ICONS[category] ? ENTITY_ICONS[category] : 'fa-question';
-}
+};
 NotificationViewModel.calcColorClass = function(category) {
   if (category == 'user') return 'bg-color-lighten';
   if (category == 'alert') return 'bg-color-redLight';
   if (category == 'security') return 'bg-color-redLight';
   return ENTITY_NOTO_COLORS[category] ? ENTITY_NOTO_COLORS[category] : 'bg-color-white';
-}
+};
 NotificationViewModel.calcText = function(category, message) {
   //Run through this function only once for each notification -- when the notification is initially received (and
   // before the underlying wallet/asset/whatever state has been modified, so that we can compare new to existing states
@@ -148,7 +148,7 @@ NotificationViewModel.calcText = function(category, message) {
     desc = desc.replace(/<As>/g, '<b class="notoAssetColor">').replace(/<\/As>/g, '</b>');
   }
   return desc;
-}
+};
 
 
 function NotificationFeedViewModel(initialCount) {
@@ -161,7 +161,7 @@ function NotificationFeedViewModel(initialCount) {
 
   self.ack = function() {
     self.unackedCount(0);
-  }
+  };
 
   self.add = function(category, message) {
     if (category == "balances" || category == "debits" || category == "credits") return;

@@ -10,7 +10,7 @@ $.jqlog.enabled(true);
 $.jqlog.debug = function(object, options) {
   if (IS_DEV || USE_TESTNET) //may change to just IS_DEV in the future
     $.jqlog.info(object, options);
-}
+};
 
 //Mix-in underscore.string to underscore namespace
 _.mixin(_.string.exports());
@@ -246,8 +246,7 @@ function autoDropUpDropdowns() {
         }
         $(this).toggleClass("dropup", ((windowHeight - rect.bottom) < (dropDownMenuHeight + dropUpMarginBottom)) && (rect.top > dropDownMenuHeight));
       });
-    };
-
+    }
     // bind to load & scroll - but debounce scroll with `underscorejs`
     $(window).bind({
       "resize scroll touchstart touchmove mousewheel": _.debounce(dropUp, 100),

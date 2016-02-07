@@ -52,7 +52,7 @@ var REGULAR_DUST_SIZE = 5430;
 var MULTISIG_DUST_SIZE = 7800;
 var MIN_PRIME_BALANCE = 50000; //in satoshis ... == .0005
 var ASSET_CREATION_FEE_XCP = 0.5; //in normalized XCP
-var DIVIDEND_FEE_PER_HOLDER = 0.0002
+var DIVIDEND_FEE_PER_HOLDER = 0.0002;
 var MAX_ASSET_DESC_LENGTH = 41; //42, minus a null term character?
 var FEE_FRACTION_REQUIRED_DEFAULT_PCT = .9;   //0.90% of total order
 var FEE_FRACTION_PROVIDED_DEFAULT_PCT = 1;   //1.00% of total order
@@ -151,28 +151,28 @@ var BET_TYPES_SHORT = {
   1: "BearCFD",
   2: "Equal",
   3: "NotEqual"
-}
+};
 
 var BET_TYPES_ID = {
   "BullCFD": 0,
   "BearCFD": 1,
   "Equal": 2,
   "NotEqual": 3
-}
+};
 
 var COUNTER_BET = {
   "Equal": 3,
   "NotEqual": 2,
   "BullCFD": 1,
   "BearCFD": 0
-}
+};
 
 var BET_MATCHES_STATUS = {
   "settled: liquidated for bear": 0,
   "settled: liquidated for bull": 1,
   "settled: for equal": 2,
   "settled: for notequal": 3
-}
+};
 
 var LEVERAGE_UNIT = 5040;
 
@@ -208,11 +208,11 @@ var RESTRICTED_AREA = {
   'pages/matchedbets.html': ['US'],
   'dividend': ['US'],
   'pages/simplebuy.html': ['US']
-}
+};
 
 var RESTRICTED_AREA_MESSAGE = {
   'pages/simplebuy.html': 'buy_xcp_if_legal'
-}
+};
 
 var MAX_SUPPORT_CASE_PROBLEM_LEN = 4096;
 var QUOTE_ASSETS = []; // initalized with counterblock is_ready()

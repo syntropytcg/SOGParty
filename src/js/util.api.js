@@ -118,7 +118,7 @@ function fetchData(url, onSuccess, onError, postdata, extraAJAXOpts, isJSONRPC, 
         if (onError) return onError(jqXHR, opt, err, u);
       }
     }
-  }
+  };
   if (extraAJAXOpts) {
     for (var attrname in extraAJAXOpts) { ajaxOpts[attrname] = extraAJAXOpts[attrname]; }
   }
@@ -145,7 +145,7 @@ function makeJSONRPCCall(endpoints, method, params, timeout, onSuccess, onError)
   var extraAJAXOpts = {
     'contentType': 'application/json; charset=utf-8',
     'dataType': 'json'
-  }
+  };
   if (timeout) extraAJAXOpts['timeout'] = timeout;
 
   return fetchData(endpoints,
@@ -256,7 +256,7 @@ function _multiAPIPrimative(method, params, onFinished) {
             }
             if (allNotCaughtUp) {
               bootbox.alert("The server(s) are currently updating and/or not caught up to the blockchain. Logging you out."
-                + " Please try logging in again later. (Most likely this message is due to the server being updated.)")
+                + " Please try logging in again later. (Most likely this message is due to the server being updated.)");
               location.reload(false); //log the user out to avoid ruckus
               return;
             }
@@ -301,12 +301,12 @@ function failoverAPI(method, params, onSuccess, onError) {
     // probably returning 525s or updating (or messed up somehow) and we should just log the client out to be safe about it.
     // This is probably a good choice for now... 
     if (jqXHR && jqXHR.status == '525') {
-      bootbox.alert("The server(s) are currently updating and/or not caught up to the blockchain. Logging you out. Please try logging in again later. (e:failoverAPI)")
+      bootbox.alert("The server(s) are currently updating and/or not caught up to the blockchain. Logging you out. Please try logging in again later. (e:failoverAPI)");
       location.reload(false); //log the user out to avoid ruckus
       return;
     }
     return onError(jqXHR, textStatus, errorThrown, endpoint);
-  }
+  };
 
   var destType = _getDestTypeFromMethod(method);
   _makeJSONAPICall(destType, cwAPIUrls(), method, params, TIMEOUT_FAILOVER_API, onSuccess, onErrorOverride);

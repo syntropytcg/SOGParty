@@ -100,11 +100,11 @@ function testnetBurnDetermineEarned(blockHeight, burned) {
 
 // from bitcoinjs-lib
 function bytesToBase64(bytes) {
-  var base64map = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
-  var base64 = []
+  var base64map = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+  var base64 = [];
 
   for (var i = 0; i < bytes.length; i += 3) {
-    var triplet = (bytes[i] << 16) | (bytes[i + 1] << 8) | bytes[i + 2]
+    var triplet = (bytes[i] << 16) | (bytes[i + 1] << 8) | bytes[i + 2];
 
     for (var j = 0; j < 4; j++) {
       if (i * 8 + j * 6 <= bytes.length * 8) {
@@ -125,7 +125,7 @@ function stringToBytes(string) {
 }
 
 function bytesToWords(bytes) {
-  var words = []
+  var words = [];
   for (var i = 0, b = 0; i < bytes.length; i++, b += 8) {
     words[b >>> 5] |= bytes[i] << (24 - b % 32)
   }
@@ -133,7 +133,7 @@ function bytesToWords(bytes) {
 }
 
 function wordsToBytes(words) {
-  var bytes = []
+  var bytes = [];
   for (var b = 0; b < words.length * 32; b += 8) {
     bytes.push((words[b >>> 5] >>> (24 - b % 32)) & 0xFF)
   }

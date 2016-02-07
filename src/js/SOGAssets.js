@@ -46,13 +46,12 @@ var SOGAssetArray = [
     "SATOSHILITE"
 ];
 
-var numSOGAssets = SOGAssetArray.length
+var numSOGAssets = SOGAssetArray.length;
 
 function getSOGImage(name){
 
     return "https://sogparty.com/pages/SOGImages/" + name.toString() + ".jpg";
-};
-
+}
 function getSOGSupply(base, supply){
 
     if (base == "SATOSHICARD"){
@@ -64,10 +63,7 @@ function getSOGSupply(base, supply){
     else
         return supply;
 
-};
-
-
-
+}
 function getSOGOrder(base){
 
     for(var i=0; i < numSOGAssets; i++){
@@ -89,4 +85,4 @@ function getSOGOrder(base){
 
     }
 
-};
+}

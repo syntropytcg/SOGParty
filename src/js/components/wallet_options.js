@@ -24,7 +24,7 @@ function WalletOptionsModalViewModel() {
     required: true,
     isValidPositiveQuantityOrZero: self,
     max: 100
-  }
+  };
 
   self.orderDefaultExpiration = ko.observable(ORDER_DEFAULT_EXPIRATION).extend({
     required: true,
@@ -82,7 +82,7 @@ function WalletOptionsModalViewModel() {
     self.getReflectedHostInfo();
 
     self.shown(true);
-  }
+  };
 
   self.getReflectedHostInfo = function() {
     failoverAPI("get_reflected_host_info", {}, function(data, endpoint) {
@@ -92,11 +92,11 @@ function WalletOptionsModalViewModel() {
       self.myCookie(data['cookie']);
       self.myCountry(data['country']);
     });
-  }
+  };
 
   self.showInfoTable = function() {
     self.infoTableShown(true);
-  }
+  };
 
   self.hide = function() {
     if (self.ORIG_PREFERENCES_JSON != JSON.stringify(PREFERENCES)) { //only update the preferences if they have changed

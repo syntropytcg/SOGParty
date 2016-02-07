@@ -21,7 +21,7 @@ function BalanceHistoryViewModel() {
     //the first asset will be automatically selected by default
     //assetChanged doesn't seem to autotrigger at least with chrome...manually invoke it
     self.assetChanged();
-  }
+  };
 
   self.assetChanged = function() {
     if (self.selectedAsset() == self.ASSET_LASTCHANGE) return;
@@ -80,7 +80,7 @@ function BalanceHistoryViewModel() {
         self.doChart();
       });
     }
-  }
+  };
 
   self.doChart = function() {
     $('#balanceHistory').highcharts({
@@ -142,15 +142,15 @@ function TransactionHistoryItemViewModel(data) {
 
   self.dispTXHash = function() {
     return getTxHashLink(self.TX_HASH);
-  }
+  };
 
   self.dispBlockIndex = function() {
     return getLinkForBlock(self.BLOCK_INDEX);
-  }
+  };
 
   self.dispSource = function() {
     return getLinkForCPData('address', self.SOURCE, getAddressLabel(self.SOURCE));
-  }
+  };
 
   //self.btcQuantity = TODO
   //self.fee = TODO
@@ -161,7 +161,7 @@ function TransactionHistoryItemViewModel(data) {
 
   self.dispTxType = function() {
     return ENTITY_NAMES[self.DATA['_category']] + "&nbsp;&nbsp;<i class=\"fa " + ENTITY_ICONS[self.DATA['_category']] + "\"></i>&nbsp;";
-  }
+  };
 
   self.dispDescription = function() {
     //TODO: this display of data is very elementary and basic. IMPROVE greatly in the future...
@@ -221,7 +221,7 @@ function TransactionHistoryItemViewModel(data) {
     } else if (self.RAW_TX_TYPE == 'order_match_expirations') {
       desc = i18n.t("hist_order_match_expired", self.DATA['order_match_id']);
     } else if (self.RAW_TX_TYPE == 'credits' || self.RAW_TX_TYPE == 'debits') {
-      var tx_type = (self.RAW_TX_TYPE == 'credits' ? i18n.t('hist_credited_with') : i18n.t('hist_debited_for'))
+      var tx_type = (self.RAW_TX_TYPE == 'credits' ? i18n.t('hist_credited_with') : i18n.t('hist_debited_for'));
       desc = i18n.t("hist_credit_debit", getLinkForCPData('address', self.DATA['address'], getAddressLabel(self.DATA['address'])), tx_type,
         smartFormat(normalizeQuantity(self.DATA['quantity'], self.DATA['_divisible'])), self.DATA['asset']);
 
@@ -260,7 +260,7 @@ function TransactionHistoryViewModel() {
     });
     //the first address will be automatically selected by default
     //addressChanged will naturally trigger on load
-  }
+  };
 
   self.selectedAddress.subscribeChanged(function(newSelection, prevSelection) {
     if (newSelection == self.ADDRESS_LASTCHANGE) return; //just in case for screwy browsers...

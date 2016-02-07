@@ -18,7 +18,7 @@ function DonationViewModel() {
       message: i18n.t('quantity_exceeds_balance'),
       params: self
     }
-  }
+  };
 
   self.shown = ko.observable(false);
   self.availableAddresses = ko.observableArray([]);
@@ -36,11 +36,11 @@ function DonationViewModel() {
   self.show = function() {
     self.init();
     self.shown(true);
-  }
+  };
 
   self.hide = function() {
     self.shown(false);
-  }
+  };
 
   self.init = function() {
 
@@ -48,7 +48,7 @@ function DonationViewModel() {
     self.availableAddresses([]);
     self.balancesXCP = {};
     var addresses = WALLET.getAddressesList(true);
-    var options = []
+    var options = [];
     for (var i = 0; i < addresses.length; i++) {
       var btcBalance = WALLET.getBalance(addresses[i][0], 'BTC', true);
       options.push({
@@ -59,7 +59,7 @@ function DonationViewModel() {
       self.balancesXCP[addresses[i][0]] = addresses[i][2];
     }
     self.availableAddresses(options);
-  }
+  };
 
   self.submitDonation = function() {
     $.jqlog.debug('submitDonation');
@@ -88,7 +88,7 @@ function DonationViewModel() {
       message += " " + i18n.t("thank_you");
       message += "</b> ";
       WALLET.showTransactionCompleteDialog(message + " " + i18n.t(ACTION_PENDING_NOTICE), message, armoryUTx);
-    }
+    };
 
     WALLET.doTransaction(self.sourceAddress(), "create_send", params, onSuccess);
     self.hide();

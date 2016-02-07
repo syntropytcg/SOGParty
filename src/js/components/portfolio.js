@@ -44,7 +44,7 @@ var AssetPortfolioViewModel = AssetLeaderboardViewModel.extend(function() {
             info = $.grep(self.marketInfo, function(e) { return e.asset == asset; })[0]; //O(n^3) --- optimize!
             if (info) {
               self.myGraphTables[baseAsset]['rawValByAsset'][asset] = info ? assetTotalBal / info[baseAsset == 'XCP' ? 'price_in_xcp' : 'price_in_btc'] : null;
-              self.myGraphTables[baseAsset]['valByAsset'].push([asset, self.myGraphTables[baseAsset]['rawValByAsset'][asset]])
+              self.myGraphTables[baseAsset]['valByAsset'].push([asset, self.myGraphTables[baseAsset]['rawValByAsset'][asset]]);
               self.myGraphTables[baseAsset]['pctChange'].push({
                 name: asset,
                 data: [info ? (info[baseAsset == 'XCP' ? '24h_vol_price_change_in_xcp' : '24h_vol_price_change_in_btc'] || 0) : null]

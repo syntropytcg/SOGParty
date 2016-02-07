@@ -28,7 +28,7 @@ function AssetViewModel(props) {
 
   self.updateEscrowedBalance = function(delta) {
     self.escrowedBalance(self.escrowedBalance() + delta);
-  }
+  };
 
   self.isMine = ko.computed(function() {
     if (self.ASSET == 'BTC' || self.ASSET == 'XCP') return null; //special value for BTC and XCP
@@ -54,7 +54,7 @@ function AssetViewModel(props) {
     if (value == 0) {
       self.balanceChangePending(false);
     }
-  })
+  });
 
   self.availableBalance = ko.computed(function() {
     return addFloat(self.normalizedBalance(), self.unconfirmedBalance());

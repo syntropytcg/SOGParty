@@ -122,11 +122,11 @@ function noExponents(n) {
 //Usage: var userObject = {userId: 24, name: 'Jack Bauer'}; localStorage.setObject('user', userObject); userObject = localStorage.getObject('user');
 Storage.prototype.setObject = function(key, value) {
   this.setItem(key, JSON.stringify(value));
-}
+};
 Storage.prototype.getObject = function(key) {
   var value = this.getItem(key);
   return value && JSON.parse(value);
-}
+};
 
 //Object comparison -- From http://stackoverflow.com/a/1144249
 function deepCompare() {

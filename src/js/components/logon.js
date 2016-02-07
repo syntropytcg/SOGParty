@@ -24,11 +24,11 @@ function WalletCreationViewModel() {
     self.showQuickAccessFrame(false);
     self.shown(true);
     setTimeout(function() { selectText('generated') }, 200); //necessary due to fade in effect
-  }
+  };
 
   self.hide = function() {
     self.shown(false);
-  }
+  };
 
   self.generatePassphrase = function() {
     var m = new Mnemonic(128); //128 bits of entropy (12 word passphrase)
@@ -38,17 +38,17 @@ function WalletCreationViewModel() {
 
     //select the generated passphrase text
     selectText('generated');
-  }
+  };
 
   self.goToStep2 = function() {
     document.getElementById("homepairscontainer").innerHTML = "";
 
     self.step(2);
-  }
+  };
 
   self.showQuickAccessURLGUI = function() {
     self.showQuickAccessFrame(true);
-  }
+  };
 
   self.createWallet = function() {
     self.hide();
@@ -109,25 +109,25 @@ function LogonViewModel() {
     } catch (e) {
       $.jqlog.debug('error: ' + e)
     }
-  }
+  };
   self.cryptedPassphrase.subscribe(self.decryptEnteredPassphrase);
   self.passwordDecrypt.subscribe(self.decryptEnteredPassphrase);
 
   self.generatePassphrase = function() {
 
     WALLET_CREATION_MODAL.show();
-  }
+  };
 
   self.showSecureKeyboard = function() {
     LOGON_PASSWORD_MODAL.show();
-  }
+  };
 
   self.setExtraInfoOpacity = function(opacity) {
     $('#newAccountInfoPane').animate({opacity: opacity}); //fade out the new account pane if visible
     $('#createNewAcctBtnPane').animate({opacity: opacity}); //fade out the new account button pane if visible
     $('#extra-info').animate({opacity: opacity});
     $('#disclaimer').animate({opacity: opacity});
-  }
+  };
 
   self.openWallet = function() {
     //Start with a gate check to make sure at least one of the servers is ready and caught up before we try to log in
@@ -165,7 +165,7 @@ function LogonViewModel() {
         }
 
         // set quote assets
-        QUOTE_ASSETS = data['quote_assets']
+        QUOTE_ASSETS = data['quote_assets'];
 
         QUICK_BUY_ENABLE = data['quick_buy_enable'];
 
@@ -181,7 +181,7 @@ function LogonViewModel() {
         var message = describeError(jqXHR, textStatus, errorThrown);
         bootbox.alert(i18n.t("no_counterparty_error", message));
       });
-  }
+  };
 
 
   self.onReceivedPreferences = function(data) {
@@ -235,7 +235,7 @@ function LogonViewModel() {
     WALLET_OPTIONS_MODAL.selectedTheme(PREFERENCES['selected_theme']);
 
     self.displayLicenseIfNecessary(mustSavePreferencesToServer);
-  }
+  };
 
   self.displayLicenseIfNecessary = function(mustSavePreferencesToServer) {
     if (!PREFERENCES['has_accepted_license']) {
@@ -244,7 +244,7 @@ function LogonViewModel() {
       //Generate the wallet addresses
       self.openWalletPt2(mustSavePreferencesToServer);
     }
-  }
+  };
 
   self.openWalletPt2 = function(mustSavePreferencesToServer) {
     //generate the appropriate number of addresses
@@ -253,7 +253,7 @@ function LogonViewModel() {
     //kick off address generation (we have to take this hacky approach of using setTimeout, otherwise the
     // progress bar does not update correctly through the HD wallet build process....)
     setTimeout(function() { self.genAddress(mustSavePreferencesToServer, PREFERENCES['num_addresses_used']) }, 1);
-  }
+  };
 
   self.genAddress = function(mustSavePreferencesToServer, addressCount) {
 
@@ -308,7 +308,7 @@ function LogonViewModel() {
 
       }
     });
-  }
+  };
 
   self.updateBalances = function(additionalBTCAddresses, onSuccess) {
     //updates all balances for all addesses, creating the asset objects on the address if need be
@@ -316,7 +316,7 @@ function LogonViewModel() {
       //^ specify true here to start a recurring get BTC balances timer chain
       WALLET.refreshCounterpartyBalances(WALLET.getAddressesList(), onSuccess);
     });
-  }
+  };
 
   self.openWalletPt3 = function(mustSavePreferencesToServer) {
     //add in the armory and watch only addresses
@@ -358,7 +358,7 @@ function LogonViewModel() {
 
     //Update the wallet balances (isAtLogon = true)
     self.updateBalances(additionalBTCAddresses, self.openWalletPt4);
-  }
+  };
 
   self.openWalletPt4 = function() {
     /* hide the login div and show the other divs */
@@ -393,16 +393,16 @@ function LicenseModalViewModel() {
 
     //Load in the license file text into the textarea
     $("#licenseAgreementText").val(i18n.t('license'));
-  }
+  };
 
   self.hide = function() {
     self.shown(false);
-  }
+  };
 
   self.rejectTerms = function() {
     self.hide();
     LOGON_VIEW_MODEL.setExtraInfoOpacity(100);
-  }
+  };
 
   self.acceptTerms = function() {
     //Continue on to generate the wallet addresses
@@ -473,7 +473,7 @@ function LogonPasswordModalViewModel() {
     self.pwPart11('');
     self.pwPart12('');
     self.validationModel.errors.showAllMessages(false);
-  }
+  };
 
   self.submitForm = function() {
     if (!self.validationModel.isValid()) {
@@ -482,7 +482,7 @@ function LogonPasswordModalViewModel() {
     }
     //data entry is valid...submit to trigger doAction()
     $('#logonPassphaseModal form').submit();
-  }
+  };
 
   self.show = function(resetForm) {
     if (typeof(resetForm) === 'undefined') resetForm = true;
@@ -530,11 +530,11 @@ function LogonPasswordModalViewModel() {
     };
 
     self.shown(true);
-  }
+  };
 
   self.hide = function() {
     self.shown(false);
-  }
+  };
 
   self.doAction = function() {
     //simply fill in the data back into the passphrase field and close the dialog

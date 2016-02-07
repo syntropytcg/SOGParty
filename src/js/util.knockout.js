@@ -59,7 +59,7 @@ ko.bindingHandlers.timeago = {
     element.title = moment(valueUnwrapped).toISOString();
     $(element).timeago('update', element.title);
   }
-}
+};
 
 var initDateTimePicker = function(locale) {
   ko.bindingHandlers.datetimepicker = {
@@ -234,7 +234,7 @@ function createSharedKnockoutValidators() {
       failoverAPI("get_issuances",
         {'filters': {'field': 'asset', 'op': '==', 'value': val}, 'status': 'valid'},
         function(data, endpoint) {
-          return data.length ? callback(false) : callback(true) //empty list -> true (valid = true)
+          return data.length ? callback(false) : callback(true); //empty list -> true (valid = true)
         }
       );
     }
@@ -248,7 +248,7 @@ function createSharedKnockoutValidators() {
       failoverAPI("get_issuances", {'filters': {'field': 'asset', 'op': '==', 'value': val}, 'status': 'valid'},
         function(data, endpoint) {
           $.jqlog.debug("Asset exists: " + data.length);
-          return data.length ? callback(true) : callback(false) //empty list -> false (valid = false)
+          return data.length ? callback(true) : callback(false); //empty list -> false (valid = false)
         }
       );
     }
@@ -307,7 +307,7 @@ ko.bindingHandlers.btnGroupChecked = {
       $(element).removeClass('active');
     }
   }
-}
+};
 
 ko.bindingHandlers.select2 = {
   //From https://github.com/ivaynberg/select2/wiki/Knockout.js-Integration

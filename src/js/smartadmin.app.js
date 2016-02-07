@@ -78,7 +78,7 @@ $(document).ready(function() {
   }
 
   //TODO: was moved from window.load due to IE not firing consist
-  nav_page_height()
+  nav_page_height();
 
   // INITIALIZE LEFT NAV
   if (!null) {
@@ -175,8 +175,8 @@ $(document).ready(function() {
   });
 
   $('button[data-loading-text]').on('click', function() {
-    var btn = $(this)
-    btn.button('loading')
+    var btn = $(this);
+    btn.button('loading');
     setTimeout(function() {
       btn.button('reset')
     }, 3000)
@@ -283,7 +283,7 @@ $(document).ready(function() {
   function shortcut_buttons_show() {
     $.shortcut_dropdown.animate({
       height : "show"
-    }, 200, "easeOutCirc")
+    }, 200, "easeOutCirc");
     $.root_.addClass('shortcut-on');
   }
 
@@ -361,7 +361,7 @@ $(document).ready(function() {
         //COUNTERWALLETD: END MOD
 
         old_handler.apply(this, arguments);
-      };
+      }
       if ($.isFunction(handleObj)) {
         old_handler = handleObj;
         return new_handler;
@@ -399,8 +399,7 @@ $(document).ready(function() {
 
     }, jq_resize[str_delay]);
 
-  };
-
+  }
 })(jQuery, this);
 
 /*
@@ -430,11 +429,11 @@ function nav_page_height() {
 $('#main').resize(function() {
   nav_page_height();
   check_if_mobile_width();
-})
+});
 
 $('nav').resize(function() {
   nav_page_height();
-})
+});
 
 function check_if_mobile_width() {
   if ($(window).width() < 979) {
@@ -714,8 +713,8 @@ function runAllForms() {
    * Usage: <button type="button" data-loading-text="Loading..." class="btn btn-xs btn-default ajax-refresh"> .. </button>
    */
   $('button[data-loading-text]').on('click', function() {
-    var btn = $(this)
-    btn.button('loading')
+    var btn = $(this);
+    btn.button('loading');
     setTimeout(function() {
       btn.button('reset')
     }, 3000)
@@ -850,7 +849,7 @@ function runAllCharts() {
       //BULLET
       if (sparklineType == 'bullet') {
 
-        var thisBulletHeight = $this.data('sparkline-height') || 'auto', thisBulletWidth = $this.data('sparkline-width') || 2, thisBulletColor = $this.data('sparkline-bullet-color') || '#ed1c24', thisBulletPerformanceColor = $this.data('sparkline-performance-color') || '#3030f0', thisBulletRangeColors = $this.data('sparkline-bulletrange-color') || ["#d3dafe", "#a8b6ff", "#7f94ff"]
+        var thisBulletHeight = $this.data('sparkline-height') || 'auto', thisBulletWidth = $this.data('sparkline-width') || 2, thisBulletColor = $this.data('sparkline-bullet-color') || '#ed1c24', thisBulletPerformanceColor = $this.data('sparkline-performance-color') || '#3030f0', thisBulletRangeColors = $this.data('sparkline-bulletrange-color') || ["#d3dafe", "#a8b6ff", "#7f94ff"];
 
         $this.sparkline('html', {
 
@@ -907,7 +906,7 @@ function runAllCharts() {
       //COMPOSITE: BAR
       if (sparklineType == 'compositebar') {
 
-        var sparklineHeight = $this.data('sparkline-height') || '20px', sparklineWidth = $this.data('sparkline-width') || '100%', sparklineBarWidth = $this.data('sparkline-barwidth') || 3, thisLineWidth = $this.data('sparkline-line-width') || 1, thisLineColor = $this.data('sparkline-color-top') || '#ed1c24', thisBarColor = $this.data('sparkline-color-bottom') || '#333333'
+        var sparklineHeight = $this.data('sparkline-height') || '20px', sparklineWidth = $this.data('sparkline-width') || '100%', sparklineBarWidth = $this.data('sparkline-barwidth') || 3, thisLineWidth = $this.data('sparkline-line-width') || 1, thisLineColor = $this.data('sparkline-color-top') || '#ed1c24', thisBarColor = $this.data('sparkline-color-bottom') || '#333333';
 
         $this.sparkline($this.data('sparkline-bar-val'), {
 
@@ -918,7 +917,7 @@ function runAllCharts() {
           barWidth : sparklineBarWidth
           //barSpacing: 5
 
-        })
+        });
 
         $this.sparkline($this.data('sparkline-line-val'), {
 
@@ -957,7 +956,7 @@ function runAllCharts() {
           lineColor : thisLineColor1,
           fillColor : thisFillColor1
 
-        })
+        });
 
         $this.sparkline($this.data('sparkline-line-val'), {
 
@@ -1130,7 +1129,7 @@ var gMapsLoaded = false;
 window.gMapsCallback = function() {
   gMapsLoaded = true;
   $(window).trigger('gMapsLoaded');
-}
+};
 window.loadGoogleMaps = function() {
   if (gMapsLoaded)
     return window.gMapsCallback();
@@ -1138,7 +1137,7 @@ window.loadGoogleMaps = function() {
   script_tag.setAttribute("type", "text/javascript");
   script_tag.setAttribute("src", "http://maps.google.com/maps/api/js?sensor=false&callback=gMapsCallback");
   (document.getElementsByTagName("head")[0] || document.documentElement).appendChild(script_tag);
-}
+};
 /* ~ END: GOOGLE MAPS */
 
 /*
@@ -1150,7 +1149,7 @@ window.loadGoogleMaps = function() {
 
 //COUNTERWALLET: START MOD
 function loadScript(scriptName, callback) {
-  var scriptID = "script_" + scriptName.replace(/\//g, "__").replace(/\.js/g, "")
+  var scriptID = "script_" + scriptName.replace(/\//g, "__").replace(/\.js/g, "");
   if($("#" + scriptID).length == 0 || IS_DEV) {
     //script doesn't exist, or it does and we're in dev mode (which means we should reinit the script to catch code changes)
     if(IS_DEV) {
@@ -1186,9 +1185,8 @@ if($.navAsAjax)
     // fire this on page load if nav exists
     if ($('nav').length) {
       checkURL();
-    };
-
-    $(document).on('click', 'nav a[href!="#"]', function(e) {
+    }
+  $(document).on('click', 'nav a[href!="#"]', function(e) {
       e.preventDefault();
       var $this = $(e.currentTarget);
 
@@ -1270,7 +1268,7 @@ function checkURL() {
     $('nav li.active').removeClass("active");
     // match the url and add the active class
     $('nav li:has(a[href="' + url + '"])').addClass("active");
-    var title = ($('nav a[href="' + url + '"]').attr('title'))
+    var title = ($('nav a[href="' + url + '"]').attr('title'));
 
     // change page title from global var
     document.title = (title || document.title);

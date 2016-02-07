@@ -25,7 +25,7 @@ var AssetLeaderboardViewModel = CClass.create(function() {
         self.generateMarketCapHistoryGraph();
       });
     }
-  }
+  };
 
   self.updateMarketInfo = function() {
     //Compose the table this has changed
@@ -127,15 +127,15 @@ var AssetLeaderboardViewModel = CClass.create(function() {
       ]
     });
     self.generateAssetMiniCharts();
-  }
+  };
 
   self.showPortfolioInXCP = function() {
     self.showPortfolioIn("XCP");
-  }
+  };
 
   self.showPortfolioInBTC = function() {
     self.showPortfolioIn("BTC");
-  }
+  };
 
   self.showPortfolioIn.subscribeChanged(function(newValue, prevValue) {
     if (!prevValue) return; //initial setting on initialization, ignore
@@ -166,7 +166,7 @@ var AssetLeaderboardViewModel = CClass.create(function() {
         });
       }
     }
-  }
+  };
 
   self.generateMarketCapHistoryGraph = function() {
     assert(self.isLeaderboard);
@@ -193,7 +193,7 @@ var AssetLeaderboardViewModel = CClass.create(function() {
       },
       series: self.marketCapHistory[self.showPortfolioIn()]
     });
-  }
+  };
 
   self.dataTableResponsive = function(e) {
     // Responsive design for our data tables and more on this page
@@ -227,7 +227,7 @@ AssetLeaderboardViewModel.formulateExtendedAssetInfo = function(asset, hasImage,
     dispAsset += asset; //keep it simple for now for avoid XSS
   }
   return dispAsset;
-}
+};
 
 /*NOTE: Any code here is only triggered the first time the page is visited. Put JS that needs to run on the
   first load and subsequent ajax page switches in the .html <script> tag*/

@@ -32,5 +32,5 @@ Counterblock.getBalances = function(addresses, cwkeys, callback) {
     });
   });
 
-}
+};
 

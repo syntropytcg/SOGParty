@@ -52,7 +52,7 @@ function localeInit(callback) {
     lngWhitelist: AVAILABLE_LANGUAGES,
     resGetPath: 'locales/__lng__/__ns__.json',
     shorcutFunction: 'sprintf'
-  }
+  };
   i18n.init(options, function() {
     callback();
     createSharedKnockoutValidators();
@@ -120,7 +120,7 @@ ko.bindingHandlers['locale'] = {
     var key = ko.unwrap(valueAccessor());
     var localeArgs = ko.toJS(allBindings.get('localeArgs'));
     var args = [];
-    var argsType = Object.prototype.toString.call(localeArgs)
+    var argsType = Object.prototype.toString.call(localeArgs);
     if (argsType == "[object Object]") {
       for (var k in localeArgs) {
         args.push(localeArgs[k]);
@@ -143,7 +143,7 @@ ko.bindingHandlers['localeAttr'] = {
       var args = [];
       if (attributesArgs[attrName]) {
         var attrArgs = ko.toJS(attributesArgs[attrName]);
-        var argsType = Object.prototype.toString.call(attrArgs)
+        var argsType = Object.prototype.toString.call(attrArgs);
         if (argsType == "[object Object]") {
           for (var k in attrArgs) {
             args.push(attrArgs[k]);
