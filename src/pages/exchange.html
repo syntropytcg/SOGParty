@@ -205,13 +205,13 @@
 
 
   <div class="row">
-
+<!--buy is quote for base, sell is base for quote-->
     <article class="col-xs-12 col-sm-12 col-md-6 col-lg-6"> <!-- NEW WIDGET START -->
       <div class="jarviswidget defaultWidgetColor" id="wid-id-orderBook" data-widget-editbutton="false" data-widget-deletebutton="false"
        data-widget-colorbutton="false" data-widget-fullscreenbutton="false" data-widget-togglebutton="false" data-widget-sortable="false" data-widget-grid="false" data-bind="fadeVisibleInOnly: validationModelBaseOrders.isValid() && !dexHome()">
         <header>
             <span class="widget-icon"> <i class="fa fa-sort-amount-desc"></i> </span>
-            <h3 data-bind="locale: 'sell_orders'"></h3>
+            <h3><span data-bind="text: 'Offers of ' + baseAsset + ' For ' + quoteAsset"></span></h3>
             <div class="clearfix"></div>
         </header>
         <div> <!-- widget div-->
@@ -244,7 +244,7 @@
        data-widget-colorbutton="false" data-widget-fullscreenbutton="false" data-widget-togglebutton="false" data-widget-sortable="false" data-widget-grid="false" data-bind="fadeVisibleInOnly: validationModelBaseOrders.isValid() && !dexHome()">
         <header>
             <span class="widget-icon"> <i class="fa fa-sort-amount-desc"></i> </span>
-            <h3 data-bind="locale: 'buy_orders'"></h3>
+            <h3><span data-bind="text: 'Offers of ' + quoteAsset + ' For ' + baseAsset"></span></h3>
             <div class="clearfix"></div>
         </header>
         <div> <!-- widget div-->
@@ -363,7 +363,7 @@
                    data-widget-colorbutton="false" data-widget-fullscreenbutton="false" data-widget-togglebutton="false" data-widget-sortable="false" data-widget-grid="false" data-bind="fadeVisibleInOnly: validationModelBaseOrders.isValid() && !dexHome()">
                   <header>
                       <span class="widget-icon"> <i class="fa fa-sort-amount-desc"></i> </span>
-                      <h3 class="tradeForm" data-bind="text: 'Buy ' + baseAsset"></h3>
+                      <h3 class="tradeForm" data-bind="text: 'I Want To Get: ' + baseAsset"></h3>
                       <div class="clearfix"></div>
                   </header>
                   <div> <!-- widget div-->
@@ -456,7 +456,7 @@
                                           <td>BTC</td>
                                       </tr>
                                       <tr>
-                                          <td colspan="3" style="text-align:center"><a id="buyButton" class="btn btn-default btn-lg" data-bind="click: buy">Buy (<span data-bind="text: quoteAsset + '→' + baseAsset"></span>)</a></td>
+                                          <td colspan="3" style="text-align:center"><a id="buyButton" class="btn btn-primary btn-md" data-bind="click: buy">Offer <span data-bind="text: quoteAsset"></span> For <span data-bind="text: baseAsset"></span></a></td>
                                       </tr>
                                       </tbody>
                                   </table>
@@ -472,7 +472,7 @@
                    data-widget-colorbutton="false" data-widget-fullscreenbutton="false" data-widget-togglebutton="false" data-widget-sortable="false" data-widget-grid="false" data-bind="fadeVisibleInOnly: validationModelBaseOrders.isValid() && !dexHome()">
                   <header>
                       <span class="widget-icon"> <i class="fa fa-sort-amount-desc"></i> </span>
-                      <h3 class="tradeForm" data-bind="text: 'Sell ' + baseAsset"></h3>
+                      <h3 class="tradeForm" data-bind="text: 'I Want To Get: ' + quoteAsset"></h3>
                       <div class="clearfix"></div>
                   </header>
                   <div> <!-- widget div-->
@@ -565,7 +565,7 @@
                                           <td>BTC</td>
                                       </tr>
                                       <tr>
-                                          <td colspan="3" style="text-align:center"><a id="sellButton" class="btn btn-default btn-lg" data-bind="click: sell"><span data-bind="locale: 'Sell'"></span> (<span data-bind="text:baseAsset + '→' + quoteAsset"></span>)</a></td>
+                                          <td colspan="3" style="text-align:center"><a id="sellButton" class="btn btn-primary btn-md" data-bind="click: sell">Offer <span data-bind="text: baseAsset"></span> For <span data-bind="text: quoteAsset"></span></a></td>
                                       </tr>
                                       </tbody>
                                   </table>
