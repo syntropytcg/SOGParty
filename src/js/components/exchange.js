@@ -541,7 +541,8 @@ function ExchangeViewModel() {
             total = mulFloat(amount, price);
         } else if (!self.quoteAssetIsDivisible() && self.baseAssetIsDivisible()) {
             total = Math.floor(total);
-            amount = total.div(price);
+            amount = divFloat(total, price);
+
         }
 
         self.buyPrice(roundAmount(price));

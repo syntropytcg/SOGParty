@@ -5,8 +5,11 @@
 SoGParty
 ================
 
-- This is a hobby/project forking counterwallet and adapting it specifically for Spells of Genesis. This project is going to be entered into the DEVPARTY contest, please vote for it!
-- Note: SOGPARTY's ShapeShift.io integration requires  my **[forked ShapeShift Skeleton](https://github.com/x-ETHeREAL-x/ShapeShift-Skeleton)** to enable ShapeShift functionality in the wallet. 
+- This is a project forking counterwallet and adapting it specifically for Spells of Genesis gaming assets. This project is going to be entered into the DEVPARTY contest, please vote for it!
+
+- Note #1: SOGPARTY requires my **[forked Counterblock server](https://github.com/x-ETHeREAL-x/SOGPartyBlock)** to enable BITCRYSTALS denominatted markets to work. These markets must give priority to BITCRYSTALS as a quote asset like XCP/BTC over the cards. Without this change the BCY markets trade denomated in the card assets and require awkward decimal approximations that induce rounding errors. 
+
+- Note #2: SOGPARTY's ShapeShift.io integration requires  my **[forked ShapeShift Skeleton](https://github.com/x-ETHeREAL-x/ShapeShift-Skeleton)** to enable ShapeShift functionality in the wallet. 
 
 Devparty Contest 
 -------------------
