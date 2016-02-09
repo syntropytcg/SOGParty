@@ -43,6 +43,10 @@ ko.validation.registerExtenders();
 function ExchangeViewModel() {
     var self = this;
     self.dexHome = ko.observable(true);
+    self.showSingleCurrency = ko.observable(true);
+    self.availableFiat = ko.observableArray(['USD','CNY','GBP','AUD','EUR','MXN','CHF']);
+
+
 
     self._lastWindowWidth = null;
 
@@ -892,8 +896,10 @@ function ExchangeViewModel() {
             document.getElementById("AssetPairMarketInfo-loader-done").style.display = "block";
 
             self.allPairs([]);
+
             $('#AssetPairMarketInfo').dataTable().fnClearTable();
             self.allPairs(self.SOGHomePairsData);
+
             runDataTables('#AssetPairMarketInfo', true, {});
             spinner.stop();
         } else {
@@ -1018,6 +1024,8 @@ function ExchangeViewModel() {
     };
 
     self.fetchAllHomePairs = function () {
+        self.showSingleCurrency(true);
+        self.exchangSelection = "XCP";
         try {
             self.allPairs([]);
             $('#AssetPairMarketInfo').dataTable().fnClearTable();
@@ -1063,9 +1071,14 @@ function ExchangeViewModel() {
             };
             failoverAPI('get_market_details', params, self.getorderdata);
         }
+
+
+
     };
 
     self.fetchAllPairsByBase = function (base) {
+        self.showSingleCurrency(true);
+        self.exchangSelection = base;
         try {
             self.allPairs([]);
             $('#AssetPairMarketInfo').dataTable().fnClearTable();
@@ -1120,6 +1133,7 @@ function ExchangeViewModel() {
     self.fetchAllPairs = function () {
 
 
+
         self.fetchAllHomePairs();
         /*
          try {
@@ -1167,7 +1181,6 @@ function ExchangeViewModel() {
 
     self.fetchAllPairsByBCY = function () {
 
-
         self.fetchAllPairsByBase("BITCRYSTALS");
         /*
          try {
@@ -1189,8 +1202,197 @@ function ExchangeViewModel() {
 
     self.fetchAllPairsByBTC = function () {
 
+
         self.fetchAllPairsByBase("BTC");
     };
+
+
+    self.getorderdata_all = function (data) {
+
+        //self.SOGHomePairsData already has one dataset in it for the base asset
+
+        for (var k in self.SOGHomePairsData) {
+            if (self.SOGHomePairsData[k].base_asset == data.base_asset) {
+                //on the right card
+                if (data['quote_asset'] == "XCP") {
+
+                    var last = data['last_trades'].shift();
+                    if (last == undefined) {
+                        self.SOGHomePairsData[k].lasttrade_xcp = "No XCP Trades";
+                    } else {
+                        self.SOGHomePairsData[k].lasttrade_xcp = smartFormat(parseFloat(last.price)) + " XCP (" + last.type + ")";
+
+                    }
+
+
+                    var buyorder = data['buy_orders'].shift();
+
+                    var sellorder = data['sell_orders'].shift();
+                    if (buyorder == undefined) {
+                        self.SOGHomePairsData[k].highbuy_xcp = "No XCP Buy Offers";
+
+                    } else {
+                        self.SOGHomePairsData[k].highbuy_xcp = smartFormat(parseFloat(buyorder.price)) + " XCP";
+                    }
+                    if (sellorder == undefined) {
+                        self.SOGHomePairsData[k].lowsell_xcp =  "No XCP Sell Offers";
+                    } else {
+                        self.SOGHomePairsData[k].lowsell_xcp = smartFormat(parseFloat(sellorder.price)) + " XCP";
+                    }
+                } else if (data['quote_asset'] == "BITCRYSTALS") {
+
+                    var last = data['last_trades'].shift();
+                    if (last == undefined) {
+                        self.SOGHomePairsData[k].lasttrade_bcy = "No BITCRYSTALS Trades";
+                    } else {
+                        self.SOGHomePairsData[k].lasttrade_bcy = smartFormat(parseFloat(last.price)) + " BITCRYSTALS (" + last.type + ")";
+
+                    }
+
+
+                    var buyorder = data['buy_orders'].shift();
+
+                    var sellorder = data['sell_orders'].shift();
+                    if (buyorder == undefined) {
+                        self.SOGHomePairsData[k].highbuy_bcy = "No BITCRYSTALS Buy Offers";
+
+                    } else {
+                        self.SOGHomePairsData[k].highbuy_bcy = smartFormat(parseFloat(buyorder.price)) + " BITCRYSTALS";
+                    }
+                    if (sellorder == undefined) {
+                        self.SOGHomePairsData[k].lowsell_bcy =  "No BITCRYSTALS Sell Offers";
+                    } else {
+                        self.SOGHomePairsData[k].lowsell_bcy = smartFormat(parseFloat(sellorder.price)) + " BITCRYSTALS";
+                    }
+                } else if (data['quote_asset'] == "BTC") {
+
+                    var last = data['last_trades'].shift();
+                    if (last == undefined) {
+                        self.SOGHomePairsData[k].lasttrade_btc = "No BTC Trades";
+                    } else {
+                        self.SOGHomePairsData[k].lasttrade_btc = smartFormat(parseFloat(last.price)) + " BTC (" + last.type + ")";
+
+                    }
+
+
+                    var buyorder = data['buy_orders'].shift();
+
+                    var sellorder = data['sell_orders'].shift();
+                    if (buyorder == undefined) {
+                        self.SOGHomePairsData[k].highbuy_btc = "No BTC Buy Offers";
+
+                    } else {
+                        self.SOGHomePairsData[k].highbuy_btc = smartFormat(parseFloat(buyorder.price)) + " BTC";
+                    }
+                    if (sellorder == undefined) {
+                        self.SOGHomePairsData[k].lowsell_btc = "No BTC Sell Offers";
+                    } else {
+                        self.SOGHomePairsData[k].lowsell_btc = smartFormat(parseFloat(sellorder.price));+ " BTC";
+                    }
+                } else console.log("Something went wrong");
+            }
+        }
+
+
+
+        self.numSOGHomePairs++;
+        if (self.numSOGHomePairs == (SOGAssetArray.length * 3)) {
+            console.log("done should load now");
+            document.getElementById("AssetPairMarketInfo-loaderAll").innerHTML = "";
+            document.getElementById("AssetPairMarketInfo-loader-doneAll").style.display = "block";
+
+            self.allPairs([]);
+            $('#AssetPairMarketInfoAll').dataTable().fnClearTable();
+
+            self.allPairs(self.SOGHomePairsData);
+            runDataTables('#AssetPairMarketInfoAll', true, {});
+
+            spinner.stop();
+        } else {
+
+            var h = "<h3><b>Loading Market Data For Market Number " + self.numSOGHomePairs + " Out Of " + (SOGAssetArray.length*3) + "</b></h3>";
+            document.getElementById("AssetPairMarketInfo-loaderAll").innerHTML = h;
+
+        }
+
+
+    };
+
+
+    self.fetchAllPairsCombined = function () {
+        self.showSingleCurrency(false);
+        self.exchangSelection = "All";
+
+
+
+        try {
+            self.allPairs([]);
+            $('#AssetPairMarketInfoAll').dataTable().fnClearTable();
+        } catch (e) {
+        }
+
+        var opts = {
+            lines: 13 // The number of lines to draw
+            , length: 16 // The length of each line
+            , width: 9 // The line thickness
+            , radius: 17 // The radius of the inner circle
+            , scale: 1 // Scales overall size of the spinner
+            , corners: 1 // Corner roundness (0..1)
+            , color: '#000' // #rgb or #rrggbb or array of colors
+            , opacity: 0.45 // Opacity of the lines
+            , rotate: 31 // The rotation offset
+            , direction: 1 // 1: clockwise, -1: counterclockwise
+            , speed: 1.3 // Rounds per second
+            , trail: 60 // Afterglow percentage
+            , fps: 20 // Frames per second when using setTimeout() as a fallback for CSS
+            , zIndex: 2e9 // The z-index (defaults to 2000000000)
+            , className: 'spinner' // The CSS class to assign to the spinner
+            , top: '49%' // Top position relative to parent
+            , left: '51%' // Left position relative to parent
+            , shadow: false // Whether to render a shadow
+            , hwaccel: false // Whether to use hardware acceleration
+            , position: 'absolute' // Element positioning
+        };
+        var target = document.getElementById('AssetPairMarketInfoAll');
+        spinner = new Spinner(opts).spin(target);
+        //we keep the old data from one of the prior sets to set the structure, this
+        //will always be set since all never gets called first.
+        //self.SOGHomePairsData = [];
+        self.numSOGHomePairs = 0;
+
+        document.getElementById("AssetPairMarketInfo-loader-doneAll").style.display = "none";
+        var h = "<h3><b>Loading Market Data...</b></h3>";
+        document.getElementById("AssetPairMarketInfo-loaderAll").innerHTML = h;
+
+        for (var i = 0; i < SOGAssetArray.length; i++) {
+
+            var params = {
+                'asset1': SOGAssetArray[i],
+                'asset2': "XCP"
+
+            };
+            failoverAPI('get_market_details', params, self.getorderdata_all);
+        }
+        for (var i = 0; i < SOGAssetArray.length; i++) {
+
+            var params = {
+                'asset1': SOGAssetArray[i],
+                'asset2': "BITCRYSTALS"
+
+            };
+            failoverAPI('get_market_details', params, self.getorderdata_all);
+        }
+        for (var i = 0; i < SOGAssetArray.length; i++) {
+
+            var params = {
+                'asset1': SOGAssetArray[i],
+                'asset2': "BTC"
+
+            };
+            failoverAPI('get_market_details', params, self.getorderdata_all);
+        }
+    };
+
 
 
     /* OLD
@@ -1236,6 +1438,7 @@ function ExchangeViewModel() {
      }
      */
     /* MARKET DETAILS */
+    self.showgraph = ko.observable(false);
 
     self.displayMarketDetails = function (data) {
 
@@ -1337,6 +1540,9 @@ function ExchangeViewModel() {
         self.tradeHistory(data['last_trades']);
         if (self.tradeHistory().length) {
             runDataTables('#tradeHistory', true, {"aaSorting": [[1, 'desc']]});
+            self.showgraph(true);
+        }else {
+            self.showgraph(false);
         }
 
         self.fetchOpenUserOrders();
@@ -1406,15 +1612,23 @@ function ExchangeViewModel() {
         });
 
     };
-
+    self.exchangSelection = "XCP";
     self.refresh = function () {
         if (self.dexHome()) {
-            //self.fetchTopUserPairs();
-            self.fetchAllPairs();
+            if (self.exchangSelection == "All")
+                self.fetchAllPairsCombined();
+            else
+                self.fetchAllPairsByBase(self.exchangSelection);
         } else {
             self.fetchMarketDetails();
         }
     };
+
+    self.backtodexhome = function(){
+        self.dexHome(true);
+        self.dexHome(true);
+
+    }
 
     self.metricsRefreshPriceChart = function () {
         var deferred = $.Deferred();

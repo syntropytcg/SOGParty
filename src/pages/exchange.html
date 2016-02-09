@@ -16,10 +16,9 @@
 
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" data-bind="visible: !dexHome()">
       <h1 style="text-align:center;position:relative;margin:0">
-        <a id="changeMarket" class="btn btn-md btn-primary" style="vertical-align:text-bottom;">
-          <span class="fa fa-arrow-left"><span>
-          <span data-bind="locale: 'all_markets'"></span>
-        </a>
+        <button id="changeMarket_" class="btn btn-md btn-primary" style="vertical-align:text-bottom;" data-bind='click: backtodexhome'>
+          Back To All Markets View
+        </button>
         <div class="pairTitle page-title txt-color-blueDark">
           <img data-bind="attr: {src: baseAssetImage()}, visible: baseAssetImage()!=''" />
           <span data-bind="text: dispAssetPair"></span>
@@ -89,19 +88,24 @@
 
 
 
-  <div data-bind="fadeVisibleInOnly: dexHome()" class="row"> <!-- row -->
+  <div data-bind="visible: dexHome() && showSingleCurrency()" class="row"> <!-- row -->
     <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> <!-- NEW WIDGET START -->
-      <div class="jarviswidget defaultWidgetColor" id="wid-id-assetPairMarketInfo" data-widget-editbutton="false" data-widget-sortable="false" data-widget-deletebutton="false" data-widget-colorbutton="false" data-widget-fullscreenbutton="false" data-widget-togglebutton="false"  data-widget-grid="false">
+      <div class="jarviswidget defaultWidgetColor" id="wid-id-assetPairMarketInfo_" data-widget-editbutton="false" data-widget-sortable="false" data-widget-deletebutton="false" data-widget-colorbutton="false" data-widget-fullscreenbutton="false" data-widget-togglebutton="false"  data-widget-grid="false">
         <header>
             <div id="AssetPairMarketInfo-loader"></div>
             <div id="AssetPairMarketInfo-loader-done" style="display: none;">
-            <h3><b>View All Card Sale Markets By Currency:</b></h3><span>&nbsp;&nbsp;&nbsp;</span>
+           <h3><b>View Card Sale Markets By Currency:</b></h3>&nbsp;&nbsp;&nbsp;
                 <div class='btn-group' style="margin-bottom: 0">
                     <button class='btn btn-primary btn-md' data-bind='click: fetchAllPairsByXCP'>XCP</button>&nbsp;
                     <button class='btn btn-primary btn-md' data-bind='click: fetchAllPairsByBCY'>BITCRYSTALS</button>&nbsp;
                     <button class='btn btn-primary btn-md' data-bind='click: fetchAllPairsByBTC'>BTC</button>
+                    <button class='btn btn-info btn-md' data-bind='click: fetchAllPairsCombined'>Compare All</button>
                 </div>
+
+
+
             </div>
+
 
         </header>
 
@@ -109,7 +113,7 @@
 
 
         <div> <!-- widget div-->
-            <div class="widget-body no-padding"> <!-- widget content -->
+            <div class="widget-body no-padding" id="bindingholderexchange"> <!-- widget content -->
                 <div class="widget-body-toolbar">
                 </div>
                 <table id="AssetPairMarketInfo" class="table table-striped table-bordered table-hover datatable_basic">
@@ -122,10 +126,6 @@
                         <th>Last Trade</th>
                         <th>Total Issued</th>
                         <th>Card Divisible?</th>
-
-
-
-
                     </tr>
                     </thead>
                     <tbody data-bind="foreach: allPairs">
@@ -165,6 +165,10 @@
                     </tr>
                     </tbody>
                 </table>
+
+
+
+
             </div> <!-- end widget content -->
         </div> <!-- end widget div -->
       </div> <!-- end widget -->
@@ -173,33 +177,118 @@
   </div> <!-- end row -->
 
 
-  <div class="alert alert-info font-medlg" data-bind="fadeVisibleInOnly: !dexHome() && currentMarketPrice() == 0">
-      <i class="fa-fw fa fa-times"></i> <span data-bind="locale: 'no_market_data_price'"></span>
-  </div>
 
-  <div class="row" data-bind="fadeVisibleInOnly: !dexHome() && currentMarketPrice() != 0">
-    <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> <!-- NEW WIDGET START -->
-      <div class="jarviswidget defaultWidgetColor" id="wid-id-priceCharts" data-widget-editbutton="false" data-widget-sortable="false" data-widget-deletebutton="false" data-widget-colorbutton="false" data-widget-fullscreenbutton="false" data-widget-togglebutton="false"  data-widget-grid="false">
-        <header>
-            <span class="widget-icon"> <i class="fa fa-bar-chart-o"></i> </span>
-            <h3 data-bind="locale: 'price_history_for', localeArgs: dispAssetPair"></h3>
-            <div class="clearfix"></div>
-        </header>
-        <div> <!-- widget div-->
-            <div class="widget-body no-padding"> <!-- widget content -->
-                <div class="row">
-                    <div class="col-md-12">
-                        <div id="priceHistory" class="buySellPriceHistory"></div>
+
+
+    <div data-bind="visible: dexHome() && !showSingleCurrency()" class="row"> <!-- row -->
+        <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> <!-- NEW WIDGET START -->
+            <div class="jarviswidget defaultWidgetColor" id="wid-id-assetPairMarketInfo" data-widget-editbutton="false" data-widget-sortable="false" data-widget-deletebutton="false" data-widget-colorbutton="false" data-widget-fullscreenbutton="false" data-widget-togglebutton="false"  data-widget-grid="false">
+                <header>
+                    <div id="AssetPairMarketInfo-loaderAll"></div>
+                    <div id="AssetPairMarketInfo-loader-doneAll" style="display: none;">
+                        <h3><b>View Card Sale Markets By Currency:</b></h3>&nbsp;&nbsp;&nbsp;
+                        <div class='btn-group' style="margin-bottom: 0">
+                            <button class='btn btn-primary btn-md' data-bind='click: fetchAllPairsByXCP'>XCP</button>&nbsp;
+                            <button class='btn btn-primary btn-md' data-bind='click: fetchAllPairsByBCY'>BITCRYSTALS</button>&nbsp;
+                            <button class='btn btn-primary btn-md' data-bind='click: fetchAllPairsByBTC'>BTC</button>
+                            <button class='btn btn-info btn-md' data-bind='click: fetchAllPairsCombined'>Compare All</button>
+                        </div>
+
+
+
                     </div>
-                </div>
-            </div> <!-- end widget content -->
-        </div> <!-- end widget div -->
-      </div> <!-- end widget -->
-    </article> <!-- WIDGET END -->
-  </div> <!-- end row -->
+
+
+                </header>
+
+                <div class="clearfix"></div>
+
+
+                <div> <!-- widget div-->
+                    <div class="widget-body no-padding"> <!-- widget content -->
+                        <div class="widget-body-toolbar">
+                        </div>
+
+                        <table id="AssetPairMarketInfoAll"  class="table table-striped table-bordered table-hover datatable_basic">
+                            <thead>
+                            <tr class="centerHeader">
+                                <th data-bind="locale: 'card_image'"></th>
+                                <th>Card Name</th>
+                                <th>High Buy Offers</th>
+                                <th>Low Sell Offers</th>
+                                <th>Last Trades</th>
+                                <th>Total Issued</th>
+                                <th>Card Divisible?</th>
+                            </tr>
+                            </thead>
+                            <tbody data-bind="foreach: allPairs">
+                            <tr>
+                                <td style="text-align:center">
+                                    <img data-bind="attr: {'src': 'https://sogparty.com/pages/SOGImages/' + base_asset + '.jpg', height:'240', width: '160'}">
+                                    <p>
+                                        <b><span data-bind="text: issued"></span></b>
+                                    </p>
+                                </td>
+                                <td style="with-space:nowrap">
+                                    <b><span data-bind="text: base_asset"></span></b>
+                                </td>
+                                <td style="with-space:nowrap">
+                                    <b><span data-bind="text: highbuy_xcp"></span></b><p></p>
+                                    <b><span data-bind="text: highbuy_bcy"></span></b><p></p>
+                                    <b><span data-bind="text: highbuy_btc"></span></b><p></p>
+                                </td>
+                                <td style="with-space:nowrap">
+                                    <b><span data-bind="text: lowsell_xcp"></span></b><p></p>
+                                    <b><span data-bind="text: lowsell_bcy"></span></b><p></p>
+                                    <b><span data-bind="text: lowsell_btc"></span></b><p></p>
+                                </td>
+                                <td>
+                                    <b><span data-bind="text: lasttrade_xcp"></span></b><p></p>
+                                    <b><span data-bind="text: lasttrade_bcy"></span></b><p></p>
+                                    <b><span data-bind="text: lasttrade_btc"></span></b><p></p>
+                                </td>
+                                <td class="number" data-bind="text: supply"></td>
+                                <td style="with-space:nowrap">
+                                    <span data-bind="text: divisible"></span>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
 
 
 
+                    </div> <!-- end widget content -->
+                </div> <!-- end widget div -->
+            </div> <!-- end widget -->
+        </article> <!-- WIDGET END -->
+
+    </div> <!-- end row -->
+
+
+    <div class="alert alert-info font-medlg" data-bind="fadeVisibleInOnly: !dexHome() && !showgraph()">
+        <i class="fa-fw fa fa-times"></i> <span data-bind="locale: 'no_market_data_price'"></span>
+    </div>
+
+    <div class="row" data-bind="fadeVisibleInOnly: !dexHome() && showgraph()">
+        <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> <!-- NEW WIDGET START -->
+            <div class="jarviswidget defaultWidgetColor" id="wid-id-priceCharts" data-widget-editbutton="false" data-widget-sortable="false" data-widget-deletebutton="false" data-widget-colorbutton="false" data-widget-fullscreenbutton="false" data-widget-togglebutton="false"  data-widget-grid="false">
+                <header>
+                    <span class="widget-icon"> <i class="fa fa-bar-chart-o"></i> </span>
+                    <h3 data-bind="locale: 'price_history_for', localeArgs: dispAssetPair"></h3>
+                    <div class="clearfix"></div>
+                </header>
+                <div> <!-- widget div-->
+                    <div class="widget-body no-padding"> <!-- widget content -->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div id="priceHistory" class="buySellPriceHistory"></div>
+                            </div>
+                        </div>
+                    </div> <!-- end widget content -->
+                </div> <!-- end widget div -->
+            </div> <!-- end widget -->
+        </article> <!-- WIDGET END -->
+    </div> <!-- end row -->
 
 
 

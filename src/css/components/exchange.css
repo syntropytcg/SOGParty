@@ -136,6 +136,9 @@ span.marketPrice {
 #assetPairMarketInfo td {
   cursor: pointer;
 }
+#assetPairMarketInfoAll td {
+    cursor: pointer;
+}
 
 table.buySellForm tbody tr td {
   vertical-align: middle;

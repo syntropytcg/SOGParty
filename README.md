@@ -2,10 +2,10 @@
 [![Build Status Circle](https://circleci.com/gh/CounterpartyXCP/counterwallet.svg?&style=shield)](https://circleci.com/gh/CounterpartyXCP/counterwallet)
 
 
-SoGParty
+Welcome To SoGParty!
 ================
 
-- This is a project forking counterwallet and adapting it specifically for Spells of Genesis gaming assets. This project is going to be entered into the DEVPARTY contest, please vote for it!
+- This is a full featured webwallet and peer-to-peer marketplace for the Spells of Genesis game card assets.
 
 - Note #1: SOGPARTY requires my **[forked Counterblock server](https://github.com/x-ETHeREAL-x/SOGPartyBlock)** to enable BITCRYSTALS denominatted markets to work. These markets must give priority to BITCRYSTALS as a quote asset like XCP/BTC over the cards. Without this change the BCY markets trade denomated in the card assets and require awkward decimal approximations that induce rounding errors. 
 
@@ -28,6 +28,7 @@ SOG-Specific DEX and Wallet Features
 
 - Asset limitation; only SOG card assets and BTC/BCY/XCP displayed
 - Standard high bid - low ask style market discovery
+- Allows comparing XCP, BTC, and BITCRYSTALS offers for each card in a single display
 - Card image associates with markets and wallet
 - Balances sort fixed with currencies (BTC, BCY, XCP) first with images
 - Non-focus on XCP currency, improved discovery of BTC/BCY markets
