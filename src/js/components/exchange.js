@@ -757,7 +757,7 @@ function ExchangeViewModel() {
 
         var rev = false;
 
-        if (data.base_asset == "BITCRYSTALS"){
+        if (data.base_asset == "BITCRYSTALS") {
             //need to reverse
             rev = true;
             data.base_asset = data.quote_asset;
@@ -767,7 +767,6 @@ function ExchangeViewModel() {
 
 
         }
-
 
 
         for (var j = 0; j < SOGAssetArray.length; j++) {
@@ -790,10 +789,10 @@ function ExchangeViewModel() {
 
         data.divisible = data.base_asset_divisible;
         if (typeof(data.divisible) === 'undefined') data.divisible = true;
-        if (data.divisible){
+        if (data.divisible) {
             data.divisible = "Yes!";
 
-        }   else {
+        } else {
             data.divisible = "No";
         }
         if (rev) {
@@ -803,7 +802,7 @@ function ExchangeViewModel() {
             } else {
                 data.lasttrade = smartFormat(1.0 / parseFloat(last.price)) + " " + data['quote_asset'] + " (" + last.type + ")";
             }
-        }else{
+        } else {
             var last = data['last_trades'].shift();
             if (last == undefined) {
                 data.lasttrade = "None";
@@ -815,7 +814,6 @@ function ExchangeViewModel() {
 
 
         data.volume = smartFormat(normalizeQuantity(data.volume, data.quote__asset_divisible)) + " " + data.quote_asset;
-
 
 
         if (rev)
@@ -850,7 +848,7 @@ function ExchangeViewModel() {
         }
         data.price = smartFormat(parseFloat(data.price));
 
-        if (rev){
+        if (rev) {
             var sellorder = data['buy_orders'].shift();
 
             var buyorder = data['sell_orders'].shift();
@@ -869,23 +867,32 @@ function ExchangeViewModel() {
             }
 
         } else {
-            var buyorder = data['buy_orders'].shift();
+            if (data['quote_asset'] == 'BTC') {
 
-            var sellorder = data['sell_orders'].shift();
-            if (buyorder == undefined) {
-                data.highbuy = "None";
-
+                data.highbuy = "Not Currently Supported";
             } else {
-                data.highbuy = smartFormat(parseFloat(buyorder.price)) + " " + data['quote_asset'];
+
+                var buyorder = data['buy_orders'].shift();
+
+
+                if (buyorder == undefined) {
+                    data.highbuy = "None";
+
+                } else {
+                    data.highbuy = smartFormat(parseFloat(buyorder.price)) + " " + data['quote_asset'];
+                }
             }
+            var sellorder = data['sell_orders'].shift();
             if (sellorder == undefined) {
                 data.lowsell = "None";
             } else {
                 data.lowsell = smartFormat(parseFloat(sellorder.price)) + " " + data['quote_asset'];
             }
-
-
         }
+
+
+
+
 
         self.SOGHomePairsData = self.SOGHomePairsData.concat(data);
 
@@ -1279,15 +1286,15 @@ function ExchangeViewModel() {
 
                     var sellorder = data['sell_orders'].shift();
                     if (buyorder == undefined) {
-                        self.SOGHomePairsData[k].highbuy_btc = "No BTC Buy Offers";
+                        self.SOGHomePairsData[k].highbuy_btc = "BTC Buy Orders Are Not Supported";
 
                     } else {
-                        self.SOGHomePairsData[k].highbuy_btc = smartFormat(parseFloat(buyorder.price)) + " BTC";
+                        self.SOGHomePairsData[k].highbuy_btc = "BTC Buy Orders Are Not Supported";
                     }
                     if (sellorder == undefined) {
                         self.SOGHomePairsData[k].lowsell_btc = "No BTC Sell Offers";
                     } else {
-                        self.SOGHomePairsData[k].lowsell_btc = smartFormat(parseFloat(sellorder.price));+ " BTC";
+                        self.SOGHomePairsData[k].lowsell_btc = smartFormat(parseFloat(sellorder.price))+ " BTC";
                     }
                 } else console.log("Something went wrong");
             }

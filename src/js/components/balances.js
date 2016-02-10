@@ -1892,7 +1892,7 @@ function ShapeShiftModalViewModel() {
 
     self.init = function(){
 
-
+        ssframe.sandbox="allow-same-origin allow-scripts allow-popups allow-forms";
         document.getElementById("shapeshiftmodeldiv").appendChild(ssframe);
         if (loadonce){
             loadonce = false;
