@@ -1621,19 +1621,26 @@ function ExchangeViewModel() {
     };
     self.exchangSelection = "XCP";
     self.refresh = function () {
-        if (self.dexHome()) {
-            if (self.exchangSelection == "All")
-                self.fetchAllPairsCombined();
-            else
-                self.fetchAllPairsByBase(self.exchangSelection);
-        } else {
-            self.fetchMarketDetails();
-        }
+
+        setTimeout(function () {
+
+
+            if (self.dexHome()) {
+                if (self.exchangSelection == "All")
+                    self.fetchAllPairsCombined();
+                else
+                    self.fetchAllPairsByBase(self.exchangSelection);
+
+            } else {
+                self.fetchMarketDetails();
+            }
+        }, Math.floor(Math.random() * 15000));
+
     };
 
     self.backtodexhome = function(){
         self.dexHome(true);
-        self.dexHome(true);
+
 
     }
 
