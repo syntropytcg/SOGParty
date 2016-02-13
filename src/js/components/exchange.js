@@ -44,6 +44,7 @@ function ExchangeViewModel() {
     var self = this;
     self.dexHome = ko.observable(true);
     self.showSingleCurrency = ko.observable(true);
+    self.showingSwapbots = ko.observable(false);
     self.availableFiat = ko.observableArray(['USD','CNY','GBP','AUD','EUR','MXN','CHF']);
 
 
@@ -1032,6 +1033,7 @@ function ExchangeViewModel() {
 
     self.fetchAllHomePairs = function () {
         self.showSingleCurrency(true);
+        self.showingSwapbots(false);
         self.exchangSelection = "XCP";
         try {
             self.allPairs([]);
@@ -1085,6 +1087,7 @@ function ExchangeViewModel() {
 
     self.fetchAllPairsByBase = function (base) {
         self.showSingleCurrency(true);
+        self.showingSwapbots(false);
         self.exchangSelection = base;
         try {
             self.allPairs([]);
@@ -1328,6 +1331,7 @@ function ExchangeViewModel() {
 
     self.fetchAllPairsCombined = function () {
         self.showSingleCurrency(false);
+        self.showingSwapbots(false);
         self.exchangSelection = "All";
 
 
@@ -1399,6 +1403,159 @@ function ExchangeViewModel() {
             failoverAPI('get_market_details', params, self.getorderdata_all);
         }
     };
+
+    self.allSwaps = ko.observableArray([]);
+    self.SOGSwapsData = ko.observableArray([]);
+
+
+
+    self.fetchAllSwaps = function () {
+        self.showSingleCurrency(false);
+        self.showingSwapbots(true);
+
+        try {
+            self.allSwaps([]);
+            $('#AssetPairMarketSwaps').dataTable().fnClearTable();
+        } catch (e) {
+        }
+
+        var opts = {
+            lines: 13 // The number of lines to draw
+            , length: 16 // The length of each line
+            , width: 9 // The line thickness
+            , radius: 17 // The radius of the inner circle
+            , scale: 1 // Scales overall size of the spinner
+            , corners: 1 // Corner roundness (0..1)
+            , color: '#000' // #rgb or #rrggbb or array of colors
+            , opacity: 0.45 // Opacity of the lines
+            , rotate: 31 // The rotation offset
+            , direction: 1 // 1: clockwise, -1: counterclockwise
+            , speed: 1.3 // Rounds per second
+            , trail: 60 // Afterglow percentage
+            , fps: 20 // Frames per second when using setTimeout() as a fallback for CSS
+            , zIndex: 2e9 // The z-index (defaults to 2000000000)
+            , className: 'spinner' // The CSS class to assign to the spinner
+            , top: '49%' // Top position relative to parent
+            , left: '51%' // Left position relative to parent
+            , shadow: false // Whether to render a shadow
+            , hwaccel: false // Whether to use hardware acceleration
+            , position: 'absolute' // Element positioning
+        };
+        var target = document.getElementById('AssetPairMarketSwaps');
+        spinner = new Spinner(opts).spin(target);
+
+        document.getElementById("AssetPairMarketSwaps-loader-done").style.display = "none";
+        var h = "<h3><b>Loading Market Data...</b></h3>";
+        document.getElementById("AssetPairMarketSwaps-loader").innerHTML = h;
+
+        //get all the bots
+        var push = false;
+        $.ajax("https://sogparty.com/swapbots/bots", {
+            success: self.doSwaps
+        });
+
+
+
+    };
+
+    self.doSwaps = function(data) {
+        var bigHolder = [];
+        for (var i in data) {
+            for (var s in data[i]['swaps']) {
+                for (var k in SOGAssetArray) {
+                    var card = SOGAssetArray[k];
+                    //active, out is sog, in is btc/bcy/xcp, and balance of card is not 0
+                    if ((data[i].state == "active") &&
+                        (data[i]['swaps'][s].out == SOGAssetArray[k]) &&
+                        (data[i]['swaps'][s].in == "BTC" || data[i]['swaps'][s].in == "XCP" || data[i]['swaps'][s].in == "BITCRYSTALS") &&
+                        (data[i]['balances'][card] > 0)) {
+                        var holder = {};
+                        holder.balance = data[i]['balances'][card];
+
+                        holder.card = card;
+                        //do issued
+                        var data_ = '';
+                        var c = k + 1;
+                        var p = c % 10,
+                            k = c % 100;
+                        if (p == 1 && k != 11) {
+                            data_ = c + "st";
+                        } else if (p == 2 && k != 12) {
+                            data_ = c + "nd";
+                        } else if (p == 3 && k != 13) {
+                            data_ = c + "rd";
+                        } else {
+                            data_ = c + "th";
+                        }
+
+                        holder.issued = "This was the " + data_ + " Card Issued";
+
+
+                        //setup output
+                        if (data[i]['swaps'][s].strategy == "fixed") {
+                            holder.in_qty = data[i]['swaps'][s].in_qty;
+                            holder.in = data[i]['swaps'][s].in;
+                            holder.out = data[i]['swaps'][s].out;
+                            holder.out_qty = data[i]['swaps'][s].out_qty;
+
+                            holder.priceline = holder.in_qty + " " + holder.in + " / Available: " + holder.balance;
+                        } else {
+
+                            holder.in = data[i]['swaps'][s].in;
+                            holder.out = data[i]['swaps'][s].out;
+                            holder.price = data[i]['swaps'][s].price;
+                            holder.rate = data[i]['swaps'][s].rate;
+                            holder.min = data[i]['swaps'][s].min;
+
+                            holder.priceline = holder.price + " " + holder.out + " Per 1 Card (Accepts Fractional Orders - min. " + holder.min + " " + holder.in + ") / Available: "+ holder.balance;
+
+
+                        }
+                        holder.visit = data[i].botUrl;
+                        holder.address = data[i].address;
+                        holder.id = data[i].id;
+                        holder.balance = data[i]['balances'][card];
+                        holder.name = data[i].name;
+
+                        if (holder.name.indexOf("Partner") > -1) {
+                            holder.restriction = "SOG Partner Only";
+
+                        } else if (holder.name.indexOf("Premium") > -1) {
+                            holder.restriction = "SOG Premium Only";
+
+                        } else holder.restriction = "None";
+
+                        bigHolder = bigHolder.concat(holder);
+                    }
+                }
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+        console.log("done should load now");
+        document.getElementById("AssetPairMarketSwaps-loader").innerHTML = "";
+        document.getElementById("AssetPairMarketSwaps-loader-done").style.display = "block";
+
+        self.allSwaps([]);
+        $('#AssetPairMarketSwaps').dataTable().fnClearTable();
+
+        self.allSwaps(bigHolder);
+        runDataTables('#AssetPairMarketSwaps', true, {});
+
+        spinner.stop();
+
+
+    }
+
 
 
 
@@ -1622,6 +1779,7 @@ function ExchangeViewModel() {
     self.exchangSelection = "XCP";
     self.refresh = function () {
 
+        if (self.showingSwapbots()) return;
         setTimeout(function () {
 
 

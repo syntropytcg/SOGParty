@@ -109,7 +109,7 @@
                   </div>
               <div class="widget-body" data-bind="attr: {'id': 'address-basebalances-' + ADDRESS}, foreach: filteredBaseAssets">
 
-                  <div class="base-asset-item" data-bind="attr: {'id': 'baseasset-' + ADDRESS + '-' + ASSET}, css: { btc: ASSET === 'BTC', xcp: (ASSET === 'XCP'), bcy: ASSET === 'BITCRYSTALS'}">
+                  <div class="base-asset-item" data-bind="attr: {'id': 'baseasset-' + ADDRESS + '-' + ASSET}, css: { btc: ASSET === 'BTC', xcp: (ASSET === 'XCP'), bcy: (ASSET === 'BITCRYSTALS' || ASSET === 'MAGICFLDC')}">
 
                       <div class="btn-group btn-group-dropup"> <!-- asset level action button -->
                           <button type="button" class="btn btn-default dropdown-toggle assetBtn"><span class="caret"></span></button>

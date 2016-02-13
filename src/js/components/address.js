@@ -32,6 +32,7 @@ function AddressViewModel(type, key, address, initialLabel, pubKeys) {
     new AssetViewModel({address: address, asset: "BTC"}), //will be updated with data loaded from insight
     new AssetViewModel({address: address, asset: "XCP"}), //will be updated with data loaded from counterpartyd
     new AssetViewModel({address: address, asset: "BITCRYSTALS"}),
+    new AssetViewModel({address: address, asset: "MAGICFLDC"}),
 
 
   ]);
@@ -61,7 +62,7 @@ function AddressViewModel(type, key, address, initialLabel, pubKeys) {
   self.filteredBaseAssets = ko.computed(function() {
 
       return ko.utils.arrayFilter(self.assets(), function(asset) {
-        return asset.ASSET == 'BTC' || asset.ASSET == 'XCP' || asset.ASSET == 'BITCRYSTALS';
+        return asset.ASSET == 'BTC' || asset.ASSET == 'XCP' || asset.ASSET == 'BITCRYSTALS' || asset.ASSET == 'MAGICFLDC';
       });
 
   }, self);
@@ -146,7 +147,7 @@ function AddressViewModel(type, key, address, initialLabel, pubKeys) {
       return item.ASSET === asset;
     });
 
-    if (asset == 'BTC' || asset == 'XCP'|| asset == 'BITCRYSTALS') { //special case update MAGICFLDC
+    if (asset == 'BTC' || asset == 'XCP'|| asset == 'BITCRYSTALS' || asset == 'MAGICFLDC') { //special case update MAGICFLDC
       assert(match, 'was created when the address viewmodel was initialized...');
       match.rawBalance(initialRawBalance);
       match.escrowedBalance(escrowedBalance);

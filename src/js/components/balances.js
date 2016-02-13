@@ -834,7 +834,7 @@ function SweepModalViewModel() {
       var assets = [], assetInfo = null;
       for (var i = 0; i < balancesData.length; i++) {
         for (var j = 0; j < SOGAssetArray.length; j++) {
-          if (balancesData[i]['asset'] == SOGAssetArray[j] || balancesData[i]['asset'] == 'XCP' || balancesData[i]['asset'] == 'BTC' || balancesData[i]['asset'] == 'BITCRYSTALS') {
+          if (balancesData[i]['asset'] == SOGAssetArray[j] || balancesData[i]['asset'] == 'XCP' || balancesData[i]['asset'] == 'BTC' || balancesData[i]['asset'] == 'BITCRYSTALS' || balancesData[i]['asset'] == 'MAGICFLDC') {
             var single = balancesData[i];
             b.push(single);
 
