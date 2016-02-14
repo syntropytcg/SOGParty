@@ -1462,7 +1462,7 @@ function ExchangeViewModel() {
         var bigHolder = [];
         for (var i in data) {
             for (var s in data[i]['swaps']) {
-                for (var k in SOGAssetArray) {
+                for (var k=0; k < SOGAssetArray.length; k++) {
                     var card = SOGAssetArray[k];
                     //active, out is sog, in is btc/bcy/xcp, and balance of card is not 0
                     if ((data[i].state == "active") &&
@@ -1477,18 +1477,19 @@ function ExchangeViewModel() {
                         var data_ = '';
                         var c = k + 1;
                         var p = c % 10,
-                            k = c % 100;
-                        if (p == 1 && k != 11) {
+                            j = c % 100;
+                        if (p == 1 && j != 11) {
                             data_ = c + "st";
-                        } else if (p == 2 && k != 12) {
+                        } else if (p == 2 && j != 12) {
                             data_ = c + "nd";
-                        } else if (p == 3 && k != 13) {
-                            data_ = c + "rd";
+                        } else if (p == 3 && j != 13) {
+                            data_= c + "rd";
                         } else {
                             data_ = c + "th";
                         }
 
                         holder.issued = "This was the " + data_ + " Card Issued";
+                        console.log(holder.issued);
 
 
                         //setup output
@@ -1507,7 +1508,7 @@ function ExchangeViewModel() {
                             holder.rate = data[i]['swaps'][s].rate;
                             holder.min = data[i]['swaps'][s].min;
 
-                            holder.priceline = holder.price + " " + holder.out + " Per 1 Card (Accepts Fractional Orders - min. " + holder.min + " " + holder.in + ") / Available: "+ holder.balance;
+                            holder.priceline = holder.price + " " + holder.in + " Per 1 Card (Accepts Fractional Orders - min. " + holder.min + " " + holder.in + ") / Available: "+ holder.balance;
 
 
                         }
@@ -1725,6 +1726,29 @@ function ExchangeViewModel() {
         trackEvent('Exchange', 'MarketSelected', self.dispAssetPair());
     };
 
+
+    self.showMarketPage = function (a1) {
+        self.asset1(a1);
+        self.asset2('XCP');
+        self.selectedQuoteAsset('XCP');
+
+        trackEvent('Exchange', 'MarketSelected', self.dispAssetPair());
+    };
+
+    self.showCurBTC = function(){
+        self.showMarketPage('BTC');
+
+    }
+    self.showCurBCY = function(){
+
+        self.showMarketPage('BITCRYSTALS');
+    }
+    self.showCurMAGICFLDC = function(){
+
+        self.showMarketPage('MAGICFLDC');
+    }
+
+
     self.fetchMarketDetails = function (item) {
         self.highestBidPrice(0);
         self.lowestAskPrice(0);
@@ -1750,6 +1774,7 @@ function ExchangeViewModel() {
         data = ['XCP'].concat(data);
         data = ['BTC'].concat(data);
         data = ['BITCRYSTALS'].concat(data);
+        data = ['MAGICFLDC'].concat(data);
         data = SOGAssetArray.concat(data);
         self.allAssets(data);
 
