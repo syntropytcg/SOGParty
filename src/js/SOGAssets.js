@@ -48,7 +48,12 @@ var SOGAssetArray = [
     "DARYENCARD",
     "LTCDRAGON",
     "SARUTOBICARD",
-    "SHIELDWALLCD"
+    "SHIELDWALLCD",
+    "MERCHANTCARD",
+    "COINOFLITECD",
+    "MAIDSAFECD",
+    "SHOPKEEPERCD",
+    "FOOTSOLDIER"
 ];
 
 var numSOGAssets = SOGAssetArray.length;
